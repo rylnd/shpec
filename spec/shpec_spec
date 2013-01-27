@@ -38,4 +38,14 @@ describe "shpec"
       assert equal "$(readlink /tmp/link)" "$HOME"
       rm /tmp/link
   end_describe
+
+  describe "exit codes"
+    it "returns nonzero if any test fails"
+      ./$spec_root/etc/failing_example &> /dev/null
+      assert true "[[ $? -ne 0 ]]"
+
+    it "returns zero if a suite passes"
+      ./$spec_root/etc/passing_example &> /dev/null
+      assert true "[[ $? -eq 0 ]]"
+  end_describe
 end_describe
