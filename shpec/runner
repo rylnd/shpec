@@ -2,7 +2,7 @@
 
 runner_root=$(dirname ${BASH_SOURCE[0]})
 
-for file in $(find $runner_root -name '*_spec'); do
+for file in $(find $runner_root -name '*_shpec'); do
   ./$file
   [[ $? -eq 0 ]] || fail=true
 done

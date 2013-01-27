@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 ## SETUP
-spec_root=$(dirname ${BASH_SOURCE[0]})
-source $spec_root/../lib/shpec
+shpec_root=$(dirname ${BASH_SOURCE[0]})
+source $shpec_root/../lib/shpec
 
 describe "shpec"
   describe "basic operations"
@@ -41,21 +41,21 @@ describe "shpec"
 
   describe "exit codes"
     it "returns nonzero if any test fails"
-      ./$spec_root/etc/failing_example &> /dev/null
+      ./$shpec_root/etc/failing_example &> /dev/null
       assert true "[[ $? -ne 0 ]]"
 
     it "returns zero if a suite passes"
-      ./$spec_root/etc/passing_example &> /dev/null
+      ./$shpec_root/etc/passing_example &> /dev/null
       assert true "[[ $? -eq 0 ]]"
   end_describe
 
   describe "output"
     it "outputs passing tests to STDOUT"
-      message=$(./$spec_root/etc/passing_example)
+      message=$(./$shpec_root/etc/passing_example)
       assert match "$message" "passes"
 
     it "outputs failing tests to STDERR"
-      message=$(./$spec_root/etc/failing_example 2>&1)
+      message=$(./$shpec_root/etc/failing_example 2>&1)
       assert match "$message" "fails"
   end_describe
 end_describe

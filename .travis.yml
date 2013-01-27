@@ -1,2 +1,2 @@
 language: c
-script: spec/runner
+script: shpec/runner
