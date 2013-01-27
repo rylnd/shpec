@@ -48,4 +48,14 @@ describe "shpec"
       ./$spec_root/etc/passing_example &> /dev/null
       assert true "[[ $? -eq 0 ]]"
   end_describe
+
+  describe "output"
+    it "outputs passing tests to STDOUT"
+      message=$(./$spec_root/etc/passing_example)
+      assert match "$message" "passes"
+
+    it "outputs failing tests to STDERR"
+      message=$(./$spec_root/etc/failing_example 2>&1)
+      assert match "$message" "fails"
+  end_describe
 end_describe
