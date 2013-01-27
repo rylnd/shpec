@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+## SETUP
+  spec_root=$(dirname ${BASH_SOURCE[0]})
+  source $spec_root/../lib/shpec
+
+describe "shpec"
+  describe "basic operations"
+    it "asserts equality"
+      assert equal "foo" "foo"
+
+    it "asserts partial matches"
+      assert match "partially" "partial"
+
+    it "asserts blankness"
+      assert blank ""
+  end_describe
+
+  describe "passing through to the test builtin"
+    it "asserts arbitrary tests"
+      assert true "[[ 5 -lt 10 ]]"
+      assert true "[[ 'foo' != 'bar' ]]"
+  end_describe
+end_describe
+
+## TEARDOWN
+  echo
+  [[ -z "$fail" ]] || exit 1

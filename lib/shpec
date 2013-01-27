@@ -1,0 +1,67 @@
+test_indent=1
+
+indent() {
+  printf '  %.0s' $(eval echo "{1..$test_indent}")
+}
+
+describe() {
+  indent
+  echo "$1"
+  ((test_indent += 1))
+}
+
+end_describe() {
+  ((test_indent -= 1))
+  # if [[ $test_indent -eq 1 ]]; then
+  #   echo
+  #   [[ -z "$fail" ]] || exit 1
+  # fi
+}
+
+it() {
+  assertion="$1"
+}
+
+assert() {
+  if [[ $# -lt 2 ]]; then
+    echo "Usage: $0 OPERAND [ARGS...]"
+  fi
+
+  case "x$1" in
+
+  x== | xequal )
+    print_result "[[ '$2' = '$3' ]]" "Expected [$2] to equal [$3]"
+  ;;
+
+  x=~ | xmatch )
+    print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]"
+  ;;
+
+  xblank )
+    print_result "[[ -z '$2' ]]" "Expected [$2] to be blank"
+  ;;
+
+  xtrue )
+    print_result "$2" "Expected $2 to be true"
+  ;;
+
+  *) echo "Unknown operand [$1]"; exit 1
+
+  esac
+}
+
+print_result() {
+  local red="\033[0;31m"
+  local green="\033[0;32m"
+  local norm="\033[0m"
+
+  indent
+  if eval "$1"; then
+    echo -e "$green$assertion$norm"
+  else
+    fail=true
+    echo -e "$red$assertion" >&2
+    indent
+    echo -e "($2)$norm" >&2
+  fi
+}
