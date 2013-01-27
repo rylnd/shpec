@@ -29,11 +29,11 @@ assert() {
 
   case "x$1" in
 
-  x== | xequal )
+  xequal )
     print_result "[[ '$2' = '$3' ]]" "Expected [$2] to equal [$3]"
   ;;
 
-  x=~ | xmatch )
+  xmatch )
     print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]"
   ;;
 
