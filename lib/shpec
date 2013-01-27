@@ -12,10 +12,10 @@ describe() {
 
 end_describe() {
   ((test_indent -= 1))
-  # if [[ $test_indent -eq 1 ]]; then
-  #   echo
-  #   [[ -z "$fail" ]] || exit 1
-  # fi
+  if [[ $test_indent -eq 1 ]]; then
+    echo
+    [[ -z "$fail" ]] || exit 1
+  fi
 }
 
 it() {

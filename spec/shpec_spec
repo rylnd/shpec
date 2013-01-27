@@ -22,7 +22,3 @@ describe "shpec"
       assert true "[[ 'foo' != 'bar' ]]"
   end_describe
 end_describe
-
-## TEARDOWN
-  echo
-  [[ -z "$fail" ]] || exit 1
