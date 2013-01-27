@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 ## SETUP
-  spec_root=$(dirname ${BASH_SOURCE[0]})
-  source $spec_root/../lib/shpec
+spec_root=$(dirname ${BASH_SOURCE[0]})
+source $spec_root/../lib/shpec
 
 describe "shpec"
   describe "basic operations"
