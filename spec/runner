@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+runner_root=$(dirname ${BASH_SOURCE[0]})
+
+for file in $(find $runner_root -name '*_spec'); do
+  ./$file
+  [[ $? -eq 0 ]] || fail=true
+done
+
+[[ -z "$fail" ]] || exit 1
