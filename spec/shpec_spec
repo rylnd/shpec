@@ -17,8 +17,25 @@ describe "shpec"
   end_describe
 
   describe "passing through to the test builtin"
-    it "asserts arbitrary tests"
+    it "asserts an arbitrary integer test"
       assert true "[[ 5 -lt 10 ]]"
+
+    it "asserts an arbitrary string test"
       assert true "[[ 'foo' != 'bar' ]]"
+  end_describe
+
+  describe "testing files"
+    it "can test file existence"
+      assert true "[[ ! -e /tmp/foo ]]"
+
+    it "can verify that a file was created"
+      touch /tmp/foo
+      assert true "[[ -e /tmp/foo ]]"
+      rm /tmp/foo
+
+    it "can verify the pointer of a symlink"
+      ln -s $HOME /tmp/link
+      assert equal "$(readlink /tmp/link)" "$HOME"
+      rm /tmp/link
   end_describe
 end_describe
