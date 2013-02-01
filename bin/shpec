@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 test_indent=1
 
 indent() {
@@ -64,3 +66,11 @@ print_result() {
     echo -e "($2)$norm" >&2
   fi
 }
+
+shpec_root=$(find . -name 'shpec' -type d)
+
+for file in $(find . -name '*_shpec'); do
+  . $file
+done
+
+[[ -z "$fail" ]] || exit 1
