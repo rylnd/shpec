@@ -5,19 +5,18 @@ Test your shell scripts!
 This repo itself is using shpec, so feel free to use it as an example.
 Here is the basic structure that you'll want:
 
+    ├── bin
+        └── shpec
     └── shpec
-        ├── runner
-        ├── shpec
         └── an_example_shpec
         └── another_shpec
 
-with this executable [runner file](https://github.com/rylnd/shpec/tree/master/shpec/runner),
- and of course the [shpec source](https://github.com/rylnd/shpec/tree/master/lib/shpec) itself.
+with the executable [shpec file](https://github.com/rylnd/shpec/tree/master/bin/shpec) in `bin/`.
 
 Then to run your tests:
 
 ```bash
-shpec/runner
+bin/shpec
 ```
 
 ## Contributing
