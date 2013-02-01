@@ -1,2 +1,2 @@
 language: c
-script: shpec/runner
+script: bin/shpec
