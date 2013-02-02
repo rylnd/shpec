@@ -34,14 +34,14 @@ describe "shpec"
   end_describe
 
   describe "exit codes"
-    it "sets the failure flag if any test fails"
-      . $shpec_root/etc/failing_example &> /dev/null
-      assert true "[[ -n "$fail" ]]"
-      fail=""
+    shpec_cmd="$shpec_root/../bin/shpec"
+    it "returns nonzero f any test fails"
+      $shpec_cmd $shpec_root/etc/failing_example &> /dev/null
+      assert true "[[ $? -ne 0 ]]"
 
-    it "doesn't set the flag if a suite passes"
-      . $shpec_root/etc/passing_example &> /dev/null
-      assert blank "$fail"
+    it "returns zero if a suite passes"
+      $shpec_cmd $shpec_root/etc/passing_example &> /dev/null
+      assert equal "$?" "0"
   end_describe
 
   describe "output"
