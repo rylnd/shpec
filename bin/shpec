@@ -31,28 +31,22 @@ assert() {
   case "x$1" in
 
   xequal )
-    print_result "[[ '$2' = '$3' ]]" "Expected [$2] to equal [$3]"
-  ;;
+    print_result "[[ '$2' = '$3' ]]" "Expected [$2] to equal [$3]";;
 
   xunequal )
-    print_result "[[ '$2' != '$3' ]]" "Expected [$2] not to equal [$3]"
-  ;;
+    print_result "[[ '$2' != '$3' ]]" "Expected [$2] not to equal [$3]";;
 
   xmatch )
-    print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]"
-  ;;
+    print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]";;
 
   xpresent )
-    print_result "[[ -n '$2' ]]" "Expected [$2] to be present"
-  ;;
+    print_result "[[ -n '$2' ]]" "Expected [$2] to be present";;
 
   xblank )
-    print_result "[[ -z '$2' ]]" "Expected [$2] to be blank"
-  ;;
+    print_result "[[ -z '$2' ]]" "Expected [$2] to be blank";;
 
   xtest )
-    print_result "$2" "Expected $2 to be true"
-  ;;
+    print_result "$2" "Expected $2 to be true";;
 
   *) echo "Unknown operand [$1]"; exit 1
 
