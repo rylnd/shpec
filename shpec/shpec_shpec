@@ -3,8 +3,14 @@ describe "shpec"
     it "asserts equality"
       assert equal "foo" "foo"
 
+    it "asserts inequality"
+      assert unequal "foo" "bar"
+
     it "asserts partial matches"
       assert match "partially" "partial"
+
+    it "asserts presence"
+      assert present "something"
 
     it "asserts blankness"
       assert blank ""
@@ -13,9 +19,6 @@ describe "shpec"
   describe "passing through to the test builtin"
     it "asserts an arbitrary integer test"
       assert true "[[ 5 -lt 10 ]]"
-
-    it "asserts an arbitrary string test"
-      assert true "[[ 'foo' != 'bar' ]]"
   end_describe
 
   describe "testing files"
@@ -37,7 +40,7 @@ describe "shpec"
     shpec_cmd="$shpec_root/../bin/shpec"
     it "returns nonzero f any test fails"
       $shpec_cmd $shpec_root/etc/failing_example &> /dev/null
-      assert true "[[ $? -ne 0 ]]"
+      assert unequal "$?" "0"
 
     it "returns zero if a suite passes"
       $shpec_cmd $shpec_root/etc/passing_example &> /dev/null
