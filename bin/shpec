@@ -50,7 +50,7 @@ assert() {
     print_result "[[ -z '$2' ]]" "Expected [$2] to be blank"
   ;;
 
-  xtrue )
+  xtest )
     print_result "$2" "Expected $2 to be true"
   ;;
 
