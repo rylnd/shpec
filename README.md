@@ -16,7 +16,7 @@ with the executable [shpec file](https://github.com/rylnd/shpec/tree/master/bin/
 Then to run your tests:
 
 ```bash
-bin/shpec
+bin/shpec [shpec_files]
 ```
 
 ## Contributing
