@@ -80,6 +80,7 @@ print_result() {
 }
 
 shpec_root=$(find . -name 'shpec' -type d)
+# assume current directory is test dir if not found
 shpec_root=${shpec_root:-.}
 files=${@:-$(find . -name '*_shpec')}
 
