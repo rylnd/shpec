@@ -80,6 +80,7 @@ print_result() {
 }
 
 shpec_root=$(find . -name 'shpec' -type d)
+shpec_root=${shpec_root:-.}
 files=${@:-$(find . -name '*_shpec')}
 
 for file in $files; do
