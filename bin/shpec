@@ -48,7 +48,7 @@ assert() {
   xtest )
     print_result "$2" "Expected $2 to be true";;
 
-  *) echo "Unknown operand [$1]"; exit 1
+  *) print_result false "Error: Unknown operand [$1]"
 
   esac
 }
