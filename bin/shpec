@@ -45,6 +45,16 @@ assert() {
   xblank )
     print_result "[[ -z '$2' ]]" "Expected [$2] to be blank";;
 
+  xfile_present )
+    print_result "[[ -e $2 ]]" "Expected file [$2] to exist";;
+
+  xfile_absent )
+    print_result "[[ ! -e $2 ]]" "Expected file [$2] not to exist";;
+
+  xsymlink )
+    link="$(readlink $2)"
+    print_result "[[ '$link' = '$3' ]]" "Expected [$2] to link to [$3], but got [$link]";;
+
   xtest )
     print_result "$2" "Expected $2 to be true";;
 

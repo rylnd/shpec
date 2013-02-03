@@ -22,17 +22,17 @@ describe "shpec"
   end_describe
 
   describe "testing files"
-    it "can test file existence"
-      assert test "[[ ! -e /tmp/foo ]]"
+    it "asserts file absence"
+      assert file_absent /tmp/foo
 
-    it "can verify that a file was created"
+    it "asserts file existence"
       touch /tmp/foo
-      assert test "[[ -e /tmp/foo ]]"
+      assert file_present /tmp/foo
       rm /tmp/foo
 
     it "can verify the pointer of a symlink"
       ln -s $HOME /tmp/link
-      assert equal "$(readlink /tmp/link)" "$HOME"
+      assert symlink /tmp/link "$HOME"
       rm /tmp/link
   end_describe
 
