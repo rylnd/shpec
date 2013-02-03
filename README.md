@@ -19,5 +19,9 @@ Then to run your tests:
 bin/shpec [shpec_files]
 ```
 
+### Examples
+Examples to come. In the meantime, check out shpec's
+[tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec).
+
 ## Contributing
 Pull requests are always welcome.
