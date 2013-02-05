@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+examples=0
+failures=0
 
 test_indent=1
 
@@ -14,12 +16,13 @@ describe() {
 
 end_describe() {
   ((test_indent -= 1))
-  if [[ $test_indent -eq 1 ]]; then
-    [[ -z "$fail" ]] || exit 1
+  if [ $test_indent -eq 1 ]; then
+    [ $failures -eq 0 ]
   fi
 }
 
 it() {
+  ((examples += 1))
   assertion="$1"
 }
 
@@ -72,7 +75,7 @@ print_result() {
   if eval "$1"; then
     echo -e "$green$assertion$norm"
   else
-    fail=true
+    ((failures += 1))
     echo -e "$red$assertion" >&2
     indent
     echo -e "($2)$norm" >&2
@@ -84,8 +87,10 @@ shpec_root=$(find . -name 'shpec' -type d)
 shpec_root=${shpec_root:-.}
 files=${@:-$(find . -name '*_shpec')}
 
-for file in $files; do
+time for file in $files; do
   . $file
 done
 
-[[ -z "$fail" ]] || exit 1
+echo "${examples} examples, ${failures} failures"
+
+[ $failures -eq 0 ]
