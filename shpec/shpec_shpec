@@ -6,6 +6,12 @@ describe "shpec"
     it "asserts inequality"
       assert unequal "foo" "bar"
 
+    it "asserts less than"
+      assert lt 5 7
+
+    it "asserts greater than"
+      assert gt 7 5
+
     it "asserts partial matches"
       assert match "partially" "partial"
 
