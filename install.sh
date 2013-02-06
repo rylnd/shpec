@@ -1,6 +1,10 @@
-#!/bin/sh
+#!/bin/sh -ex
 VERSION=0.0.2
-cd /tmp
+SHPECDIR=${TMPDIR}/shpec-${VERSION}
+
+cd $TMPDIR
 curl -sL https://github.com/shpec/shpec/archive/${VERSION}.tar.gz | tar zxf -
-cd shpec-${VERSION}
-make install
+cd $SHPECDIR
+sudo make install
+cd $TMPDIR
+rm -rf $SHPECDIR
