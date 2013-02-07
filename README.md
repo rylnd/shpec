@@ -11,8 +11,8 @@ This repo itself is using shpec, so feel free to use it as an example.
 Here is the basic structure that you'll want:
 
     └── shpec
-        └── an_example_shpec
-        └── another_shpec
+        └── an_example_shpec.sh
+        └── another_shpec.sh
 
 Then to run your tests:
 
