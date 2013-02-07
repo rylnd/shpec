@@ -88,7 +88,7 @@ print_result() {
   fi
 }
 
-shpec_root=$(find . -name 'shpec' -type d)
+shpec_root=$(find . -name 'shpec' -type d | grep -v '.git')
 # assume current directory is test dir if not found
 shpec_root=${shpec_root:-.}
 files=${@:-$(find . -name '*_shpec')}
