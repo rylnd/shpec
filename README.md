@@ -1,4 +1,4 @@
-# shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci.org/rylnd/shpec)
+# shpec [![Build Status](https://travis-ci.org/shpec/shpec.png)](https://travis-ci.org/shpec/shpec)
 Test your shell scripts!
 
 ### Installation
@@ -22,7 +22,7 @@ shpec [shpec_files]
 
 ### Examples
 Examples to come. In the meantime, check out shpec's
-[tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec).
+[tests](https://github.com/shpec/shpec/tree/master/shpec/shpec_shpec).
 
 ## Contributing
 Pull requests are always welcome.
