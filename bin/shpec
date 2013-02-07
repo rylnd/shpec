@@ -82,9 +82,9 @@ print_result() {
     echo -e "$green$assertion$norm"
   else
     ((failures += 1))
-    echo -e "$red$assertion" >&2
+    echo -e "$red$assertion"
     indent
-    echo -e "($2)$norm" >&2
+    echo -e "($2)$norm"
   fi
 }
 

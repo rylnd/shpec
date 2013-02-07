@@ -58,8 +58,8 @@ describe "shpec"
       message="$(. $shpec_root/etc/passing_example)"
       assert match "$message" "a\ passing\ test"
 
-    it "outputs failing tests to STDERR"
-      message="$(. $shpec_root/etc/failing_example 2>&1)"
+    it "outputs failing tests to STDOUT"
+      message="$(. $shpec_root/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
   end_describe
 end_describe
