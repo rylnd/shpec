@@ -5,8 +5,8 @@ all: shpec
 
 release:
 	cat install.sh | sed "s/VERSION=.*/VERSION=`cat VERSION`/" > install.sh
-	git add install.sh
-	[ -n "`git status --porcelain`" ] && git commit -m "make release" || true
+	git add install.sh VERSION
+	[ -n "`git status --porcelain`" ] && git commit -m "Release `cat VERSION`" || true
 	git push origin master
 	git tag `cat VERSION`
 	git push --tags
