@@ -2,6 +2,9 @@
 examples=0
 failures=0
 test_indent=0
+red="\033[0;31m"
+green="\033[0;32m"
+norm="\033[0m"
 
 indent() {
   printf '%*s' $test_indent
@@ -72,10 +75,6 @@ assert() {
 }
 
 print_result() {
-  local red="\033[0;31m"
-  local green="\033[0;32m"
-  local norm="\033[0m"
-
   indent
   if eval "$1"; then
     echo -e "$green$assertion$norm"
@@ -96,6 +95,7 @@ time for file in $files; do
   . $file
 done
 
-echo "${examples} examples, ${failures} failures"
+[ $failures -eq 0 ] && color=$green || color=$red
+echo -e "${color}${examples} examples, ${failures} failures${norm}"
 
 [ $failures -eq 0 ]
