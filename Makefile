@@ -1,8 +1,5 @@
 PREFIX    ?= /usr/local
-INSTALL   ?= install
-MKDIR     ?= $(INSTALL) -d
 BINDIR    ?= $(PREFIX)/bin
-DESTDIR   ?=
 
 all: shpec
 
@@ -15,7 +12,8 @@ release:
 	git push --tags
 
 install:
-	$(INSTALL) bin/shpec $(DESTDIR)$(BINDIR)/
+	mkdir -p $(BINDIR)
+	install bin/shpec $(BINDIR)/
 
 uninstall:
-	rm -f $(DESTDIR)$(BINDIR)/shpec
+	rm -f $(BINDIR)/shpec
