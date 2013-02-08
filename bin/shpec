@@ -1,22 +1,21 @@
 #!/usr/bin/env bash
 examples=0
 failures=0
-
-test_indent=1
+test_indent=0
 
 indent() {
-  printf '  %.0s' $(eval echo "{1..$test_indent}")
+  printf '%*s' $test_indent
 }
 
 describe() {
   indent
   echo "$1"
-  ((test_indent += 1))
+  ((test_indent += 2))
 }
 
 end_describe() {
-  ((test_indent -= 1))
-  if [ $test_indent -eq 1 ]; then
+  ((test_indent -= 2))
+  if [ $test_indent -eq 0 ]; then
     [ $failures -eq 0 ]
   fi
 }
