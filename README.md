@@ -22,7 +22,7 @@ shpec [shpec_files]
 
 ### Examples
 Examples to come. In the meantime, check out shpec's
-[tests](https://github.com/shpec/shpec/tree/master/shpec/shpec_shpec).
+[tests](https://github.com/shpec/shpec/tree/master/shpec/shpec_shpec.sh).
 
 ## Contributing
 Pull requests are always welcome.
