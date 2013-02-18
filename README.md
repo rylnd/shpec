@@ -1,5 +1,10 @@
-# shpec [![Build Status](https://travis-ci.org/shpec/shpec.png)](https://travis-ci.org/shpec/shpec)
+shpec [![Build Status](https://travis-ci.org/shpec/shpec.png)](https://travis-ci.org/shpec/shpec)
+----
 Test your shell scripts!
+
+<p align='center'>
+  <img src='https://raw.github.com/wiki/shpec/shpec/images/screenshot.png' alt="Screenshot of shpec" />
+</p>
 
 ## Using shpec
 This repo itself is using shpec, so feel free to use it as an example.
