@@ -11,16 +11,44 @@ Here is the basic structure that you'll want:
 
 Then to run your tests:
 
-``` bash
+```bash
 shpec [shpec_files]
 ```
 
 ### Examples
-Examples to come. In the meantime, check out shpec's
-[tests](https://github.com/shpec/shpec/tree/master/shpec/shpec_shpec.sh).
+[shpec's own tests](https://github.com/shpec/shpec/tree/master/shpec/shpec_shpec.sh)
+are a great place to start. More detailed examples to come.
 
-### Installation
-``` bash
+### Matchers
+The general format is:
+
+    assert matcher arguments
+
+where `matcher` is one of the following:
+
+#### Binary Matchers
+```bash
+equal         # equality
+unequal       # inequality
+gt            # algebraic '>'
+lt            # algebraic '<'
+match         # regex match
+```
+
+#### Unary Matchers
+```bash
+present       # string presence
+blank         # string absence
+file_present  # file presence
+file_absent   # file absence
+symlink       # tests a symlink's target
+test          # evaluates a test string
+```
+
+Support for custom matchers coming soon.
+
+## Installation
+```bash
 sh -c "`curl https://raw.github.com/shpec/shpec/master/install.sh`"
 ```
 
