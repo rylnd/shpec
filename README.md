@@ -50,7 +50,28 @@ symlink       # tests a symlink's target
 test          # evaluates a test string
 ```
 
-Support for custom matchers coming soon.
+#### Custom Matchers
+Custom matchers are loaded from `shpec/matchers/*.sh`.
+
+For example, here's how you'd create a `still_alive` matcher:
+
+```bash
+# in shpec/matchers/network.sh
+still_alive() {
+  ping -oc1 "$1" > /dev/null 2>&1
+  assert equal "$?" 0
+}
+```
+
+Then you can use that matcher like any other:
+
+```bash
+# in shpec/network_shpec.sh
+describe "my server"
+  it "serves responses"
+    assert still_alive "my-site.com"
+end_describe
+```
 
 ## Installation
 ```bash
