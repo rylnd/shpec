@@ -29,10 +29,6 @@ it() {
 }
 
 assert() {
-  if [[ $# -lt 2 ]]; then
-    echo "Usage: $0 OPERAND [ARGS...]"
-  fi
-
   case "x$1" in
 
   xequal )
@@ -69,7 +65,13 @@ assert() {
   xtest )
     print_result "$2" "Expected $2 to be true";;
 
-  *) print_result false "Error: Unknown operand [$1]"
+  * )
+    if type "$1" 2>/dev/null | grep -q 'function'; then
+      matcher="$1"; shift
+      $matcher "$@"
+    else
+      print_result false "Error: Unknown matcher [$1]"
+    fi;;
 
   esac
 }
@@ -88,7 +90,14 @@ print_result() {
 
 shpec_root="$(find . -name 'shpec' -type d | grep -v '.git')"
 shpec_root="${shpec_root:-.}" # default to current directory
-files="${@:-$(find . -name '*_shpec.sh')}"
+
+matcher_files="$(find "$shpec_root/matchers" -name '*.sh' 2>/dev/null)"
+
+for matcher_file in $matcher_files; do
+  . "$matcher_file"
+done
+
+files="${@:-$(find "$shpec_root" -name '*_shpec.sh')}"
 
 time for file in $files; do
   . "$file"
