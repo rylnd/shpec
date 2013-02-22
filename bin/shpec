@@ -24,7 +24,8 @@ end_describe() {
 }
 
 stub_command() {
-  eval "$1() { :; }"
+  body="${2:-:}"
+  eval "$1() { $body; }"
 }
 
 unstub_command() { unset -f "$1"; }
