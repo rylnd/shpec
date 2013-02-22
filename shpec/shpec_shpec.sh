@@ -35,6 +35,19 @@ line'
       assert test "[[ 5 -lt 10 ]]"
   end_describe
 
+  describe "stubbing commands"
+    it "stubs to the null command by default"
+      stub_command "exit"
+      exit # doesn't really exit
+      assert equal "$?" 0
+      unstub_command "exit"
+
+    it "accepts an optional function body"
+      stub_command "curl" "echo 'stubbed body'"
+      assert equal "$(curl)" "stubbed body"
+      unstub_command "curl"
+  end_describe
+
   describe "testing files"
     it "asserts file absence"
       assert file_absent /tmp/foo
