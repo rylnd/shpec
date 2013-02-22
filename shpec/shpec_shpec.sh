@@ -22,6 +22,14 @@ describe "shpec"
       assert blank ""
   end_describe
 
+  describe "equality matcher"
+    it "handles newlines properly"
+      string_with_newline_char="new\nline"
+      multiline_string='new
+line'
+      assert equal "$multiline_string" "$string_with_newline_char"
+  end_describe
+
   describe "passing through to the test builtin"
     it "asserts an arbitrary algebraic test"
       assert test "[[ 5 -lt 10 ]]"

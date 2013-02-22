@@ -36,10 +36,10 @@ assert() {
   case "x$1" in
 
   xequal )
-    print_result "[[ '$2' = '$3' ]]" "Expected [$2] to equal [$3]";;
+    print_result "[[ $'$2' = $'$3' ]]" "Expected [$2] to equal [$3]";;
 
   xunequal )
-    print_result "[[ '$2' != '$3' ]]" "Expected [$2] not to equal [$3]";;
+    print_result "[[ $'$2' != $'$3' ]]" "Expected [$2] not to equal [$3]";;
 
   xgt )
     print_result "[[ '$2' > '$3' ]]" "Expected [$2] to be > [$3]";;
