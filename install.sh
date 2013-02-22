@@ -5,6 +5,6 @@ SHPECDIR=${TMPDIR}/shpec-${VERSION}
 cd $TMPDIR
 curl -sL https://github.com/shpec/shpec/archive/${VERSION}.tar.gz | tar zxf -
 cd $SHPECDIR
-sudo make install
+make install
 cd $TMPDIR
 rm -rf $SHPECDIR
