@@ -23,6 +23,13 @@ end_describe() {
   fi
 }
 
+stub_command() {
+  body="${2:-:}"
+  eval "$1() { $body; }"
+}
+
+unstub_command() { unset -f "$1"; }
+
 it() {
   ((examples += 1))
   assertion="$1"
