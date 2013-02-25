@@ -49,10 +49,10 @@ assert() {
     print_result "[[ $'$2' != $'$3' ]]" "Expected [$2] not to equal [$3]";;
 
   xgt )
-    print_result "[[ '$2' > '$3' ]]" "Expected [$2] to be > [$3]";;
+    print_result "[[ $'$2' -gt $'$3' ]]" "Expected [$2] to be > [$3]";;
 
   xlt )
-    print_result "[[ '$2' < '$3' ]]" "Expected [$2] to be < [$3]";;
+    print_result "[[ $'$2' -lt $'$3' ]]" "Expected [$2] to be < [$3]";;
 
   xmatch )
     print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]";;
