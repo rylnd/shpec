@@ -33,11 +33,15 @@ line'
   describe "lt matcher"
     it "handles numbers of different length properly"
       assert lt 5 17
+    it "handles floats and integers"
+      assert lt 5 10.7
   end_describe
 
   describe "gt matcher"
     it "handles numbers of different length properly"
       assert gt 17 5
+    it "handles floats and integers"
+      assert gt 17 5.2
   end_describe
 
   describe "passing through to the test builtin"
