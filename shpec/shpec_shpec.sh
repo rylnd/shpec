@@ -30,9 +30,28 @@ line'
       assert equal "$multiline_string" "$string_with_newline_char"
   end_describe
 
+  describe "lt matcher"
+    it "handles numbers of different length properly"
+      assert lt 5 17
+    it "handles floats and integers"
+      assert lt 5 10.7
+  end_describe
+
+  describe "gt matcher"
+    it "handles numbers of different length properly"
+      assert gt 17 5
+    it "handles floats and integers"
+      assert gt 17 5.2
+  end_describe
+
   describe "passing through to the test builtin"
     it "asserts an arbitrary algebraic test"
       assert test "[[ 5 -lt 10 ]]"
+  end_describe
+
+  describe "passing through to the bc command"
+    it "asserts an arbitrary expression"
+      assert bc_expr "scale=1; 2.4 < (5/2)"
   end_describe
 
   describe "stubbing commands"

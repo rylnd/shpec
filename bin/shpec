@@ -35,6 +35,10 @@ it() {
   assertion="$1"
 }
 
+bc_expr() {
+  echo "[[ $(bc <<< $1) = 1 ]]"
+}
+
 assert() {
   if [[ $# -lt 2 ]]; then
     echo "Usage: $0 OPERAND [ARGS...]"
@@ -49,10 +53,10 @@ assert() {
     print_result "[[ $'$2' != $'$3' ]]" "Expected [$2] not to equal [$3]";;
 
   xgt )
-    print_result "[[ '$2' > '$3' ]]" "Expected [$2] to be > [$3]";;
+    print_result "$(bc_expr "$2 > $3")" "Expected [$2] to be > [$3]";;
 
   xlt )
-    print_result "[[ '$2' < '$3' ]]" "Expected [$2] to be < [$3]";;
+    print_result "$(bc_expr "$2 < $3")" "Expected [$2] to be < [$3]";;
 
   xmatch )
     print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]";;
@@ -75,6 +79,9 @@ assert() {
 
   xtest )
     print_result "$2" "Expected $2 to be true";;
+
+  xbc_expr )
+    print_result "$(bc_expr "$2")" "Expected $2 to be true";;
 
   *) print_result false "Error: Unknown operand [$1]"
 
