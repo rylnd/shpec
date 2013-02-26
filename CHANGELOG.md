@@ -3,6 +3,7 @@
 ## 0.0.6 Unreleased
 
  * Bugfix lt gt matchers on numbers
+ * Add bc expression matcher
 
 ## 0.0.5 (Feb 23 2013)
 

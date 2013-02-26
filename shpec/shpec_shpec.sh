@@ -45,6 +45,11 @@ line'
       assert test "[[ 5 -lt 10 ]]"
   end_describe
 
+  describe "passing through to the bc command"
+    it "asserts an arbitrary expression"
+      assert bc_expr "scale=1; 2.4 < (5/2)"
+  end_describe
+
   describe "stubbing commands"
     it "stubs to the null command by default"
       stub_command "exit"

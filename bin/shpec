@@ -76,6 +76,9 @@ assert() {
   xtest )
     print_result "$2" "Expected $2 to be true";;
 
+  xbc_expr )
+    print_result "[[ $(bc <<< "$2") = 1 ]]" "Expected $2 to be true";;
+
   *) print_result false "Error: Unknown operand [$1]"
 
   esac
