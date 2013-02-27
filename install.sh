@@ -1,5 +1,8 @@
 #!/bin/sh -ex
 VERSION=0.0.6
+
+TMPDIR=${TMPDIR:-/tmp}
+
 SHPECDIR=${TMPDIR}/shpec-${VERSION}
 
 cd $TMPDIR
