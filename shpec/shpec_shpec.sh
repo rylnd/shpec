@@ -63,6 +63,11 @@ line'
       rm /tmp/link
   end_describe
 
+  describe "custom matcher"
+    it "allows custom matchers"
+      assert custom_assertion "argument"
+  end_describe
+
   describe "exit codes"
     shpec_cmd="$shpec_root/../bin/shpec"
     it "returns nonzero if any test fails"
