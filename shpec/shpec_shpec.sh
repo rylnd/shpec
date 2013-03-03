@@ -88,4 +88,18 @@ line'
       message="$(. $shpec_root/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
   end_describe
+
+  describe "commandline options"
+    shpec_cmd="$shpec_root/../bin/shpec"
+    describe "--version"
+      it "outputs the current version number"
+        message="$($shpec_cmd --version)"
+        assert match "$message" "$(cat $shpec_root/../VERSION)"
+    end_describe
+    describe "-v"
+      it "outputs the current version number"
+        message="$($shpec_cmd -v)"
+        assert match "$message" "$(cat $shpec_root/../VERSION)"
+    end_describe
+  end_describe
 end_describe
