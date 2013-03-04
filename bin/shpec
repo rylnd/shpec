@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+VERSION=0.0.6
 examples=0
 failures=0
 test_indent=0
@@ -102,7 +103,7 @@ case "$1" in
 
   -v|--version )
 
-    cat "$shpec_root/../VERSION";;
+    echo "$VERSION";;
 
   * )
 
