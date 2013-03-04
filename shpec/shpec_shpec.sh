@@ -78,6 +78,12 @@ line'
       assert custom_assertion "argument"
   end_describe
 
+  describe "it blocks"
+    it <<-'EOF'
+      assert equal $((1+1)) 2
+EOF
+  end_describe
+
   describe "exit codes"
     shpec_cmd="$shpec_root/../bin/shpec"
     it "returns nonzero if any test fails"
