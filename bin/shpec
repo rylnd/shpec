@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+VERSION=0.0.6
 examples=0
 failures=0
 test_indent=0
@@ -98,19 +99,29 @@ print_result() {
 shpec_root="$(find . -name 'shpec' -type d | grep -v '.git')"
 shpec_root="${shpec_root:-.}" # default to current directory
 
-matcher_files="$(find "$shpec_root/matchers" -name '*.sh' 2>/dev/null)"
+case "$1" in
 
-for matcher_file in $matcher_files; do
-  . "$matcher_file"
-done
+  -v|--version )
 
-files="${@:-$(find "$shpec_root" -name '*_shpec.sh')}"
+    echo "$VERSION";;
 
-time for file in $files; do
-  . "$file"
-done
+  * )
 
-[ $failures -eq 0 ] && color=$green || color=$red
-echo -e "${color}${examples} examples, ${failures} failures${norm}"
+    matcher_files="$(find "$shpec_root/matchers" -name '*.sh' 2>/dev/null)"
 
-[ $failures -eq 0 ]
+    for matcher_file in $matcher_files; do
+      . "$matcher_file"
+    done
+
+    files="${@:-$(find "$shpec_root" -name '*_shpec.sh')}"
+
+    time for file in $files; do
+      . "$file"
+    done
+
+    [ $failures -eq 0 ] && color=$green || color=$red
+    echo -e "${color}${examples} examples, ${failures} failures${norm}"
+
+    [ $failures -eq 0 ]
+
+esac
