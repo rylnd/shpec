@@ -12,6 +12,7 @@ indent() {
 }
 
 describe() {
+  subject=$1
   indent
   echo "$1"
   ((test_indent += 2))
@@ -34,6 +35,15 @@ unstub_command() { unset -f "$1"; }
 it() {
   ((examples += 1))
   assertion="$1"
+}
+
+should() {
+  title="should $@"
+  it "$title"
+  matcher="$1"
+  shift
+  args="$@"
+  $matcher "$subject" "$args"
 }
 
 assert() {
