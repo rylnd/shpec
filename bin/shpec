@@ -96,8 +96,8 @@ print_result() {
   fi
 }
 
-shpec_root="$(find . -name 'shpec' -type d | grep -v '.git')"
-shpec_root="${shpec_root:-.}" # default to current directory
+shpec_root=${SHPEC_ROOT:-$(find . -name 'shpec' -type d | grep -v '.git')}
+shpec_root=${shpec_root:-.} # default to current directory
 
 case "$1" in
 
