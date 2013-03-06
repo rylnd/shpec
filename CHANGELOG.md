@@ -1,8 +1,13 @@
 # shpec Changelog
 
-## 0.0.8 Unreleased
+## 0.0.9 Unreleased
 
  *
+
+## 0.0.8 (Mar 6 2013)
+
+ * Pass in SHPEC_ROOT as an env variable
+ * Gt lt bugfix
 
 ## 0.0.7 (Mar 3 2013)
 
