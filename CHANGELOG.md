@@ -2,7 +2,7 @@
 
 ## 0.0.9 Unreleased
 
- *
+ * Set SHPEC_ROOT without using find
 
 ## 0.0.8 (Mar 6 2013)
 
