@@ -96,8 +96,9 @@ print_result() {
   fi
 }
 
-shpec_root=${SHPEC_ROOT:-$(find . -name 'shpec' -type d | grep -v '.git')}
-shpec_root=${shpec_root:-.} # default to current directory
+shpec_root() {
+  echo ${SHPEC_ROOT:=$([[ -d 'shpec' ]] && echo 'shpec' || echo '.')}
+}
 
 case "$1" in
 
@@ -107,13 +108,13 @@ case "$1" in
 
   * )
 
-    matcher_files="$(find "$shpec_root/matchers" -name '*.sh' 2>/dev/null)"
+    matcher_files="$(find "$(shpec_root)/matchers" -name '*.sh' 2>/dev/null)"
 
     for matcher_file in $matcher_files; do
       . "$matcher_file"
     done
 
-    files="${@:-$(find "$shpec_root" -name '*_shpec.sh')}"
+    files="${@:-$(find $(shpec_root) -name '*_shpec.sh')}"
 
     time for file in $files; do
       . "$file"
