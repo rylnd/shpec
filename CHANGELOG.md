@@ -1,6 +1,10 @@
 # shpec Changelog
 
-## 0.0.9 Unreleased
+## 0.0.10 Unreleased
+
+ *
+
+## 0.0.9 (Mar 7 2013)
 
  * Set SHPEC_ROOT without using find
 
