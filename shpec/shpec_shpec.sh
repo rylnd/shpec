@@ -79,37 +79,37 @@ line'
   end_describe
 
   describe "exit codes"
-    shpec_cmd="$shpec_root/../bin/shpec"
+    shpec_cmd="$SHPEC_ROOT/../bin/shpec"
     it "returns nonzero if any test fails"
-      $shpec_cmd $shpec_root/etc/failing_example &> /dev/null
+      $shpec_cmd $SHPEC_ROOT/etc/failing_example &> /dev/null
       assert unequal "$?" "0"
 
     it "returns zero if a suite passes"
-      $shpec_cmd $shpec_root/etc/passing_example &> /dev/null
+      $shpec_cmd $SHPEC_ROOT/etc/passing_example &> /dev/null
       assert equal "$?" "0"
   end_describe
 
   describe "output"
     it "outputs passing tests to STDOUT"
-      message="$(. $shpec_root/etc/passing_example)"
+      message="$(. $SHPEC_ROOT/etc/passing_example)"
       assert match "$message" "a\ passing\ test"
 
     it "outputs failing tests to STDOUT"
-      message="$(. $shpec_root/etc/failing_example)"
+      message="$(. $SHPEC_ROOT/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
   end_describe
 
   describe "commandline options"
-    shpec_cmd="$shpec_root/../bin/shpec"
+    shpec_cmd="$SHPEC_ROOT/../bin/shpec"
     describe "--version"
       it "outputs the current version number"
         message="$($shpec_cmd --version)"
-        assert match "$message" "$(cat $shpec_root/../VERSION)"
+        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
     end_describe
     describe "-v"
       it "outputs the current version number"
         message="$($shpec_cmd -v)"
-        assert match "$message" "$(cat $shpec_root/../VERSION)"
+        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
     end_describe
   end_describe
 end_describe
