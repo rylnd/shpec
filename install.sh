@@ -6,7 +6,7 @@ TMPDIR=${TMPDIR:-/tmp}
 SHPECDIR=${TMPDIR}/shpec-${VERSION}
 
 cd $TMPDIR
-curl -sL https://github.com/shpec/shpec/archive/${VERSION}.tar.gz | tar zxf -
+curl -sL https://github.com/rylnd/shpec/archive/${VERSION}.tar.gz | tar zxf -
 cd $SHPECDIR
 make install
 cd $TMPDIR

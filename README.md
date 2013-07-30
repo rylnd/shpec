@@ -1,9 +1,9 @@
-shpec [![Build Status](https://travis-ci.org/shpec/shpec.png)](https://travis-ci.org/shpec/shpec)
+shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci.org/rylnd/shpec)
 ----
 Test your shell scripts!
 
 <p align='center'>
-  <img src='https://raw.github.com/wiki/shpec/shpec/images/screenshot.png' alt="Screenshot of shpec" />
+  <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png' alt="Screenshot of shpec" />
 </p>
 
 ## Using shpec
@@ -21,7 +21,7 @@ shpec [shpec_files]
 ```
 
 ### Examples
-[shpec's own tests](https://github.com/shpec/shpec/tree/master/shpec/shpec_shpec.sh)
+[shpec's own tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec.sh)
 are a great place to start. More detailed examples to come.
 
 ### Matchers
@@ -75,7 +75,7 @@ end_describe
 
 ## Installation
 ```bash
-sh -c "`curl https://raw.github.com/shpec/shpec/master/install.sh`"
+sh -c "`curl https://raw.github.com/rylnd/shpec/master/install.sh`"
 ```
 
 ## Contributing
