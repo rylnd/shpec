@@ -33,7 +33,13 @@ unstub_command() { unset -f "$1"; }
 
 it() {
   ((examples += 1))
-  assertion="$1"
+  if [[ $* ]]; then
+    assertion=$*
+  else
+    block=$(cat </dev/stdin | sed 's/^[ ]*//g')
+    assertion=$block
+    eval $block
+  fi
 }
 
 assert() {
