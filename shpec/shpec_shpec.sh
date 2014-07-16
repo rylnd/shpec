@@ -28,6 +28,12 @@ describe "shpec"
       multiline_string='new
 line'
       assert equal "$multiline_string" "$string_with_newline_char"
+
+    it "compares strings containing single quotes"
+      assert equal "a' b" "a' b"
+
+    it "compares strings containing double quotes"
+      assert equal 'a" b' 'a" b'
   end_describe
 
   describe "lt matcher"

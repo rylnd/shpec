@@ -11,6 +11,10 @@ indent() {
   printf '%*s' $test_indent
 }
 
+escape() {
+  IFS= echo -e "$1" | tr '\n' 'n' | tr "'" 'q'
+}
+
 describe() {
   indent
   echo "$1"
@@ -40,10 +44,10 @@ assert() {
   case "x$1" in
 
   xequal )
-    print_result "[[ $'$2' = $'$3' ]]" "Expected [$2] to equal [$3]";;
+    print_result "[[ '$(escape "$2")' = '$(escape "$3")' ]]" "Expected [$2] to equal [$3]";;
 
   xunequal )
-    print_result "[[ $'$2' != $'$3' ]]" "Expected [$2] not to equal [$3]";;
+    print_result "[[ '$(escape "$2")' != '$(escape "$3")' ]]" "Expected [$2] not to equal [$3]";;
 
   xgt )
     print_result "[[ $2 -gt $3 ]]" "Expected [$2] to be > [$3]";;
