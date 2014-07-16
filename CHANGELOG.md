@@ -1,8 +1,12 @@
 # shpec Changelog
 
-## 0.0.10 Unreleased
+## 0.0.11 Unreleased
 
  *
+
+## 0.0.10 (Jul 16 2014)
+
+ * Allow comparison of strings containing quotes
 
 ## 0.0.9 (Mar 7 2013)
 
