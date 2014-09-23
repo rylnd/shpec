@@ -75,7 +75,7 @@ end_describe
 
 ## Installation
 ```bash
-sh -c "`curl https://raw.github.com/rylnd/shpec/master/install.sh`"
+sh -c "`curl -L https://raw.github.com/rylnd/shpec/master/install.sh`"
 ```
 
 ## Contributing
