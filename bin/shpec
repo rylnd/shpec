@@ -11,14 +11,17 @@ indent() {
   printf '%*s' $(((test_indent - 1) * 2))
 }
 
+iecho() {
+  indent && echo "$@"
+}
+
 sanitize() {
   IFS= echo -e "$1" | tr '\n' 'n' | tr "'" 'q'
 }
 
 describe() {
   ((test_indent += 1))
-  indent
-  echo "$1"
+  iecho "$1"
 }
 
 end() {
@@ -29,8 +32,7 @@ end() {
 }
 
 end_describe() {
-  indent
-  echo "Warning: end_describe will be deprecated in shpec 1.0. Please use end instead."
+  iecho "Warning: end_describe will be deprecated in shpec 1.0. Please use end instead."
   end
 }
 
@@ -99,14 +101,12 @@ assert() {
 }
 
 print_result() {
-  indent
   if eval "$1"; then
-    echo -e "$green$assertion$norm"
+    iecho -e "$green$assertion$norm"
   else
     ((failures += 1))
-    echo -e "$red$assertion"
-    indent
-    echo -e "($2)$norm"
+    iecho -e "$red$assertion"
+    iecho -e "($2)$norm"
   fi
 }
 
