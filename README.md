@@ -70,7 +70,8 @@ Then you can use that matcher like any other:
 describe "my server"
   it "serves responses"
     assert still_alive "my-site.com"
-end_describe
+  end
+end
 ```
 
 ## Installation
