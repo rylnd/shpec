@@ -8,7 +8,7 @@ green="\033[0;32m"
 norm="\033[0m"
 
 indent() {
-  printf '%*s' $test_indent
+  printf '%*s' $(((test_indent - 1) * 2))
 }
 
 sanitize() {
@@ -16,13 +16,13 @@ sanitize() {
 }
 
 describe() {
+  ((test_indent += 1))
   indent
   echo "$1"
-  ((test_indent += 2))
 }
 
 end_describe() {
-  ((test_indent -= 2))
+  ((test_indent -= 1))
   if [ $test_indent -eq 0 ]; then
     [ $failures -eq 0 ]
   fi
@@ -36,6 +36,7 @@ stub_command() {
 unstub_command() { unset -f "$1"; }
 
 it() {
+  ((test_indent += 1))
   ((examples += 1))
   assertion="$1"
 }
