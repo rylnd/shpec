@@ -1,0 +1,4 @@
+describe "an old example"
+  it "works"
+    assert equal "foo" "foo"
+end_describe
