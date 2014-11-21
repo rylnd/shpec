@@ -1,8 +1,10 @@
 # shpec Changelog
 
-## 0.0.11 Unreleased
+## 0.1.1 Unreleased
 
- *
+## 0.1.0 (Nov 20 2014)
+
+ * Add end function
 
 ## 0.0.10 (Jul 16 2014)
 
