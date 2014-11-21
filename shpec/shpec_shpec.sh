@@ -20,6 +20,10 @@ describe "shpec"
       assert match "partially" "partial"
     end
 
+    it "asserts lack of partial matches"
+      assert no_match "zebra" "giraffe"
+    end
+
     it "asserts presence"
       assert present "something"
     end

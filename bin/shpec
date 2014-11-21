@@ -65,6 +65,9 @@ assert() {
   xmatch )
     print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]";;
 
+  xno_match )
+    print_result "[[ ! '$2' =~ $3 ]]" "Expected [$2] not to match [$3]";;
+
   xpresent )
     print_result "[[ -n '$2' ]]" "Expected [$2] to be present";;
 
