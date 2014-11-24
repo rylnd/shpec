@@ -6,6 +6,7 @@ test_indent=0
 red="\033[0;31m"
 green="\033[0;32m"
 norm="\033[0m"
+SHPEC_ROOT=${SHPEC_ROOT:-$([[ -d './shpec' ]] && echo './shpec' || echo '.')}
 
 indent() {
   printf '%*s' $(((test_indent - 1) * 2))
@@ -110,7 +111,9 @@ print_result() {
   fi
 }
 
-SHPEC_ROOT=${SHPEC_ROOT:-$([[ -d './shpec' ]] && echo './shpec' || echo '.')}
+files_in() {
+  echo "$(find "$1" -name "$2" 2>/dev/null)"
+}
 
 case "$1" in
 
@@ -120,16 +123,25 @@ case "$1" in
 
   * )
 
-    matcher_files="$(find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null)"
-
-    for matcher_file in $matcher_files; do
+    matcher_files=("$(files_in "$SHPEC_ROOT/matchers" '*.sh')")
+    for matcher_file in "${matcher_files[@]}"; do
       . "$matcher_file"
     done
 
-    files="${@:-$(find $SHPEC_ROOT -name '*_shpec.sh')}"
+    if [ $# -eq 0 ]; then
+      shpec_files=("$(files_in $SHPEC_ROOT '*_shpec.sh')")
+    else
+      for arg in $@; do
+        if [ -d $arg ]; then
+          shpec_files=("${shpec_files[@]}" "$(files_in $arg '*_shpec.sh')")
+        else
+          shpec_files=("${shpec_files[@]}" "$arg")
+        fi
+      done
+    fi
 
-    time for file in $files; do
-      . "$file"
+    time for shpec_file in "${shpec_files[@]}"; do
+      . "$shpec_file"
     done
 
     [ $failures -eq 0 ] && color=$green || color=$red
