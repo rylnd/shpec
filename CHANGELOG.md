@@ -1,6 +1,10 @@
 # shpec Changelog
 
-## 0.1.1 Unreleased
+## 0.1.2 Unreleased
+
+## 0.1.1 (Dec 17 2014)
+  * Add no_match matcher
+  * Refactor indented printing
 
 ## 0.1.0 (Nov 20 2014)
 
