@@ -82,3 +82,5 @@ sh -c "`curl -L https://raw.github.com/rylnd/shpec/master/install.sh`"
 
 ## Contributing
 Pull requests are always welcome.
+
+If you've got a test or custom matcher you're particularly proud of, please consider adding it to [the Examples page](https://github.com/rylnd/shpec/wiki/Examples)!
