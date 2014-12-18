@@ -20,6 +20,12 @@ Then to run your tests:
 shpec [shpec_files]
 ```
 
+If you'd like your tests to run automatically when they change, we recommend the [entr](http://entrproject.org/) utility:
+
+```bash
+find . -name "*_shpec.sh" | entr shpec
+```
+
 ### Examples
 [shpec's own tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec.sh)
 are a great place to start. More detailed examples to come.
