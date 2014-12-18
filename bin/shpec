@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=0.1.0
+VERSION=0.1.1
 examples=0
 failures=0
 test_indent=0
