@@ -38,6 +38,7 @@ unequal       # inequality
 gt            # algebraic '>'
 lt            # algebraic '<'
 match         # regex match
+no_match      # lack of regex match
 ```
 
 #### Unary Matchers
