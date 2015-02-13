@@ -12,4 +12,4 @@
 
 ## just create an alias shpec pointing to where the spec
 ## executable really is (in this folder)
-alias shpec="bash $(readlink -f bin/shpec)"
+alias shpec="bash $(dirname $0:A)/bin/shpec"
