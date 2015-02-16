@@ -1,6 +1,9 @@
 # shpec Changelog
 
-## 0.1.2 Unreleased
+## 0.1.3 Unreleased
+
+## 0.1.2 (Feb 16 2014)
+  * Add Antigen package manager support
 
 ## 0.1.1 (Dec 17 2014)
   * Add no_match matcher
