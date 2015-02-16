@@ -1,5 +1,5 @@
 #!/bin/sh -ex
-VERSION=0.1.1
+VERSION=0.1.2
 
 TMPDIR=${TMPDIR:-/tmp}
 
