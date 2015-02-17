@@ -82,9 +82,13 @@ end
 ```
 
 ## Installation
+you can either install with curl
 ```bash
 sh -c "`curl -L https://raw.github.com/rylnd/shpec/master/install.sh`"
 ```
+
+or with [antigen](https://github.com/zsh-users/antigen) for zsh by
+putting `antigen bundle rylnd/shpec` in your `.zshrc`
 
 ## Contributing
 Pull requests are always welcome.
