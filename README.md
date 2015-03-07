@@ -32,10 +32,10 @@ are a great place to start. More detailed examples to come.
 
 ### Mocking
 
-You can mock command using =stub_command=. This command take as first argument the name of the command you will stub.
+You can mock command using `stub_command`. This command take as first argument the name of the command you will stub.
 You can provide an optional argument that will be the body of the method. (code that would be evaluated)
 
-One done, you can delete it with =unstub_command=.
+One done, you can delete it with `unstub_command`.
 
 ### Matchers
 The general format is:
