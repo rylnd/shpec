@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/rylnd/shpec.png?label=ready&title=Ready)](https://waffle.io/rylnd/shpec)
 shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci.org/rylnd/shpec)
 ----
 Test your shell scripts!
