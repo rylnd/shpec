@@ -69,11 +69,20 @@ line'
   end
 
   describe "stubbing commands"
+    # only bash lets us redefine 'exit', so use 'false'
+    it "check original working of the stub"
+      false
+      assert equal "$?" 1
+    end
     it "stubs to the null command by default"
-      stub_command "exit"
-      exit # doesn't really exit
+      stub_command "false"
+      false # doesn't do anything
       assert equal "$?" 0
-      unstub_command "exit"
+      unstub_command "false"
+    end
+    it "preserves the original working of the stub"
+      false
+      assert equal "$?" 1
     end
 
     it "accepts an optional function body"
