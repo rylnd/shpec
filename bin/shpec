@@ -1,11 +1,5 @@
-#!/usr/bin/env bash
-VERSION=0.1.2
-examples=0
-failures=0
-test_indent=0
-red="\033[0;31m"
-green="\033[0;32m"
-norm="\033[0m"
+: Use one of: bash, dash, or ksh93
+
 
 indent() {
   printf '%*s' $(((test_indent - 1) * 2))
@@ -110,31 +104,60 @@ print_result() {
   fi
 }
 
-SHPEC_ROOT=${SHPEC_ROOT:-$([[ -d './shpec' ]] && echo './shpec' || echo '.')}
 
-case "$1" in
+shpec() {
+  (
+  VERSION=0.1.2posix
+  examples=0
+  failures=0
+  test_indent=0
+  red="\033[0;31m"
+  green="\033[0;32m"
+  norm="\033[0m"
 
-  -v|--version )
+  SHPEC_ROOT=${SHPEC_ROOT:-$([[ -d './shpec' ]] && echo './shpec' || echo '.')}
+  case "$1" in
+  ( -v | --version ) echo "$VERSION"
+  ;;
+  ( * )
+      matcher_files="$(
+          find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
+      )"
 
-    echo "$VERSION";;
+      for matcher_file in $matcher_files; do
+        . "$matcher_file"
+      done
 
-  * )
+      if [ $# -gt 0 ] ; then
+        : \$1="'$1'" \${#1}="'${#1}'"
+        files="${@}"
+      else
+        files=$(
+          find $SHPEC_ROOT -name '*_shpec.sh'
+        )
+      fi
 
-    matcher_files="$(find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null)"
+      for file in $files; do
+        echo >& 2 "$file"
+        . "$file" || exit
+      done
 
-    for matcher_file in $matcher_files; do
-      . "$matcher_file"
-    done
+      [ $failures -eq 0 ] && color=$green || color=$red
+      echo -e "${color}${examples} examples, ${failures} failures${norm}"
 
-    files="${@:-$(find $SHPEC_ROOT -name '*_shpec.sh')}"
+      times
+      [ $failures -eq 0 ]
+      exit
+  ;;
+  esac
+  )
+}
 
-    time for file in $files; do
-      . "$file"
-    done
+(
+  _progname=shpec
+  _pathname=$( command -v $0 )
+  _cmdname=${_pathname##*/}
+  _main=shpec
 
-    [ $failures -eq 0 ] && color=$green || color=$red
-    echo -e "${color}${examples} examples, ${failures} failures${norm}"
-
-    [ $failures -eq 0 ]
-
-esac
+  case $_progname in (${_cmdname%.sh}) $_main "$@";; esac
+)
