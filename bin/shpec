@@ -38,9 +38,13 @@ end() {
 }
 
 end_describe() {
-  iecho "Warning: end_describe will be deprecated in shpec 1.0. Please use end instead."
+  iecho "Warning: end_describe will be deprecated in shpec 1.0." \
+    "Please use end instead."
   end
 }
+
+# Beware: POSIX shells are not required to accept
+# any identifier as a function name.
 
 stub_command() {
   body="${2:-:}"
