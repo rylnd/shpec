@@ -61,52 +61,64 @@ it() {
 
 assert() {
   case "x$1" in
-
   xequal )
-    print_result "[[ '$(sanitize "$2")' = '$(sanitize "$3")' ]]" "Expected [$2] to equal [$3]";;
-
+    print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
+      "Expected [$2] to equal [$3]"
+  ;;
   xunequal )
-    print_result "[[ '$(sanitize "$2")' != '$(sanitize "$3")' ]]" "Expected [$2] not to equal [$3]";;
-
+    print_result "[ '$(sanitize "$2")' != '$(sanitize "$3")' ]" \
+      "Expected [$2] not to equal [$3]"
+  ;;
   xgt )
-    print_result "[[ $2 -gt $3 ]]" "Expected [$2] to be > [$3]";;
-
+    print_result "[ $2 -gt $3 ]" \
+      "Expected [$2] to be > [$3]"
+  ;;
   xlt )
-    print_result "[[ $2 -lt $3 ]]" "Expected [$2] to be < [$3]";;
-
+    print_result "[ $2 -lt $3 ]" \
+      "Expected [$2] to be < [$3]"
+  ;;
   xmatch )
-    print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]";;
-
+    print_result "case '$2' in *$3*) :;; *) false;; esac" \
+      "Expected [$2] to match [$3]"
+  ;;
   xno_match )
-    print_result "[[ ! '$2' =~ $3 ]]" "Expected [$2] not to match [$3]";;
-
+    print_result "case '$2' in *$3*) false ;; *) :;; esac" \
+      "Expected [$2] not to match [$3]"
+  ;;
   xpresent )
-    print_result "[[ -n '$2' ]]" "Expected [$2] to be present";;
-
+    print_result "[ -n '$2' ]" \
+      "Expected [$2] to be present"
+  ;;
   xblank )
-    print_result "[[ -z '$2' ]]" "Expected [$2] to be blank";;
+    print_result "[ -z '$2' ]" \
+      "Expected [$2] to be blank"
+  ;;
 
   xfile_present )
-    print_result "[[ -e $2 ]]" "Expected file [$2] to exist";;
-
+    print_result "[ -e $2 ]" \
+      "Expected file [$2] to exist"
+  ;;
   xfile_absent )
-    print_result "[[ ! -e $2 ]]" "Expected file [$2] not to exist";;
-
+    print_result "[ ! -e $2 ]" \
+      "Expected file [$2] not to exist"
+  ;;
   xsymlink )
     link="$(readlink $2)"
-    print_result "[[ '$link' = '$3' ]]" "Expected [$2] to link to [$3], but got [$link]";;
-
+    print_result "[ '$link' = '$3' ]" \
+      "Expected [$2] to link to [$3], but got [$link]"
+  ;;
   xtest )
-    print_result "$2" "Expected $2 to be true";;
-
+    print_result "$2" \
+      "Expected $2 to be true"
+  ;;
   * )
     if type "$1" 2>/dev/null | grep -q 'function'; then
       matcher="$1"; shift
       $matcher "$@"
     else
       print_result false "Error: Unknown matcher [$1]"
-    fi;;
-
+    fi
+  ;;
   esac
 }
 
@@ -131,7 +143,7 @@ shpec() {
   green="\033[0;32m"
   norm="\033[0m"
 
-  SHPEC_ROOT=${SHPEC_ROOT:-$([[ -d './shpec' ]] && echo './shpec' || echo '.')}
+  SHPEC_ROOT=${SHPEC_ROOT:-$([ -d './shpec' ] && echo './shpec' || echo '.')}
   case "$1" in
   ( -v | --version ) echo "$VERSION"
   ;;
