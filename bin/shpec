@@ -111,8 +111,8 @@ print_result() {
     iecho "$green$assertion$norm"
   else
     ((failures += 1))
-    iecho -e "$red$assertion"
-    iecho -e "($2)$norm"
+    iecho "$red$assertion"
+    iecho "($2)$norm"
   fi
 }
 
