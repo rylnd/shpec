@@ -64,7 +64,7 @@ line'
 
   describe "passing through to the test builtin"
     it "asserts an arbitrary algebraic test"
-      assert test "[[ 5 -lt 10 ]]"
+      assert test "[ 5 -lt 10 ]"
     end
   end
 
