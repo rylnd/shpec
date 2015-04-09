@@ -26,12 +26,12 @@ sanitize() {
 }
 
 describe() {
-  ((test_indent += 1))
+  : $((test_indent += 1))
   iecho "$1"
 }
 
 end() {
-  ((test_indent -= 1))
+  : $((test_indent -=1 ))
   if [ $test_indent -eq 0 ]; then
     [ $failures -eq 0 ]
   fi
@@ -50,8 +50,8 @@ stub_command() {
 unstub_command() { unset -f "$1"; }
 
 it() {
-  ((test_indent += 1))
-  ((examples += 1))
+  : $((test_indent += 1))
+  : $((examples += 1))
   assertion="$1"
 }
 
@@ -110,7 +110,7 @@ print_result() {
   if eval "$1"; then
     iecho "$green$assertion$norm"
   else
-    ((failures += 1))
+    : $((failures += 1))
     iecho "$red$assertion"
     iecho "($2)$norm"
   fi
