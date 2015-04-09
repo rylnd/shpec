@@ -1,16 +1,28 @@
+#
 : Use one of: bash, dash, or ksh93
-
 
 indent() {
   printf '%*s' $(((test_indent - 1) * 2))
 }
 
+# 'echo -e' is not a POSIX feature.
+# This helps us to work around that.
+echo_needs_minus_e(){
+  echo "\010"| (read a; [ ${#a} -ne 1 ])
+}
+
+if echo_needs_minus_e; then
+  echoe() { echo -e "$@"; }
+else
+  echoe() { echo "$@"; }
+fi
+
 iecho() {
-  indent && echo "$@"
+  indent && echoe "$@"
 }
 
 sanitize() {
-  IFS= echo -e "$1" | tr '\n' 'n' | tr "'" 'q'
+  IFS= echoe "$1" | tr '\n' 'n' | tr "'" 'q'
 }
 
 describe() {
@@ -96,7 +108,7 @@ assert() {
 
 print_result() {
   if eval "$1"; then
-    iecho -e "$green$assertion$norm"
+    iecho "$green$assertion$norm"
   else
     ((failures += 1))
     iecho -e "$red$assertion"
