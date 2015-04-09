@@ -2,7 +2,7 @@
 : Use one of: bash, dash, or ksh93
 
 indent() {
-  printf '%*s' $(((test_indent - 1) * 2))
+  printf '%*s' $(( (test_indent - 1) * 2))
 }
 
 # 'echo -e' is not a POSIX feature.
