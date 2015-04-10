@@ -171,7 +171,7 @@ shpec() {
       done
 
       [ $failures -eq 0 ] && color=$green || color=$red
-      echo -e "${color}${examples} examples, ${failures} failures${norm}"
+      echoe "${color}${examples} examples, ${failures} failures${norm}"
 
       times
       [ $failures -eq 0 ]
