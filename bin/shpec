@@ -153,9 +153,9 @@ shpec() {
   ( -v | --version ) echo "$VERSION"
   ;;
   ( * )
-      matcher_files="$(
+      matcher_files=$(
           find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
-      )"
+      )
 
       for matcher_file in $matcher_files; do
         . "$matcher_file"
