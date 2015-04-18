@@ -170,8 +170,7 @@ shpec() {
       fi
 
       for file in $files; do
-        echo >& 2 "$file"
-        . "$file" || exit
+        . "$file"
       done
 
       [ $failures -eq 0 ] && color=$green || color=$red
