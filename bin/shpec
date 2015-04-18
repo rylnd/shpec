@@ -31,7 +31,7 @@ describe() {
 }
 
 end() {
-  : $((test_indent -=1 ))
+  : $((test_indent -= 1))
   if [ $test_indent -eq 0 ]; then
     [ $failures -eq 0 ]
   fi
