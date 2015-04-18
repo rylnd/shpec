@@ -28,7 +28,7 @@ find . -name "*_shpec.sh" | entr shpec
 
 ### Examples
 [shpec's own tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec.sh)
-are a great place to start. More detailed examples to come.
+are a great place to start. For more examples, see the [wiki page](https://github.com/rylnd/shpec/wiki/Examples)
 
 ### Matchers
 The general format is:
@@ -92,3 +92,5 @@ putting `antigen bundle rylnd/shpec` in your `.zshrc`
 
 ## Contributing
 Pull requests are always welcome.
+
+If you've got a test or custom matcher you're particularly proud of, please consider adding it to [the Examples page](https://github.com/rylnd/shpec/wiki/Examples)!
