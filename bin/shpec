@@ -162,7 +162,6 @@ shpec() {
       done
 
       if [ $# -gt 0 ] ; then
-        : \$1="'$1'" \${#1}="'${#1}'"
         files="${@}"
       else
         files=$(
