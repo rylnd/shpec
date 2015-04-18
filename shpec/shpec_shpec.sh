@@ -70,11 +70,6 @@ line'
   end
 
   describe "stubbing commands"
-    # only bash lets us redefine 'exit', so use 'false'
-    it "check original working of the stub"
-      false
-      assert equal "$?" 1
-    end
     it "stubs to the null command by default"
       stub_command "false"
       false # doesn't do anything
