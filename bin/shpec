@@ -135,7 +135,12 @@ print_result() {
 
 shpec() {
   (
-  VERSION=0.1.2posix
+  VERSION=$(
+    MAJOR=0
+    MINOR=2
+    PATCH=0
+    echo $MAJOR.$MINOR.$PATCH
+  )
   examples=0
   failures=0
   test_indent=0
