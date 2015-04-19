@@ -171,7 +171,11 @@ shpec() {
   green="\033[0;32m"
   yellow="\033[0;33m"
   norm="\033[0m"
-  [ -t 0 ] || red="NO " green="OK " yellow="?? " norm=
+
+  terminal_input(){ [ -t 0 ]; }
+
+  terminal_input ||
+    red="NO " green="OK " yellow="?? " norm=
 
   SHPEC_ROOT=${SHPEC_ROOT:-$(
       [ -d './shpec' ] && echo './shpec' || echo '.'
