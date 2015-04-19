@@ -61,68 +61,68 @@ it() {
 
 assert() {
   case "x$1" in
-  xfail )
+  ( xfail )
     set +e
     print_result "false" \
       "Always fails"
   ;;
-  xequal )
+  ( xequal )
     print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
       "Expected [$2] to equal [$3]"
   ;;
-  xunequal )
+  ( xunequal )
     print_result "[ '$(sanitize "$2")' != '$(sanitize "$3")' ]" \
       "Expected [$2] not to equal [$3]"
   ;;
-  xgt )
+  ( xgt )
     print_result "[ $2 -gt $3 ]" \
       "Expected [$2] to be > [$3]"
   ;;
-  xlt )
+  ( xlt )
     print_result "[ $2 -lt $3 ]" \
       "Expected [$2] to be < [$3]"
   ;;
-  xmatch )
+  ( xmatch )
     print_result "case '$2' in *$3*) :;; *) false;; esac" \
       "Expected [$2] to match [$3]"
   ;;
-  xno_match )
+  ( xno_match )
     print_result "case '$2' in *$3*) false ;; *) :;; esac" \
       "Expected [$2] not to match [$3]"
   ;;
-  xpresent )
+  ( xpresent )
     print_result "[ -n '$2' ]" \
       "Expected [$2] to be present"
   ;;
-  xblank )
+  ( xblank )
     print_result "[ -z '$2' ]" \
       "Expected [$2] to be blank"
   ;;
-
-  xfile_present )
+  ( xfile_present )
     print_result "[ -e $2 ]" \
       "Expected file [$2] to exist"
   ;;
-  xfile_absent )
+  ( xfile_absent )
     print_result "[ ! -e $2 ]" \
       "Expected file [$2] not to exist"
   ;;
-  xsymlink )
+  ( xsymlink )
     link=$(readlink $2)
     print_result "[ '$link' = '$3' ]" \
       "Expected [$2] to link to [$3], but got [$link]"
   ;;
-  xtest )
+  ( xtest )
     print_result "$2" \
       "Expected $2 to be true"
   ;;
-  * )
-    if type "$1" 2>/dev/null | grep -q 'function'; then
+  ( * )
+    case "$(type $1)" in
+    (*function*)
       matcher="$1"; shift
       $matcher "$@"
-    else
-      print_result false "Error: Unknown matcher [$1]"
-    fi
+      return
+    esac
+    print_result false "Error: Unknown matcher [$1]"
   ;;
   esac
 }
