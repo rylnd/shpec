@@ -182,7 +182,7 @@ shpec() {
                 echo "$VERSION"
                 exit 0
     ;;
-    ( -f | --failures ) 
+    ( -f ) 
                 shift
                 expected_failures=$1 shift
     ;;
@@ -190,7 +190,7 @@ shpec() {
                 break
     ;;
     (-* | --*)  shift
-      printf -u2 -- "%s: no such option\n" $option
+                printf -u2 -- "%s: no such option\n" $option
     ;;
     (*)         break
     esac
@@ -227,6 +227,8 @@ shpec() {
       )
 
       times
+
+      set -x
       [ $failures -eq $expected_failures ]
       exit
   ;;
