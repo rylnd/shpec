@@ -127,8 +127,8 @@ assert() {
   esac
 }
 
-skip()   { : $((_skipping+=1)); }
-noskip() { [ ${_skipping} -eq 0 ]; }
+skip_next_assert()   { : $((_skipping+=1)); }
+not_skipping() { [ ${_skipping} -eq 0 ]; }
 _skipped(){ : $((_skipping-=1)); }
 
 print_result() {
@@ -138,7 +138,7 @@ print_result() {
     return
   fi
 
-  if noskip; then
+  if not_skipping; then
     : $((failures += 1))
     iecho "$red$assertion$norm"
     iecho "($2)"

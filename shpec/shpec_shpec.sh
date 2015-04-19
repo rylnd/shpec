@@ -163,7 +163,7 @@ line'
 
   describe "skip"
     it "skips this failing test"
-      skip
+      skip_next_assert
       assert fail
     end
   end
