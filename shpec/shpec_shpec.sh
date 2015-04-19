@@ -138,18 +138,18 @@ line'
   end
 
   describe "commandline options"
-    _v=$(cat $SHPEC_ROOT/../VERSION)
+    _version=$(cat $SHPEC_ROOT/../VERSION)
     describe "--version"
       it "outputs the current version number"
-        message=$(shpec --version)
-        assert match "$message" "$_v"
+        message=$( shpec --version )
+        assert match "$message" "$_version"
       end
     end
 
     describe "-v"
       it "outputs the current version number"
-        message=$(shpec -v)
-        assert match "$message" "$_v"
+        message=$( shpec -v )
+        assert match "$message" "$_version"
       end
     end
   end
