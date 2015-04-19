@@ -84,8 +84,8 @@ line'
   describe "'unstub_command'"
     it "restores the original working"
       unstub_command "false"
-      false
-      assert equal "$?" 1
+      (false) || _r=$?
+      assert equal "$_r" 1
     end
   end
 
@@ -115,8 +115,8 @@ line'
 
   describe "exit codes"
     it "returns nonzero if any test fails"
-      shpec $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1
-      assert unequal "$?" "0"
+      shpec $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1 || _r=$?
+      assert unequal "$_r" "0"
     end
 
     it "returns zero if a suite passes"
