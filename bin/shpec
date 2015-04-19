@@ -62,8 +62,10 @@ it() {
 assert() {
   case "x$1" in
   xfail )
+    set +e
     print_result "false" \
       "Always fails"
+    set -e
   ;;
   xequal )
     print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
