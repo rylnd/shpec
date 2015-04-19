@@ -69,22 +69,23 @@ line'
     end
   end
 
-  describe "stubbing commands"
-    it "stubs to the null command by default"
+  describe "'stub_command'"
+    it "defaults to the null command"
       stub_command "false"
       false # doesn't do anything
       assert equal "$?" 0
-      unstub_command "false"
     end
-    it "preserves the original working of the stub"
-      false
-      assert equal "$?" 1
-    end
-
     it "accepts an optional function body"
       stub_command "curl" "echo 'stubbed body'"
       assert equal "$(curl)" "stubbed body"
       unstub_command "curl"
+    end
+  end
+  describe "'unstub_command'"
+    it "restores the original working"
+      unstub_command "false"
+      false
+      assert equal "$?" 1
     end
   end
 
@@ -126,36 +127,36 @@ line'
 
   describe "output"
     it "outputs passing tests to STDOUT"
-      message="$(. $SHPEC_ROOT/etc/passing_example)"
+      message=$(. $SHPEC_ROOT/etc/passing_example)
       assert match "$message" "a\ passing\ test"
     end
 
     it "outputs failing tests to STDOUT"
-      message="$(. $SHPEC_ROOT/etc/failing_example)"
+      message=$(. $SHPEC_ROOT/etc/failing_example)
       assert match "$message" "a\ failing\ test"
     end
   end
 
   describe "commandline options"
-
+    _v=$(cat $SHPEC_ROOT/../VERSION)
     describe "--version"
       it "outputs the current version number"
-        message="$(shpec --version)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        message=$(shpec --version)
+        assert match "$message" "$_v"
       end
     end
 
     describe "-v"
       it "outputs the current version number"
-        message="$(shpec -v)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        message=$(shpec -v)
+        assert match "$message" "$_v"
       end
     end
   end
 
   describe "compatibility"
     it "works with old-style syntax"
-      message="$(. $SHPEC_ROOT/etc/old_example)"
+      message=$(. $SHPEC_ROOT/etc/old_example)
       assert match "$message" "old\ example"
     end
   end

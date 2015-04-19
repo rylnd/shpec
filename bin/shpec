@@ -103,7 +103,7 @@ assert() {
       "Expected file [$2] not to exist"
   ;;
   xsymlink )
-    link="$(readlink $2)"
+    link=$(readlink $2)
     print_result "[ '$link' = '$3' ]" \
       "Expected [$2] to link to [$3], but got [$link]"
   ;;
