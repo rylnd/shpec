@@ -164,6 +164,8 @@ exit_with_expected_failures() {
   exit 1
 }
 
+terminal_input(){ [ -t 0 ]; }
+
 shpec() {
   (
   set -u -e
@@ -185,7 +187,7 @@ shpec() {
   yellow="\033[0;33m"
   norm="\033[0m"
 
-  [ -t 0 ] ||
+  terminal_input ||
     red="NO " green="OK " yellow="?? " norm=
 
   SHPEC_ROOT=${SHPEC_ROOT:-$(
@@ -239,7 +241,7 @@ shpec() {
   trap 0
 
   (
-  [ -t 0 ] || red= green= yellow= norm=
+  terminal_input || red= green= yellow= norm=
   echoe   "${examples} ${norm}examples," \
             "${passed} ${green}passed${norm}" \
           "${failures} ${red}failures${norm}" \
