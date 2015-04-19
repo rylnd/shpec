@@ -1,2 +1,2 @@
 language: sh
-script: bin/shpec | grep ' 1 .*failures.* 1 skipped'
+script: bin/shpec -f 1

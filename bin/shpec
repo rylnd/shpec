@@ -159,7 +159,7 @@ shpec() {
     echo $MAJOR.$MINOR.$PATCH
   )
   examples=0
-  failures=0
+  failures=0 expected_failures=0
   passed=0
   skipped=0
 
@@ -175,9 +175,28 @@ shpec() {
       [ -d './shpec' ] && echo './shpec' || echo '.'
   )}
 
+  while option=$1
+  do
+    case $option in
+    ( -v | --version )
+                echo "$VERSION"
+                exit 0
+    ;;
+    ( -f | --failures ) 
+                shift
+                expected_failures=$1 shift
+    ;;
+    (--)        shift
+                break
+    ;;
+    (-* | --*)  shift
+      printf -u2 -- "%s: no such option\n" $option
+    ;;
+    (*)         break
+    esac
+  done
+  
   case "$1" in
-  ( -v | --version ) echo "$VERSION"
-  ;;
   ( * )
       matcher_files=$(
           find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
@@ -208,7 +227,7 @@ shpec() {
       )
 
       times
-      [ $failures -eq 0 ]
+      [ $failures -eq $expected_failures ]
       exit
   ;;
   esac
