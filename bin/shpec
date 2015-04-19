@@ -61,6 +61,10 @@ it() {
 
 assert() {
   case "x$1" in
+  xfail )
+    print_result "false" \
+      "Always fails"
+  ;;
   xequal )
     print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
       "Expected [$2] to equal [$3]"
@@ -122,13 +126,26 @@ assert() {
   esac
 }
 
+skip()   { : $((_skipping+=1)); }
+noskip() { [ ${_skipping} -eq 0 ]; }
+_skipped(){ : $((_skipping-=1)); }
+
 print_result() {
   if eval "$1"; then
+    : $((passed += 1))
     iecho "$green$assertion$norm"
-  else
+    return
+  fi
+
+  if noskip; then
     : $((failures += 1))
-    iecho "$red$assertion"
-    iecho "($2)$norm"
+    iecho "$red$assertion$norm"
+    iecho "($2)"
+  else
+    _skipped
+    : $((skipped += 1))
+    iecho "$yellow$assertion$norm"
+    iecho "($2)"
   fi
 }
 
@@ -143,12 +160,21 @@ shpec() {
   )
   examples=0
   failures=0
-  test_indent=0
+  passed=0
+  skipped=0
+
+  test_indent=0 _skipping=0
+
   red="\033[0;31m"
   green="\033[0;32m"
+  yellow="\033[0;33m"
   norm="\033[0m"
+  [ -t 0 ] || red="NO " green="OK " yellow="?? " norm=
 
-  SHPEC_ROOT=${SHPEC_ROOT:-$([ -d './shpec' ] && echo './shpec' || echo '.')}
+  SHPEC_ROOT=${SHPEC_ROOT:-$(
+      [ -d './shpec' ] && echo './shpec' || echo '.'
+  )}
+
   case "$1" in
   ( -v | --version ) echo "$VERSION"
   ;;
@@ -173,8 +199,13 @@ shpec() {
         . "$file"
       done
 
-      [ $failures -eq 0 ] && color=$green || color=$red
-      echoe "${color}${examples} examples, ${failures} failures${norm}"
+      (
+      [ -t 0 ] || red= green= yellow= norm=
+      echoe "${examples} ${norm}examples," \
+              "${passed} ${green}passed${norm}" \
+              "${failures} ${red}failures${norm}" \
+              "${skipped} ${yellow}skipped${norm}"
+      )
 
       times
       [ $failures -eq 0 ]

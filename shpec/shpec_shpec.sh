@@ -160,4 +160,17 @@ line'
       assert match "$message" "old\ example"
     end
   end
+
+  describe "skip"
+    it "skips this failing test"
+      skip
+      assert fail
+    end
+  end
+
+  describe "fail"
+    it "fails this test (EXPECTED)"
+      assert fail
+    end
+  end
 end
