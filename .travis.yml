@@ -1,2 +1,5 @@
 language: sh
-script: bin/shpec -f 1
+script:
+  - time bash bin/shpec -f 1 shpec/shpec_shpec.sh
+  - time dash bin/shpec -f 1 shpec/shpec_shpec.sh
+  - time ksh  bin/shpec -f 1 shpec/shpec_shpec.sh
