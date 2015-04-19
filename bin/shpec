@@ -150,6 +150,19 @@ print_result() {
   fi
 }
 
+report_expected_failure_count() {
+  [ ${expected_failures} -gt 0 ] &&
+    echo ", ${expected_failures} failures expected."
+}
+
+exit_with_expected_failures() {
+  if [ $failures -eq $expected_failures ] ; then
+    echo OK$( report_expected_failure_count )
+    exit 0
+  fi
+  echo NO$( report_expected_failure_count )
+  exit 1
+}
 
 shpec() {
   (
@@ -172,9 +185,7 @@ shpec() {
   yellow="\033[0;33m"
   norm="\033[0m"
 
-  terminal_input(){ [ -t 0 ]; }
-
-  terminal_input ||
+  [ -t 0 ] ||
     red="NO " green="OK " yellow="?? " norm=
 
   SHPEC_ROOT=${SHPEC_ROOT:-$(
@@ -202,44 +213,42 @@ shpec() {
     (*)         break
     esac
   done
-  
-  case "$1" in
-  ( * )
-      matcher_files=$(
-          find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
-      )
 
-      for matcher_file in $matcher_files; do
-        . "$matcher_file"
-      done
+  matcher_files=$(
+    find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
+  )
 
-      if [ $# -gt 0 ] ; then
-        files="${@}"
-      else
-        files=$(
-          find $SHPEC_ROOT -name '*_shpec.sh'
-        )
-      fi
+  for matcher_file in $matcher_files; do
+    . "$matcher_file"
+  done
 
-      for file in $files; do
-        . "$file"
-      done
+  if [ $# -gt 0 ] ; then
+    files="${@}"
+  else
+    files=$(
+      find $SHPEC_ROOT -name '*_shpec.sh'
+    )
+  fi
 
-      (
-      [ -t 0 ] || red= green= yellow= norm=
-      echoe "${examples} ${norm}examples," \
-              "${passed} ${green}passed${norm}" \
-              "${failures} ${red}failures${norm}" \
-              "${skipped} ${yellow}skipped${norm}"
-      )
+  trap 'echo "Error processing ${_shpec_file:-unknown} file"; exit 1' 0
 
-      times
+  for _shpec_file in $files; do
+    . "${_shpec_file}"
+  done
 
-      set -x
-      [ $failures -eq $expected_failures ]
-      exit
-  ;;
-  esac
+  trap 0
+
+  (
+  [ -t 0 ] || red= green= yellow= norm=
+  echoe   "${examples} ${norm}examples," \
+            "${passed} ${green}passed${norm}" \
+          "${failures} ${red}failures${norm}" \
+           "${skipped} ${yellow}skipped${norm}"
+  )
+
+  # times
+
+  exit_with_expected_failures
   )
 }
 
