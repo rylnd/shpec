@@ -161,7 +161,7 @@ line'
     end
   end
 
-  describe "skip"
+  describe "skip_next_assert"
     it "skips this failing test"
       skip_next_assert
       assert fail
