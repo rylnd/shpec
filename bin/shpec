@@ -191,7 +191,7 @@ shpec() {
     red="NO " green="OK " yellow="?? " norm=
 
   SHPEC_ROOT=${SHPEC_ROOT:-$(
-      [ -d './shpec' ] && echo './shpec' || echo '.'
+    [ -d './shpec' ] && echo './shpec' || echo '.'
   )}
 
   while [ $# -gt 0 ]
@@ -202,9 +202,10 @@ shpec() {
                 echo "$VERSION"
                 exit 0
     ;;
-    ( -f ) 
+    ( -f )
                 shift
-                expected_failures=$1 shift
+                expected_failures=$1
+                shift
     ;;
     (--)        shift
                 break
