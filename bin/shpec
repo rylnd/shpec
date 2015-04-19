@@ -32,9 +32,9 @@ describe() {
 
 end() {
   : $((test_indent -= 1))
-  if [ $test_indent -eq 0 ]; then
-    [ $failures -eq 0 ]
-  fi
+  [ $test_indent -ge 0 ] && return
+  printf -u 2 "Syntax Error in ${_shpec_file} file\n"
+  exit 1
 }
 
 end_describe() {
