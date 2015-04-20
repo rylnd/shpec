@@ -4,6 +4,10 @@ env:
     - SHELL=bash
     - SHELL=dash
     - SHELL=ksh
+    - SHELL=zsh
+matrix:
+  allow_failures:
+    - env: SHELL=zsh
 script:
   - time $SHELL bin/shpec -f 1 shpec/shpec_shpec.sh
 cache: apt
