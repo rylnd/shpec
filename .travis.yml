@@ -1,19 +1,32 @@
 language: sh
 env:
   matrix:
+    - LINT=true
     - SHELL=bash
     - SHELL=dash
     - SHELL=ksh
     - SHELL=zsh
 matrix:
+  fast_finish: true
   allow_failures:
     - env: SHELL=zsh
 script:
-  - time $SHELL bin/shpec shpec/shpec_shpec.sh
+  - >
+    if ${LINT:-false}; then
+      shellcheck -s sh bin/shpec  # Just use th `sh` dialect
+    else
+      time $SHELL bin/shpec shpec/shpec_shpec.sh
+    fi
 cache: apt
 before_install:
   - >
-    if ! type $SHELL > /dev/null; then
-      sudo apt-get update -qq &&
-      sudo apt-get install -y $SHELL
+    if ${LINT:-false}; then
+      SHELLCHECK_PKG=shellcheck_0.3.5-2_amd64.deb
+      wget http://ftp.debian.org/debian/pool/main/s/shellcheck/$SHELLCHECK_PKG
+      sudo dpkg -i $SHELLCHECK_PKG
+    else
+      if ! type $SHELL > /dev/null; then
+        sudo apt-get update -qq &&
+        sudo apt-get install -y $SHELL
+      fi
     fi
