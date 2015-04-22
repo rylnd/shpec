@@ -1,5 +1,4 @@
-#
-: Use one of: bash, dash, or ksh93
+# vim: set ft=sh:
 
 indent() {
   printf '%*s' $(( (test_indent - 1) * 2))
@@ -59,62 +58,70 @@ it() {
   assertion="$1"
 }
 
+is_function() {
+  case $(type "$1" 2> /dev/null) in
+    (*function*) return 0;;
+  esac
+  return 1
+}
+
 assert() {
   case "x$1" in
-  xequal )
+  ( xequal )
     print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
       "Expected [$2] to equal [$3]"
   ;;
-  xunequal )
+  ( xunequal )
     print_result "[ '$(sanitize "$2")' != '$(sanitize "$3")' ]" \
       "Expected [$2] not to equal [$3]"
   ;;
-  xgt )
+  ( xgt )
     print_result "[ $2 -gt $3 ]" \
       "Expected [$2] to be > [$3]"
   ;;
-  xlt )
+  ( xlt )
     print_result "[ $2 -lt $3 ]" \
       "Expected [$2] to be < [$3]"
   ;;
-  xmatch )
+  ( xmatch )
     print_result "case '$2' in *$3*) :;; *) false;; esac" \
       "Expected [$2] to match [$3]"
   ;;
-  xno_match )
+  ( xno_match )
     print_result "case '$2' in *$3*) false ;; *) :;; esac" \
       "Expected [$2] not to match [$3]"
   ;;
-  xpresent )
+  ( xpresent )
     print_result "[ -n '$2' ]" \
       "Expected [$2] to be present"
   ;;
-  xblank )
+  ( xblank )
     print_result "[ -z '$2' ]" \
       "Expected [$2] to be blank"
   ;;
 
-  xfile_present )
+  ( xfile_present )
     print_result "[ -e $2 ]" \
       "Expected file [$2] to exist"
   ;;
-  xfile_absent )
+  ( xfile_absent )
     print_result "[ ! -e $2 ]" \
       "Expected file [$2] not to exist"
   ;;
-  xsymlink )
+  ( xsymlink )
     link="$(readlink $2)"
     print_result "[ '$link' = '$3' ]" \
       "Expected [$2] to link to [$3], but got [$link]"
   ;;
-  xtest )
+  ( xtest )
     print_result "$2" \
       "Expected $2 to be true"
   ;;
-  * )
-    if type "$1" 2>/dev/null | grep -q 'function'; then
+  ( * )
+    if is_function "$1"; then
       matcher="$1"; shift
       $matcher "$@"
+      return 0
     else
       print_result false "Error: Unknown matcher [$1]"
     fi
@@ -132,55 +139,57 @@ print_result() {
   fi
 }
 
+final_results() {
+  [ $failures -eq 0 ] && color=$green || color=$red
+  echoe "${color}${examples} examples, ${failures} failures${norm}"
+  times
+  [ $failures -eq 0 ]
+  exit
+}
+
 
 shpec() {
   (
-  VERSION=$(
-    MAJOR=0
-    MINOR=2
-    PATCH=0
-    echo $MAJOR.$MINOR.$PATCH
-  )
-  examples=0
-  failures=0
-  test_indent=0
-  red="\033[0;31m"
-  green="\033[0;32m"
-  norm="\033[0m"
+    VERSION=0.3.0
+    case "$1" in
+    ( -v | --version )
+      echo "$VERSION"
+      exit 0
+    ;;
+    esac
 
-  SHPEC_ROOT=${SHPEC_ROOT:-$([ -d './shpec' ] && echo './shpec' || echo '.')}
-  case "$1" in
-  ( -v | --version ) echo "$VERSION"
-  ;;
-  ( * )
-      matcher_files=$(
-          find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
+    examples=0
+    failures=0
+    test_indent=0
+    red="\033[0;31m"
+    green="\033[0;32m"
+    norm="\033[0m"
+
+    SHPEC_ROOT=${SHPEC_ROOT:-$(
+      [ -d './shpec' ] && echo './shpec' || echo '.'
+    )}
+
+    matcher_files=$(
+      find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
+    )
+
+    for matcher_file in $matcher_files; do
+      . "$matcher_file"
+    done
+
+    if [ $# -gt 0 ] ; then
+      files="${@}"
+    else
+      files=$(
+        find $SHPEC_ROOT -name '*_shpec.sh'
       )
+    fi
 
-      for matcher_file in $matcher_files; do
-        . "$matcher_file"
-      done
+    for file in $files; do
+      . "$file"
+    done
 
-      if [ $# -gt 0 ] ; then
-        files="${@}"
-      else
-        files=$(
-          find $SHPEC_ROOT -name '*_shpec.sh'
-        )
-      fi
-
-      for file in $files; do
-        . "$file"
-      done
-
-      [ $failures -eq 0 ] && color=$green || color=$red
-      echoe "${color}${examples} examples, ${failures} failures${norm}"
-
-      times
-      [ $failures -eq 0 ]
-      exit
-  ;;
-  esac
+    final_results
   )
 }
 
