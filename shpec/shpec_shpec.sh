@@ -35,7 +35,8 @@ describe "shpec"
 
   describe "equality matcher"
     it "handles newlines properly"
-      string_with_newline_char="new\nline"
+      string_with_newline_char="new
+line"
       multiline_string='new
 line'
       assert equal "$multiline_string" "$string_with_newline_char"
@@ -64,22 +65,27 @@ line'
 
   describe "passing through to the test builtin"
     it "asserts an arbitrary algebraic test"
-      assert test "[[ 5 -lt 10 ]]"
+      assert test "[ 5 -lt 10 ]"
     end
   end
 
-  describe "stubbing commands"
-    it "stubs to the null command by default"
-      stub_command "exit"
-      exit # doesn't really exit
+  describe "'stub_command'"
+    it "defaults to the null command"
+      stub_command "false"
+      false # doesn't do anything
       assert equal "$?" 0
-      unstub_command "exit"
     end
-
     it "accepts an optional function body"
       stub_command "curl" "echo 'stubbed body'"
       assert equal "$(curl)" "stubbed body"
       unstub_command "curl"
+    end
+  end
+  describe "'unstub_command'"
+    it "restores the original working"
+      unstub_command "false"
+      (false) || _r=$?
+      assert equal "$_r" 1
     end
   end
 
@@ -108,52 +114,63 @@ line'
   end
 
   describe "exit codes"
-    shpec_cmd="$SHPEC_ROOT/../bin/shpec"
     it "returns nonzero if any test fails"
-      $shpec_cmd $SHPEC_ROOT/etc/failing_example &> /dev/null
-      assert unequal "$?" "0"
+      shpec $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1 || _r=$?
+      assert unequal "$_r" "0"
     end
 
     it "returns zero if a suite passes"
-      $shpec_cmd $SHPEC_ROOT/etc/passing_example &> /dev/null
+      shpec $SHPEC_ROOT/etc/passing_example > /dev/null 2>& 1
       assert equal "$?" "0"
     end
   end
 
   describe "output"
     it "outputs passing tests to STDOUT"
-      message="$(. $SHPEC_ROOT/etc/passing_example)"
+      message=$(. $SHPEC_ROOT/etc/passing_example)
       assert match "$message" "a\ passing\ test"
     end
 
     it "outputs failing tests to STDOUT"
-      message="$(. $SHPEC_ROOT/etc/failing_example)"
+      message=$(. $SHPEC_ROOT/etc/failing_example)
       assert match "$message" "a\ failing\ test"
     end
   end
 
   describe "commandline options"
-    shpec_cmd="$SHPEC_ROOT/../bin/shpec"
-
+    _version=$(cat $SHPEC_ROOT/../VERSION)
     describe "--version"
       it "outputs the current version number"
-        message="$($shpec_cmd --version)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        message=$( shpec --version )
+        assert match "$message" "$_version"
       end
     end
 
     describe "-v"
       it "outputs the current version number"
-        message="$($shpec_cmd -v)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        message=$( shpec -v )
+        assert match "$message" "$_version"
       end
     end
   end
 
   describe "compatibility"
     it "works with old-style syntax"
-      message="$(. $SHPEC_ROOT/etc/old_example)"
+      message=$(. $SHPEC_ROOT/etc/old_example)
       assert match "$message" "old\ example"
+    end
+  end
+
+  describe "skip_next_assert"
+    it "skips this failing test"
+      skip_next_assert
+      assert fail
+    end
+  end
+
+  describe "fail"
+    it "fails this test (EXPECTED)"
+      assert fail
     end
   end
 end

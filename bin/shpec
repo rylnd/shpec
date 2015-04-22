@@ -1,38 +1,46 @@
-#!/usr/bin/env bash
-VERSION=0.1.2
-examples=0
-failures=0
-test_indent=0
-red="\033[0;31m"
-green="\033[0;32m"
-norm="\033[0m"
+#
+: Use one of: bash, dash, or ksh93
 
 indent() {
-  printf '%*s' $(((test_indent - 1) * 2))
+  printf '%*s' $(( (test_indent - 1) * 2))
 }
 
+# 'echo -e' is not a POSIX feature.
+# This helps us to work around that.
+echo_needs_minus_e(){
+  echo "\010"| (read a; [ ${#a} -ne 1 ])
+}
+
+if echo_needs_minus_e; then
+  echoe() { echo -e "$@"; }
+else
+  echoe() { echo "$@"; }
+fi
+
 iecho() {
-  indent && echo "$@"
+  indent && echoe "$@"
 }
 
 sanitize() {
-  IFS= echo -e "$1" | tr '\n' 'n' | tr "'" 'q'
+  IFS= echoe "$1" | tr '\n' 'n' | tr "'" 'q'
 }
 
 describe() {
-  ((test_indent += 1))
+  : $((test_indent += 1))
   iecho "$1"
+  set -e
 }
 
 end() {
-  ((test_indent -= 1))
-  if [ $test_indent -eq 0 ]; then
-    [ $failures -eq 0 ]
-  fi
+  : $((test_indent -= 1))
+  [ $test_indent -ge 0 ] && return
+  printf -u 2 "Syntax Error in ${_shpec_file} file\n"
+  exit 1
 }
 
 end_describe() {
-  iecho "Warning: end_describe will be deprecated in shpec 1.0. Please use end instead."
+  iecho "Warning: end_describe will be deprecated in shpec 1.0." \
+    "Please use end instead."
   end
 }
 
@@ -44,97 +52,214 @@ stub_command() {
 unstub_command() { unset -f "$1"; }
 
 it() {
-  ((test_indent += 1))
-  ((examples += 1))
+  : $((test_indent += 1))
+  : $((examples += 1))
   assertion="$1"
+  _r=0
+  set -e
 }
 
 assert() {
   case "x$1" in
-
-  xequal )
-    print_result "[[ '$(sanitize "$2")' = '$(sanitize "$3")' ]]" "Expected [$2] to equal [$3]";;
-
-  xunequal )
-    print_result "[[ '$(sanitize "$2")' != '$(sanitize "$3")' ]]" "Expected [$2] not to equal [$3]";;
-
-  xgt )
-    print_result "[[ $2 -gt $3 ]]" "Expected [$2] to be > [$3]";;
-
-  xlt )
-    print_result "[[ $2 -lt $3 ]]" "Expected [$2] to be < [$3]";;
-
-  xmatch )
-    print_result "[[ '$2' =~ $3 ]]" "Expected [$2] to match [$3]";;
-
-  xno_match )
-    print_result "[[ ! '$2' =~ $3 ]]" "Expected [$2] not to match [$3]";;
-
-  xpresent )
-    print_result "[[ -n '$2' ]]" "Expected [$2] to be present";;
-
-  xblank )
-    print_result "[[ -z '$2' ]]" "Expected [$2] to be blank";;
-
-  xfile_present )
-    print_result "[[ -e $2 ]]" "Expected file [$2] to exist";;
-
-  xfile_absent )
-    print_result "[[ ! -e $2 ]]" "Expected file [$2] not to exist";;
-
-  xsymlink )
-    link="$(readlink $2)"
-    print_result "[[ '$link' = '$3' ]]" "Expected [$2] to link to [$3], but got [$link]";;
-
-  xtest )
-    print_result "$2" "Expected $2 to be true";;
-
-  * )
-    if type "$1" 2>/dev/null | grep -q 'function'; then
+  ( xfail )
+    set +e
+    print_result "false" \
+      "Always fails"
+  ;;
+  ( xequal )
+    print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
+      "Expected [$2] to equal [$3]"
+  ;;
+  ( xunequal )
+    print_result "[ '$(sanitize "$2")' != '$(sanitize "$3")' ]" \
+      "Expected [$2] not to equal [$3]"
+  ;;
+  ( xgt )
+    print_result "[ $2 -gt $3 ]" \
+      "Expected [$2] to be > [$3]"
+  ;;
+  ( xlt )
+    print_result "[ $2 -lt $3 ]" \
+      "Expected [$2] to be < [$3]"
+  ;;
+  ( xmatch )
+    print_result "case '$2' in *$3*) :;; *) false;; esac" \
+      "Expected [$2] to match [$3]"
+  ;;
+  ( xno_match )
+    print_result "case '$2' in *$3*) false ;; *) :;; esac" \
+      "Expected [$2] not to match [$3]"
+  ;;
+  ( xpresent )
+    print_result "[ -n '$2' ]" \
+      "Expected [$2] to be present"
+  ;;
+  ( xblank )
+    print_result "[ -z '$2' ]" \
+      "Expected [$2] to be blank"
+  ;;
+  ( xfile_present )
+    print_result "[ -e $2 ]" \
+      "Expected file [$2] to exist"
+  ;;
+  ( xfile_absent )
+    print_result "[ ! -e $2 ]" \
+      "Expected file [$2] not to exist"
+  ;;
+  ( xsymlink )
+    link=$(readlink $2)
+    print_result "[ '$link' = '$3' ]" \
+      "Expected [$2] to link to [$3], but got [$link]"
+  ;;
+  ( xtest )
+    print_result "$2" \
+      "Expected $2 to be true"
+  ;;
+  ( * )
+    case "$(type $1)" in
+    (*function*)
       matcher="$1"; shift
       $matcher "$@"
-    else
-      print_result false "Error: Unknown matcher [$1]"
-    fi;;
-
+      return
+    esac
+    print_result false "Error: Unknown matcher [$1]"
+  ;;
   esac
 }
 
+skip_next_assert()   { : $((_skipping+=1)); }
+not_skipping() { [ ${_skipping} -eq 0 ]; }
+_skipped(){ : $((_skipping-=1)); }
+
 print_result() {
   if eval "$1"; then
-    iecho -e "$green$assertion$norm"
+    : $((passed += 1))
+    iecho "$green$assertion$norm"
+    return
+  fi
+
+  if not_skipping; then
+    : $((failures += 1))
+    iecho "$red$assertion$norm"
+    iecho "($2)"
   else
-    ((failures += 1))
-    iecho -e "$red$assertion"
-    iecho -e "($2)$norm"
+    _skipped
+    : $((skipped += 1))
+    iecho "$yellow$assertion$norm"
+    iecho "($2)"
   fi
 }
 
-SHPEC_ROOT=${SHPEC_ROOT:-$([[ -d './shpec' ]] && echo './shpec' || echo '.')}
+report_expected_failure_count() {
+  [ ${expected_failures} -gt 0 ] &&
+    echo ", ${expected_failures} failures expected."
+}
 
-case "$1" in
+exit_with_expected_failures() {
+  if [ $failures -eq $expected_failures ] ; then
+    echo OK$( report_expected_failure_count )
+    exit 0
+  fi
+  echo NO$( report_expected_failure_count )
+  exit 1
+}
 
-  -v|--version )
+terminal_input(){ [ -t 0 ]; }
 
-    echo "$VERSION";;
+shpec() {
+  (
+  set -u -e
+  VERSION=$(
+    MAJOR=0
+    MINOR=2
+    PATCH=0
+    echo $MAJOR.$MINOR.$PATCH
+  )
+  examples=0
+  failures=0 expected_failures=0
+  passed=0
+  skipped=0
 
-  * )
+  test_indent=0 _skipping=0
 
-    matcher_files="$(find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null)"
+  red="\033[0;31m"
+  green="\033[0;32m"
+  yellow="\033[0;33m"
+  norm="\033[0m"
 
-    for matcher_file in $matcher_files; do
-      . "$matcher_file"
-    done
+  terminal_input ||
+    red="NO " green="OK " yellow="?? " norm=
 
-    files="${@:-$(find $SHPEC_ROOT -name '*_shpec.sh')}"
+  SHPEC_ROOT=${SHPEC_ROOT:-$(
+    [ -d './shpec' ] && echo './shpec' || echo '.'
+  )}
 
-    time for file in $files; do
-      . "$file"
-    done
+  while [ $# -gt 0 ]
+  do
+    option=$1
+    case $option in
+    ( -v | --version )
+                echo "$VERSION"
+                exit 0
+    ;;
+    ( -f )
+                shift
+                expected_failures=$1
+                shift
+    ;;
+    (--)        shift
+                break
+    ;;
+    (-* | --*)  shift
+                printf -u2 -- "%s: no such option\n" $option
+    ;;
+    (*)         break
+    esac
+  done
 
-    [ $failures -eq 0 ] && color=$green || color=$red
-    echo -e "${color}${examples} examples, ${failures} failures${norm}"
+  matcher_files=$(
+    find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
+  )
 
-    [ $failures -eq 0 ]
+  for matcher_file in $matcher_files; do
+    . "$matcher_file"
+  done
 
-esac
+  if [ $# -gt 0 ] ; then
+    files="${@}"
+  else
+    files=$(
+      find $SHPEC_ROOT -name '*_shpec.sh'
+    )
+  fi
+
+  trap 'echo "Error processing ${_shpec_file:-unknown} file"; exit 1' 0
+
+  for _shpec_file in $files; do
+    . "${_shpec_file}"
+  done
+
+  trap 0
+
+  (
+  terminal_input || red= green= yellow= norm=
+  echoe   "${examples} ${norm}examples," \
+            "${passed} ${green}passed${norm}" \
+          "${failures} ${red}failures${norm}" \
+           "${skipped} ${yellow}skipped${norm}"
+  )
+
+  # times
+
+  exit_with_expected_failures
+  )
+}
+
+(
+  _progname=shpec
+  _pathname=$( command -v $0 )
+  _cmdname=${_pathname##*/}
+  _main=shpec
+
+  case $_progname in (${_cmdname%.sh}) $_main "$@";; esac
+)
