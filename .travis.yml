@@ -1,8 +1,19 @@
 language: sh
+env:
+  matrix:
+    - SHELL=bash
+    - SHELL=dash
+    - SHELL=ksh
+    - SHELL=zsh
+matrix:
+  allow_failures:
+    - env: SHELL=zsh
 script:
-  - time bash bin/shpec -f 1 shpec/shpec_shpec.sh
-  - time dash bin/shpec -f 1 shpec/shpec_shpec.sh
-  - time ksh  bin/shpec -f 1 shpec/shpec_shpec.sh
+  - time $SHELL bin/shpec -f 1 shpec/shpec_shpec.sh
+cache: apt
 before_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install -y ksh
+  - >
+    if ! type $SHELL > /dev/null; then
+      sudo apt-get update -qq
+      sudo apt-get install -y $SHELL
+    fi
