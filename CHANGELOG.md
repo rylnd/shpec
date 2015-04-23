@@ -1,6 +1,9 @@
 # shpec Changelog
 
-## 0.1.3 Unreleased
+## 0.2.1 Unreleased
+
+## 0.2.0 (Apr 23 2015)
+  * POSIX support - shpec now works on bash, dash, and ksh93
 
 ## 0.1.2 (Feb 16 2014)
   * Add Antigen package manager support
