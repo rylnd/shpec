@@ -4,17 +4,7 @@ indent() {
   printf '%*s' $(( (test_indent - 1) * 2))
 }
 
-# 'echo -e' is not a POSIX feature.
-# This helps us to work around that.
-echo_needs_minus_e(){
-  echo "\010"| (read a; [ ${#a} -ne 1 ])
-}
-
-if echo_needs_minus_e; then
-  echoe() { echo -e "$@"; }
-else
-  echoe() { echo "$@"; }
-fi
+echoe() { printf "%b\n" "$*"; }
 
 iecho() {
   indent && echoe "$@"
