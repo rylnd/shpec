@@ -22,7 +22,7 @@ describe() {
 end() {
   : $((test_indent -= 1))
   [ $test_indent -lt 0 ] || return 0
-  printf >& 2 "shpec: $_shpec_file: syntax error\n"
+  echo >& 2 "shpec: $_shpec_file: unexpected 'end'"
   exit 1
 }
 
