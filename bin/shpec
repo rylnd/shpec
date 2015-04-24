@@ -21,9 +21,9 @@ describe() {
 
 end() {
   : $((test_indent -= 1))
-  if [ $test_indent -eq 0 ]; then
-    [ $failures -eq 0 ]
-  fi
+  [ $test_indent -lt 0 ] || return 0
+  printf "shpec: $_shpec_file: syntax error\n" >& 2
+  exit 1
 }
 
 end_describe() {
@@ -175,8 +175,8 @@ shpec() {
       )
     fi
 
-    for file in $files; do
-      . "$file"
+    for _shpec_file in $files; do
+      . "$_shpec_file"
     done
 
     final_results
