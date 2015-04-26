@@ -96,13 +96,13 @@ line'
     it "asserts file existence"
       run touch /tmp/foo
       assert file_present /tmp/foo
-      run rm /tmp/foo
+      clean /tmp/foo
     end
 
     it "can verify the pointer of a symlink"
       run ln -s $HOME /tmp/link
       assert symlink /tmp/link "$HOME"
-      run rm /tmp/link
+      clean /tmp/link
     end
   end
 
