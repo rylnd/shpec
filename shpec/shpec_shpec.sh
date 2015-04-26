@@ -114,24 +114,24 @@ line'
 
   describe "exit codes"
     it "returns nonzero if any test fails"
-      shpec $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1
+      shpec $__/etc/failing_example > /dev/null 2>& 1
       assert unequal "$?" "0"
     end
 
     it "returns zero if a suite passes"
-      shpec $SHPEC_ROOT/etc/passing_example > /dev/null 2>& 1
+      shpec $__/etc/passing_example > /dev/null 2>& 1
       assert equal "$?" "0"
     end
   end
 
   describe "output"
     it "outputs passing tests to STDOUT"
-      message="$(. $SHPEC_ROOT/etc/passing_example)"
+      message="$(. $__/etc/passing_example)"
       assert match "$message" "a\ passing\ test"
     end
 
     it "outputs failing tests to STDOUT"
-      message="$(. $SHPEC_ROOT/etc/failing_example)"
+      message="$(. $__/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
     end
   end
@@ -141,21 +141,21 @@ line'
     describe "--version"
       it "outputs the current version number"
         message="$(shpec --version)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        assert match "$message" "$(cat $__/../VERSION)"
       end
     end
 
     describe "-v"
       it "outputs the current version number"
         message="$(shpec -v)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        assert match "$message" "$(cat $__/../VERSION)"
       end
     end
   end
 
   describe "compatibility"
     it "works with old-style syntax"
-      message="$(. $SHPEC_ROOT/etc/old_example)"
+      message="$(. $__/etc/old_example)"
       assert match "$message" "old\ example"
     end
   end

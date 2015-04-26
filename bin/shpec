@@ -175,8 +175,9 @@ shpec() {
       )
     fi
 
+    __=$SHPEC_ROOT # __ as current dir
     for file in $files; do
-      . "$file"
+     . "$file"
     done
 
     final_results
