@@ -72,12 +72,12 @@ line'
   describe "stubbing commands"
     it "stubs to the null command by default"
       stub_command "false"
-      false # doesn't do anything
+      run false # doesn't do anything
       assert equal "$?" 0
       unstub_command "false"
     end
     it "preserves the original working of the stub"
-      false
+      run false
       assert equal "$?" 1
     end
 
@@ -94,15 +94,15 @@ line'
     end
 
     it "asserts file existence"
-      touch /tmp/foo
+      run touch /tmp/foo
       assert file_present /tmp/foo
-      rm /tmp/foo
+      run rm /tmp/foo
     end
 
     it "can verify the pointer of a symlink"
-      ln -s $HOME /tmp/link
+      run ln -s $HOME /tmp/link
       assert symlink /tmp/link "$HOME"
-      rm /tmp/link
+      run rm /tmp/link
     end
   end
 

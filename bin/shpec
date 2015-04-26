@@ -66,6 +66,18 @@ load() {
   fi
 }
 
+run() {
+  # for now just run provided command
+  eval $@
+}
+
+async() {
+  # for now just run provided command
+  eval $@ &
+  # maybe: capture and store process ID.
+}
+
+
 is_function() {
   case $(type "$1" 2> /dev/null) in
     (*function*) return 0;;
