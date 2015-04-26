@@ -1,4 +1,4 @@
-# vim: set ft=sh:
+#  -*- mode: sh -*-   vim: set ft=sh:
 
 indent() {
   printf '%*s' $(( (_shpec_indent - 1) * 2))
@@ -7,7 +7,15 @@ indent() {
 echoe() { printf "%b\n" "$*"; }
 
 iecho() {
-  indent && echoe "$@"
+    indent && echoe "$@"
+}
+
+iwarn() {
+    indent && echoe "${red}$@${norm}" >&2
+}
+
+iok() {
+    indent && echoe "${green}$@${norm}"
 }
 
 sanitize() {
@@ -27,7 +35,7 @@ end() {
 }
 
 end_describe() {
-  iecho "Warning: end_describe will be deprecated in shpec 1.0." \
+  iwarn "Warning: end_describe will be deprecated in shpec 1.0." \
     "Please use end instead."
   end
 }
@@ -121,11 +129,11 @@ assert() {
 
 print_result() {
   if eval "$1"; then
-    iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
+    iok "$_shpec_assertion"
   else
     : $((_shpec_failures += 1))
-    iecho "$_shpec_red$_shpec_assertion"
-    iecho "($2)$_shpec_norm"
+    iwarn "$_shpec_assertion"
+    iwarn "($2)"
   fi
 }
 
