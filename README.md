@@ -1,14 +1,14 @@
 shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci.org/rylnd/shpec) [![Join the chat at https://gitter.im/rylnd/shpec](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rylnd/shpec?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ----
 
-Test your shell scripts!
+*Test your shell scripts!*
 
 <p align='center'>
   <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png' alt="Screenshot of shpec" />
 </p>
 
 ## Using shpec
-This repo itself is using shpec, so feel free to use it as an example.
+This repo itself is using `shpec`, so feel free to use it as an example.
 Here is the basic structure that you'll want:
 
     └── shpec
@@ -26,6 +26,15 @@ If you'd like your tests to run automatically when they change, we recommend the
 ```bash
 find . -name "*_shpec.sh" | entr shpec
 ```
+### Test structure
+`Shpec` would be very familiar if you already know *BDD*, and test framework such as `rspec`, `jasmine`, `mocha`, *et caetera*
+
+The two main constructs are `describe/end` to regroup test, and `it/end` to describe a specific test.
+
+In the `it` block you will be the assertions, whose syntax is describe in the next chapter.
+
+Since you spec will be sourced as any shell script you can put in it any shell command. (in fact `describe`, `it`, `end`, *matchers* are defined has shell function)
+
 
 ### Examples
 [shpec's own tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec.sh)
