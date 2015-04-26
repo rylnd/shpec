@@ -91,6 +91,11 @@ describe "my server"
 end
 ```
 
+### Stubbing
+
+You can stub commands using `stub_command`. This function takes as first argument the name of the command you will stub. You can provide an optional argument that will be the body of the method. (code that would be evaluated)
+Once you're done, you can delete it with `unstub_command`.
+
 ## Installation
 you can either install with curl
 ```bash
