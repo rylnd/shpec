@@ -7,15 +7,15 @@ indent() {
 echoe() { printf "%b\n" "$*"; }
 
 iecho() {
-    indent && echoe "$@"
+  indent && echoe "$@"
 }
 
 iwarn() {
-    indent && echoe "${red}$@${norm}" >&2
+  ( indent && echoe "${red}$@${norm}" ) >&2
 }
 
 iok() {
-    indent && echoe "${green}$@${norm}"
+  indent && echoe "${green}$@${norm}"
 }
 
 sanitize() {
