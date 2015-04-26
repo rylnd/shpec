@@ -95,3 +95,28 @@ putting `antigen bundle rylnd/shpec` in your `.zshrc`
 Pull requests are always welcome.
 
 If you've got a test or custom matcher you're particularly proud of, please consider adding it to [the Examples page](https://github.com/rylnd/shpec/wiki/Examples)!
+
+Add your own [Travis status image](http://docs.travis-ci.com/user/status-images/)
+to see how your contributions are doing on travis:
+
+AdrieanKhisbe [![build status](
+https://travis-ci.org/AdrieanKhisbe/shpec.png
+)](https://travis-ci.org/AdrieanKhisbe/shpec
+)
+hlangeveld [![hlangeveld](
+https://travis-ci.org/hlangeveld/shpec.png
+)](https://travis-ci.org/hlangeveld/shpec
+)
+locochris [![build status](
+https://travis-ci.org/locochris/shpec.png
+)](https://travis-ci.org/locochris/shpec
+)
+
+Notes:
+
+ * The release manager may discard or include these upstream at their own discretion)
+
+ * Images for new forks may take up to several minutes to stabilise.
+Tracking too many forks might trigger some travis-ci API limit and slow down
+the refresh of this README.
+
