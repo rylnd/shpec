@@ -26,12 +26,12 @@ If you'd like your tests to run automatically when they change, we recommend the
 ```bash
 find . -name "*_shpec.sh" | entr shpec
 ```
-### Test structure
-`Shpec` would be very familiar if you already know *BDD*, and test framework such as `rspec`, `jasmine`, `mocha`, *et caetera*
+### Tests Structure
+`Shpec` would be very familiar if you already know *BDD*, and test frameworks such as [`rspec`](https://github.com/rspec/rspec), [`jasmine`](https://github.com/jasmine/jasmine), [`mocha`](https://github.com/mochajs/mocha), *et caetera*
 
-The two main constructs are `describe/end` to regroup test, and `it/end` to describe a specific test.
+The two main constructs are `describe/end` to group test, and `it/end` to describe a specific test.
 
-In the `it` block you will be the assertions, whose syntax is describe in the next chapter.
+In the `it` block you will be the assertions, whose syntax is describe in the next section.
 
 Since you spec will be sourced as any shell script you can put in it any shell command. (in fact `describe`, `it`, `end`, *matchers* are defined has shell function)
 
@@ -41,7 +41,7 @@ Since you spec will be sourced as any shell script you can put in it any shell c
 are a great place to start. For more examples, see the [wiki page](https://github.com/rylnd/shpec/wiki/Examples)
 
 ### Matchers
-The general format is:
+The general format of an assertion is:
 
     assert matcher arguments
 
@@ -92,9 +92,12 @@ end
 ```
 
 ### Stubbing
-
-You can stub commands using `stub_command`. This function takes as first argument the name of the command you will stub. You can provide an optional argument that will be the body of the method. (code that would be evaluated)
+You can stub commands using `stub_command`.
+This function takes the name of the command you wish to stub. If provided, the second argument will be used as the body of the command. (code that would be evaluated)
 Once you're done, you can delete it with `unstub_command`.
+
+The best example is the [shpec test for these feature](https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L72-L89).
+<!-- beware: keep in sync of line when modifying the shpec -->
 
 ## Installation
 you can either install with curl
