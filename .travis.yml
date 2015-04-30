@@ -5,6 +5,7 @@ env:
     - SHELL=bash
     - SHELL=dash
     - SHELL=ksh
+    - SHELL=mksh
     - SHELL=zsh
 matrix:
   fast_finish: true
