@@ -27,6 +27,7 @@ before_install:
         url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
         wget $url/$pkg || continue
         echo $pkg 
+        break
       done
     }
     if ${LINT:-false}; then
