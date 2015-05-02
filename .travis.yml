@@ -12,7 +12,7 @@ matrix:
   allow_failures:
     - env: SHELL=zsh
 script:
-  - >
+  - |
     if ${LINT:-false}; then
       shellcheck -s sh bin/shpec  # Just use th `sh` dialect
     else
@@ -20,7 +20,7 @@ script:
     fi
 cache: apt
 before_install:
-  - >
+  - |
     if ${LINT:-false}; then
       SHELLCHECK_PKG=shellcheck_0.3.5-2_amd64.deb
       wget http://ftp.debian.org/debian/pool/main/s/shellcheck/$SHELLCHECK_PKG
