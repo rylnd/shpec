@@ -12,11 +12,9 @@ matrix:
     - env: SHELL=zsh
 script:
   - |
-    if ${LINT:-false}; then
-      shellcheck -s sh bin/shpec  # Just use th `sh` dialect
-    else
-      time $SHELL bin/shpec shpec/shpec_shpec.sh
-    fi
+    ${LINT:-false} &&
+      exec shellcheck -s sh bin/shpec  # `sh` refers to POSIX
+    $SHELL bin/shpec shpec/shpec_shpec.sh
 cache: apt
 before_install:
   - |
