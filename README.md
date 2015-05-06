@@ -96,7 +96,7 @@ You can stub commands using `stub_command`.
 This function takes the name of the command you wish to stub. If provided, the second argument will be used as the body of the command. (code that would be evaluated)
 Once you're done, you can delete it with `unstub_command`.
 
-The best example is the [shpec test for these feature](https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L72-L89).
+The best example is the [shpec test for this feature](https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L72-L89).
 <!-- beware: keep in sync of line when modifying the shpec -->
 
 ## Installation
