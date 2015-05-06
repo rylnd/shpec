@@ -26,15 +26,13 @@ If you'd like your tests to run automatically when they change, we recommend the
 ```bash
 find . -name "*_shpec.sh" | entr shpec
 ```
-### Tests Structure
-`Shpec` would be very familiar if you already know *BDD*, and test frameworks such as [`rspec`](https://github.com/rspec/rspec), [`jasmine`](https://github.com/jasmine/jasmine), [`mocha`](https://github.com/mochajs/mocha), *et caetera*
+### Structuring your Tests
+`Shpec` is similar to other *BDD* frameworks like
+[`rspec`](https://github.com/rspec/rspec), [`jasmine`](https://github.com/jasmine/jasmine), [`mocha`](https://github.com/mochajs/mocha).
 
-The two main constructs are `describe/end` to group test, and `it/end` to describe a specific test.
+The two main constructs are `describe/end` (used to group tests) and `it/end` (used to describe an individual test and wrap assertions).
 
-In the `it` block you will be the assertions, whose syntax is describe in the next section.
-
-Since you spec will be sourced as any shell script you can put in it any shell command. (in fact `describe`, `it`, `end`, *matchers* are defined has shell function)
-
+__Note:__ Since your test files will be sourced into `shpec`, you can use any shell command that would normally be available in your session.
 
 ### Examples
 [shpec's own tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec.sh)
