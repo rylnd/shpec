@@ -1,4 +1,5 @@
 # vim: set ft=sh:
+set -a # for pry to access any variables set during tests
 
 indent() {
   printf '%*s' $(( (test_indent - 1) * 2))
@@ -8,6 +9,17 @@ echoe() { printf "%b\n" "$*"; }
 
 iecho() {
   indent && echoe "$@"
+}
+
+pry() {
+  export PS1="[$SHLVL] shpec-pry> "
+  lineno=$(caller | cut -f1 -d' ')
+  source_file=$(caller | cut -f2- -d' ')
+  sed -n "$((lineno - 5)),$((lineno + 5))p" "$source_file" |
+  cat -n |
+  sed 's/\(^[ ]*\)\([0-9][0-9]*\)/\1\[34;1m\2:[0m/' |
+  sed "6s/^    / => /"
+  bash --norc
 }
 
 sanitize() {
