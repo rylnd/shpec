@@ -11,22 +11,31 @@ matrix:
   allow_failures:
     - env: SHELL=zsh
 script:
-  - >
+  - |
     if ${LINT:-false}; then
-      shellcheck -s sh bin/shpec  # Just use th `sh` dialect
+      shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
     else
-      time $SHELL bin/shpec shpec/shpec_shpec.sh
+      $SHELL bin/shpec shpec/shpec_shpec.sh
     fi
 cache: apt
 before_install:
-  - >
+  - |
+    get_shellcheck() {
+      (
+      for v
+      do
+        pkg=shellcheck_${v}_amd64.deb
+        url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
+        wget $url/$pkg || continue
+        echo $pkg
+        break
+      done
+      )
+    }
     if ${LINT:-false}; then
-      SHELLCHECK_PKG=shellcheck_0.3.5-2_amd64.deb
-      wget http://ftp.debian.org/debian/pool/main/s/shellcheck/$SHELLCHECK_PKG
-      sudo dpkg -i $SHELLCHECK_PKG
-    else
-      if ! type $SHELL > /dev/null; then
+      pkg=$( get_shellcheck 0.3.5-3 0.3.4-3 )
+      sudo dpkg -i $pkg
+    elif ! type $SHELL > /dev/null; then
         sudo apt-get update -qq &&
         sudo apt-get install -y $SHELL
-      fi
     fi
