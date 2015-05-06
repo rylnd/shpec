@@ -1,0 +1,7 @@
+{
+  "name": "shpec",
+  "version": "0.2.0",
+  "description": "Test your shell scripts",
+  "global": "true",
+  "install": "make install"
+}
