@@ -27,8 +27,8 @@ If you'd like your tests to run automatically when they change, we recommend the
 find . -name "*_shpec.sh" | entr shpec
 ```
 ### Structuring your Tests
-`Shpec` is similar to other *BDD* frameworks like
-[`rspec`](https://github.com/rspec/rspec), [`jasmine`](https://github.com/jasmine/jasmine), [`mocha`](https://github.com/mochajs/mocha).
+`shpec` is similar to other *BDD* frameworks like
+[`RSpec`](https://github.com/rspec/rspec), [`Jasmine`](https://github.com/jasmine/jasmine), and [`mocha`](https://github.com/mochajs/mocha).
 
 The two main constructs are `describe/end` (used to group tests) and `it/end` (used to describe an individual test and wrap assertions).
 
