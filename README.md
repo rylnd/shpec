@@ -1,14 +1,14 @@
 shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci.org/rylnd/shpec) [![Join the chat at https://gitter.im/rylnd/shpec](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rylnd/shpec?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ----
 
-Test your shell scripts!
+*Test your shell scripts!*
 
 <p align='center'>
   <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png' alt="Screenshot of shpec" />
 </p>
 
 ## Using shpec
-This repo itself is using shpec, so feel free to use it as an example.
+This repo itself is using `shpec`, so feel free to use it as an example.
 Here is the basic structure that you'll want:
 
     └── shpec
@@ -26,13 +26,20 @@ If you'd like your tests to run automatically when they change, we recommend the
 ```bash
 find . -name "*_shpec.sh" | entr shpec
 ```
+### Structuring your Tests
+`shpec` is similar to other *BDD* frameworks like
+[`RSpec`](https://github.com/rspec/rspec), [`Jasmine`](https://github.com/jasmine/jasmine), and [`mocha`](https://github.com/mochajs/mocha).
+
+The two main constructs are `describe/end` (used to group tests) and `it/end` (used to describe an individual test and wrap assertions).
+
+__Note:__ Since your test files will be sourced into `shpec`, you can use any shell command that would normally be available in your session.
 
 ### Examples
 [shpec's own tests](https://github.com/rylnd/shpec/tree/master/shpec/shpec_shpec.sh)
 are a great place to start. For more examples, see the [wiki page](https://github.com/rylnd/shpec/wiki/Examples)
 
 ### Matchers
-The general format is:
+The general format of an assertion is:
 
     assert matcher arguments
 
@@ -81,6 +88,14 @@ describe "my server"
   end
 end
 ```
+
+### Stubbing
+You can stub commands using `stub_command`.
+This function takes the name of the command you wish to stub. If provided, the second argument will be used as the body of the command. (code that would be evaluated)
+Once you're done, you can delete it with `unstub_command`.
+
+The best example is the [shpec test for this feature](https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L72-L89).
+<!-- beware: keep in sync of line when modifying the shpec -->
 
 ## Installation
 you can either install with curl

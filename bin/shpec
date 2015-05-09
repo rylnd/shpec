@@ -21,7 +21,7 @@ describe() {
 
 end() {
   : $((test_indent -= 1))
-  [ $test_indent -lt 0 ] || return 0
+  [ $test_indent -ge 0 ] && return 0
   echo >& 2 "shpec: $_shpec_file: unexpected 'end'"
   exit 1
 }
@@ -99,7 +99,7 @@ assert() {
       "Expected file [$2] not to exist"
   ;;
   ( xsymlink )
-    link="$(readlink $2)"
+    link="$(readlink "$2")"
     print_result "[ '$link' = '$3' ]" \
       "Expected [$2] to link to [$3], but got [$link]"
   ;;
@@ -168,10 +168,10 @@ shpec() {
     done
 
     if [ $# -gt 0 ] ; then
-      files="${@}"
+      files="${*}"
     else
       files=$(
-        find $SHPEC_ROOT -name '*_shpec.sh'
+        find "$SHPEC_ROOT" -name '*_shpec.sh'
       )
     fi
 
@@ -185,7 +185,7 @@ shpec() {
 
 (
   _progname=shpec
-  _pathname=$( command -v $0 )
+  _pathname=$( command -v "$0" )
   _cmdname=${_pathname##*/}
   _main=shpec
 
