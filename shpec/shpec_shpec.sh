@@ -136,6 +136,20 @@ line'
     end
   end
 
+  describe "malformed test files"
+    _f=$SHPEC_ROOT/etc/syntax_error
+    it "exits with an error"
+      shpec $_f > /dev/null 2>& 1
+      assert unequal "$?" "0"
+    end
+
+    it "informs you of the malformed shpec test file"
+      shpec $_f > /tmp/syntax_error_output 2>& 1
+      message="$(cat /tmp/syntax_error_output)"
+      assert match "$message" "$_f"
+    end
+  end
+
   describe "commandline options"
 
     describe "--version"
