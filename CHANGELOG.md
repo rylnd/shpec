@@ -4,6 +4,7 @@
 
 ## 0.2.1 (May 11 2015)
   * shpec now exits on an unbalanced `end` statement
+  * shpec can now be installed using bpkg
 
 ## 0.2.0 (Apr 23 2015)
   * POSIX support - shpec now works on bash, dash, and ksh93
