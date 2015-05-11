@@ -1,7 +1,7 @@
 # vim: set ft=sh:
 
 indent() {
-  printf '%*s' $(( (test_indent - 1) * 2))
+  printf '%*s' $(( (_shpec_indent - 1) * 2))
 }
 
 echoe() { printf "%b\n" "$*"; }
@@ -15,13 +15,13 @@ sanitize() {
 }
 
 describe() {
-  : $((test_indent += 1))
+  : $((_shpec_indent += 1))
   iecho "$1"
 }
 
 end() {
-  : $((test_indent -= 1))
-  [ $test_indent -ge 0 ] && return 0
+  : $((_shpec_indent -= 1))
+  [ $_shpec_indent -ge 0 ] && return 0
   echo >& 2 "shpec: $_shpec_file: unexpected 'end'"
   exit 1
 }
@@ -36,16 +36,16 @@ end_describe() {
 # any identifier as a function name.
 
 stub_command() {
-  body="${2:-:}"
-  eval "$1() { $body; }"
+  _shpec_stub_body="${2:-:}"
+  eval "$1() { ${_shpec_stub_body}; }"
 }
 
 unstub_command() { unset -f "$1"; }
 
 it() {
-  : $((test_indent += 1))
-  : $((examples += 1))
-  assertion="$1"
+  : $((_shpec_indent += 1))
+  : $((_shpec_examples += 1))
+  _shpec_assertion="$1"
 }
 
 is_function() {
@@ -109,8 +109,8 @@ assert() {
   ;;
   ( * )
     if is_function "$1"; then
-      matcher="$1"; shift
-      $matcher "$@"
+      _shpec_matcher="$1"; shift
+      $_shpec_matcher "$@"
       return 0
     else
       print_result false "Error: Unknown matcher [$1]"
@@ -121,61 +121,62 @@ assert() {
 
 print_result() {
   if eval "$1"; then
-    iecho "$green$assertion$norm"
+    iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
   else
-    : $((failures += 1))
-    iecho "$red$assertion"
-    iecho "($2)$norm"
+    : $((_shpec_failures += 1))
+    iecho "$_shpec_red$_shpec_assertion"
+    iecho "($2)$_shpec_norm"
   fi
 }
 
 final_results() {
-  [ $failures -eq 0 ] && color=$green || color=$red
-  echoe "${color}${examples} examples, ${failures} failures${norm}"
+  [ $_shpec_failures -eq 0 ] && _shpec_color=$_shpec_green || _shpec_color=$_shpec_red
+  echoe "${_shpec_color}${_shpec_examples} examples, ${_shpec_failures} failures${_shpec_norm}"
   times
-  [ $failures -eq 0 ]
+  [ $_shpec_failures -eq 0 ]
   exit
 }
 
 
 shpec() {
   (
-    VERSION=0.2.1
+    _shpec_VERSION=0.2.1
     case "$1" in
     ( -v | --version )
-      echo "$VERSION"
+      echo "$_shpec_VERSION"
       exit 0
     ;;
     esac
 
-    examples=0
-    failures=0
-    test_indent=0
-    red="\033[0;31m"
-    green="\033[0;32m"
-    norm="\033[0m"
+    _shpec_examples=0
+    _shpec_failures=0
+    _shpec_indent=0
+    _shpec_red="\033[0;31m"
+    _shpec_green="\033[0;32m"
+    _shpec_norm="\033[0m"
 
-    SHPEC_ROOT=${SHPEC_ROOT:-$(
+    _shpec_root=${SHPEC_ROOT:-$(
       [ -d './shpec' ] && echo './shpec' || echo '.'
     )}
+    SHPEC_ROOT=${_shpec_root}
 
-    matcher_files=$(
-      find "$SHPEC_ROOT/matchers" -name '*.sh' 2>/dev/null
+    _shpec_matcher_files=$(
+      find "$_shpec_root/matchers" -name '*.sh' 2>/dev/null
     )
 
-    for matcher_file in $matcher_files; do
-      . "$matcher_file"
+    for _shpec_matcher_file in $_shpec_matcher_files; do
+      . "$_shpec_matcher_file"
     done
 
     if [ $# -gt 0 ] ; then
-      files="${*}"
+      _shpec_files="${*}"
     else
-      files=$(
-        find "$SHPEC_ROOT" -name '*_shpec.sh'
+      _shpec_files=$(
+        find "$_shpec_root" -name '*_shpec.sh'
       )
     fi
 
-    for _shpec_file in $files; do
+    for _shpec_file in $_shpec_files; do
       . "$_shpec_file"
     done
 
