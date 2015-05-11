@@ -8,7 +8,7 @@
 ## 0.2.0 (Apr 23 2015)
   * POSIX support - shpec now works on bash, dash, and ksh93
 
-## 0.1.2 (Feb 16 2014)
+## 0.1.2 (Feb 16 2015)
   * Add Antigen package manager support
 
 ## 0.1.1 (Dec 17 2014)
