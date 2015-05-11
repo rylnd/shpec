@@ -1,6 +1,9 @@
 # shpec Changelog
 
-## 0.2.1 Unreleased
+## 0.2.2 Unreleased
+
+## 0.2.1 (May 11 2015)
+  * shpec now exits on an unbalanced `end` statement
 
 ## 0.2.0 (Apr 23 2015)
   * POSIX support - shpec now works on bash, dash, and ksh93
