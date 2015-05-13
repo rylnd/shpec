@@ -4,7 +4,8 @@ shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci
 *Test your shell scripts!*
 
 <p align='center'>
-  <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png' alt="Screenshot of shpec" />
+  <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png' 
+       alt="Screenshot of shpec" />
 </p>
 
 ## Using shpec
@@ -34,9 +35,11 @@ https://github.com/rspec/rspec), [`Jasmine`](
 https://github.com/jasmine/jasmine), and [`mocha`](
 https://github.com/mochajs/mocha).
 
-The two main constructs are `describe/end` (used to group tests) and `it/end` (used to describe an individual test and wrap assertions).
+The two main constructs are `describe/end` (used to group tests) and `it/end`
+(used to describe an individual test and wrap assertions).
 
-__Note:__ Since your test files will be sourced into `shpec`, you can use any shell command that would normally be available in your session.
+__Note:__ Since your test files will be sourced into `shpec`, you can use any
+shell command that would normally be available in your session.
 
 ### Examples
 [shpec's own tests](
@@ -97,7 +100,8 @@ end
 
 ### Stubbing
 You can stub commands using `stub_command`.
-This function takes the name of the command you wish to stub. If provided, the second argument will be used as the body of the command. (code that would be evaluated)
+This function takes the name of the command you wish to stub. If provided,
+the second argument will be used as the body of the command. (code that would be evaluated)
 Once you're done, you can delete it with `unstub_command`.
 
 The best example is the [shpec test for this feature](
@@ -124,11 +128,11 @@ any POSIX compliant shell.  You can use `shpec` to test scripts
 that use non-POSIX features, but you must avoid them when extending
 `shpec` or the main `shpec_shpech.sh` tests.
 
-Any variables starting with the `_shpec_` prefix are reserved
-for internal use and should not be used in test cases (except
-perhaps for test cases of `shpec` itself).
+Namespace
 
-
+Any variables starting with `_shpec_` are reserved for internal use and
+should not be used in test cases (except perhaps for test cases of `shpec`
+itself).
 
 If you've got a test or custom matcher you're particularly proud of,
 please consider adding it to [the Examples page](

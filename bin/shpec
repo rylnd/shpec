@@ -137,13 +137,18 @@ final_results() {
   exit
 }
 
+shpec_version() {
+  (
+  VERSION=0.2.1
+  echo $VERSION
+  )
+}
 
 shpec() {
   (
-    _shpec_VERSION=0.2.1
     case "$1" in
     ( -v | --version )
-      echo "$_shpec_VERSION"
+      shpec_version
       exit 0
     ;;
     esac
