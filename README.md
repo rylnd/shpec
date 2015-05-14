@@ -120,20 +120,20 @@ putting `antigen bundle rylnd/shpec` in your `.zshrc`
 ## Contributing
 Pull requests are always welcome.
 
-### Style and code conventions
-Language: POSIX shell
+If you've got a test or custom matcher you're particularly proud of,
+please consider adding it to [the Examples page](
+https://github.com/rylnd/shpec/wiki/Examples)!
 
+### Style and code conventions
+
+#### Language: POSIX shell
 The core `shpec` script and function should work the same in
 any POSIX compliant shell.  You can use `shpec` to test scripts
 that use non-POSIX features, but you must avoid them when extending
 `shpec` or the main `shpec_shpech.sh` tests.
 
-Namespace
-
+#### Namespace
 Any variables starting with `_shpec_` are reserved for internal use and
 should not be used in test cases (except perhaps for test cases of `shpec`
 itself).
 
-If you've got a test or custom matcher you're particularly proud of,
-please consider adding it to [the Examples page](
-https://github.com/rylnd/shpec/wiki/Examples)!
