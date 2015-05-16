@@ -11,11 +11,11 @@ iecho() {
 }
 
 iwarn() {
-  ( indent && echoe "${red}$@${norm}" ) >&2
+  ( indent && echoe "${_shpec_red}${*}${_shpec_norm}" ) >&2
 }
 
 iok() {
-  indent && echoe "${green}$@${norm}"
+  indent && echoe "${_shpec_green}${*}${_shpec_norm}"
 }
 
 sanitize() {
@@ -62,23 +62,23 @@ load() {
     return 1
   else
     iecho "Loading $1"
-    . $1
+    . "$1"
   fi
 }
 
 run() {
   # for now just run provided command
-  eval $@
+  eval "$@"
 }
 
 async() {
   # for now just run provided command
-  eval $@ &
+  eval "$@" &
   # maybe: capture and store process ID.
 }
 
 clean() {
-  rm $@
+  rm "$@"
 }
 
 is_function() {
