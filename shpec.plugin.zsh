@@ -12,4 +12,4 @@
 
 ## just create an alias shpec pointing to where the spec
 ## executable really is (in this folder)
-alias shpec="bash $(dirname $0:A)/bin/shpec"
+alias shpec="zsh -c 'disable -r end; . $(dirname $0:A)/bin/shpec'"
