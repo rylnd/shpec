@@ -28,8 +28,8 @@ http://entrproject.org/) utility:
 ```bash
 find . -name "*_shpec.sh" | entr shpec
 ```
-__Warning__: If you use `zsh` you should disable the `end` keyword. (to do that, run `disable -r end`.
-Otherwise you'll get the following error `parse error near 'end'`
+
+Note that there are some shell specificities, you'll find more about them in the [Compatibility file](./COMPATIBILITY.md).
 
 ### Structuring your Tests
 `shpec` is similar to other *BDD* frameworks like
