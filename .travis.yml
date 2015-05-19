@@ -14,6 +14,8 @@ script:
   - |
     if ${LINT:-false}; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
+    elif [ "$SHELL" = "zsh" ]
+      zsh -c 'disable -r end ; bin/shpec'
     else
       $SHELL bin/shpec shpec/shpec_shpec.sh
     fi
