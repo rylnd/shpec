@@ -10,12 +10,14 @@ matrix:
   fast_finish: true
 script:
   - |
+    $SHELL --version
+    if [ "$SHELL" = "zsh" ]; then
+      echo "disable -r end" > $HOME/.zshenv
+    fi
     if ${LINT:-false}; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
-    elif [ "$SHELL" = "zsh" ] ; then
-      zsh -c 'disable -r end ; bin/shpec'
     else
-      $SHELL bin/shpec shpec/shpec_shpec.sh
+      $SHELL bin/shpec
     fi
 cache: apt
 before_install:
