@@ -4,7 +4,7 @@ shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci
 *Test your shell scripts!*
 
 <p align='center'>
-  <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png' 
+  <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png'
        alt="Screenshot of shpec" />
 </p>
 
@@ -28,6 +28,9 @@ http://entrproject.org/) utility:
 ```bash
 find . -name "*_shpec.sh" | entr shpec
 ```
+
+Note that there are some shell specificities, you'll find more about them in the [Compatibility file](./COMPATIBILITY.md).
+
 ### Structuring your Tests
 `shpec` is similar to other *BDD* frameworks like
 [`RSpec`](
@@ -136,4 +139,3 @@ that use non-POSIX features, but you must avoid them when extending
 Any variables starting with `_shpec_` are reserved for internal use and
 should not be used in test cases (except perhaps for test cases of `shpec`
 itself).
-
