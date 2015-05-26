@@ -1,13 +1,12 @@
 Shpec Compatibility Notes
 -------------------------
 
-You'll find there special thing to consider for using your specific shell with `shpec`
+The following are shell-specific quirks you might care about when using `shpec`.
 
+## zsh
 
-## Zsh
-
-### Disabling End Keyword
-If you use `zsh` you should disable the `end` keyword. This won't be that big of a problem
+### Disabling the 'end' Keyword
+If you use `zsh` you must disable the `end` keyword. This won't be that big of a problem
 since it belongs to a `foreach...end` structure that is rarely used.
 
 To disable it, just run `disable -r end`.
