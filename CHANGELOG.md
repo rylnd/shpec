@@ -1,6 +1,9 @@
 # shpec Changelog
 
-## 0.2.2 Unreleased
+## 0.2.3 Unreleased
+
+## 0.2.2 (May 26, 2015)
+  * Fix Antigen plugin to work with new shpec syntax
 
 ## 0.2.1 (May 11 2015)
   * shpec now exits on an unbalanced `end` statement
