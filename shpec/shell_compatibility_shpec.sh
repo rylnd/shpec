@@ -25,7 +25,7 @@ SHPEC
       ;;
 
     *)
-       it "Zsh specific test, nothing to test for $SHELL"
+       it "nothing to test for $SHELL"
        end
     ;;
   esac
