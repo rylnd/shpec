@@ -11,17 +11,10 @@ matrix:
 script:
   - |
     $SHELL --version
-    if [ "$SHELL" = "zsh" ]; then
-      cat > $HOME/.zshenv <<END
-        disable -r end
-        setopt sh_word_split
-    END
-
-    fi
     if ${LINT:-false}; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
     else
-      $SHELL bin/shpec
+      $SHELL -c shpec
     fi
 cache: apt
 before_install:
@@ -49,4 +42,11 @@ before_install:
       sudo dpkg -i $pkg
     elif ! type $SHELL > /dev/null; then
       install_shell
+    fi
+install:
+  - |
+    make install
+
+    if [ "$SHELL" = "zsh" ]; then
+      . shpec.plugin.zsh
     fi
