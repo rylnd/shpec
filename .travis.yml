@@ -38,7 +38,7 @@ before_install:
     fi
 install:
   - |
-    make install
+    sudo make install
 
     if [ "$SHELL" = "zsh" ]; then
       . shpec.plugin.zsh
