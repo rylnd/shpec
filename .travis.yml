@@ -31,8 +31,9 @@ before_install:
       done
       )
     }
-    install_shell(){
-      echo "Install $SHELL"
+
+    install_shell() {
+      echo "Installing $SHELL"
       sudo apt-get update -qq
       sudo apt-get install -y $SHELL
     }
