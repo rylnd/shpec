@@ -6,7 +6,7 @@ describe "shell compatibility"
         . ./shpec.plugin.zsh
 
         it "defines a shpec alias"
-          shpec_type=$(type shpec | cut -d ' ' -f 4)
+          shpec_type=$(LC_ALL=C type shpec | cut -d ' ' -f 4)
           assert match ${shpec_type} "alias"
         end
 
