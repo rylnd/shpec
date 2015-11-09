@@ -110,6 +110,21 @@ line'
     it "allows custom matchers"
       assert custom_assertion "argument"
     end
+
+    it "works on locales other than English"
+      stub_command "type" '
+        lang="${LC_ALL-}"
+        ${lang:=$LC_MESSAGES}
+        ${lang:=$LANG}
+        case $lang in
+          C|POSIX) printf "function" ;;
+        esac'
+
+      LANG='fr_FR.UTF-8' LC_MESSAGES=$LANG \
+        assert custom_assertion "argument"
+
+      unstub_command "type"
+    end
   end
 
   describe "exit codes"
