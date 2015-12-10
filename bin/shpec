@@ -49,10 +49,18 @@ it() {
 }
 
 is_function() {
-  case $(LC_ALL=C type "$1" 2> /dev/null) in
-    (*function*) return 0;;
-  esac
-  return 1
+  (
+    a=$(command -v "$1") 2> /dev/null
+    case $a in
+    ($1)
+      b=$(unset -f "$1"; command -v "$1") 2> /dev/null
+      case $b in
+      ("") exit 0;;
+      esac
+    ;;
+    esac
+    return 1
+  )
 }
 
 assert() {

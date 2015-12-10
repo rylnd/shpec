@@ -111,19 +111,32 @@ line'
       assert custom_assertion "argument"
     end
 
+    it "does not treat shell builtins as matchers"
+      assertion=$(assert type "argument")
+      assert match "$assertion" "Unknown"
+    end
+
     it "works on locales other than English"
-      stub_command "type" '
-        lang="${LC_ALL-}"
-        ${lang:=$LC_MESSAGES}
-        ${lang:=$LANG}
-        case $lang in
-          C|POSIX) printf "function" ;;
-        esac'
+      stub_body='
+        if [ "$1" = "-v" ]; then
+          $2 > /dev/null 2>&1
+          [ $? -ne 127 ] && printf "$2"
+        else
+          lang="${LC_ALL-}"
+          ${lang:=$LC_MESSAGES}
+          ${lang:=$LANG}
+          case $lang in
+            C|POSIX) printf "function" ;;
+          esac
+        fi'
+      stub_command "type" "$stub_body"
+      stub_command "command" "$stub_body"
 
       LANG='fr_FR.UTF-8' LC_MESSAGES=$LANG \
         assert custom_assertion "argument"
 
       unstub_command "type"
+      unstub_command "command"
     end
   end
 
