@@ -51,9 +51,9 @@ it() {
 
 is_function() {
   if [ "${SHELL}" = "dash" ]; then
-    type -t "$1" | grep "function" 2> /dev/null
+    type -t "$1" | grep "function" > /dev/null
   else
-    typeset -f | grep "$1" 2> /dev/null
+    typeset -f | grep "$1" > /dev/null
   fi
 }
 
