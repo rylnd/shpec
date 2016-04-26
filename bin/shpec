@@ -49,7 +49,7 @@ it() {
 }
 
 is_function() {
-  case $(type "$1" 2> /dev/null) in
+  case $(type -t "$1" 2> /dev/null) in
     (*function*) return 0;;
   esac
   return 1
