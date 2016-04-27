@@ -61,7 +61,7 @@ unstub_assert()
 {
     unstub_command "assert"
     local definition="$(get_function_declaration _shpec____assert)"
-    local reverted="${definition/_shpec____/}"
+    local reverted="$(echo "${definition}" | sed 's/_shpec____//')"
 
     eval "${reverted}"
 }
