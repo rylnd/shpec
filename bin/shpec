@@ -42,6 +42,30 @@ stub_command() {
 
 unstub_command() { unset -f "$1"; }
 
+get_function_declaration()
+{
+  if [ "${SHELL}" = "dash" ]; then
+    type "$1" | tail -n +2
+  else
+    typeset -f "$1"
+  fi
+}
+
+stub_assert()
+{
+    eval "_shpec____$(get_function_declaration assert)"
+    stub_command "assert" "$1"
+}
+
+unstub_assert()
+{
+    unstub_command "assert"
+    local definition="$(get_function_declaration _shpec____assert)"
+    local reverted="${definition/_shpec____/}"
+
+    eval "${reverted}"
+}
+
 it() {
   : $((_shpec_indent += 1))
   : $((_shpec_examples += 1))

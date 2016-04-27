@@ -86,6 +86,15 @@ line'
       assert equal "$(curl)" "stubbed body"
       unstub_command "curl"
     end
+
+    it "stubs shpec assert function"
+      local expected="assert double"
+      stub_assert "echo '${expected}'"
+      local result="$(assert)"
+      unstub_assert
+
+      assert equal "${expected}" "${result}"
+    end
   end
 
   describe "testing files"
