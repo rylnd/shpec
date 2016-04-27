@@ -4,7 +4,7 @@ describe "Regression tests"
             stub_command "type" "[ \"\$1\" = \"-t\" ] && echo function || echo \"\$2 est une fonction\""
             is_function "custom_assertion"
             assert equal "0" "$?"
-            stub_command "type"
+            unstub_command "type"
         end
 
         it "returns 1 for file type"
