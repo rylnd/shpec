@@ -7,8 +7,7 @@ env:
     - SHELL=dash
     - SHELL=ksh
     - SHELL=zsh
-    - LANG=de_DE.UTF-8
-    - LANG=fr_FR.UTF-8
+    - LANGUAGE=fr_FR.UTF-8
 matrix:
   include:
     - os: osx
@@ -36,6 +35,7 @@ script:
       $SHELL bin/shpec
     fi
 before_install:
+  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-fr
   - |
     if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       get_shellcheck() {
@@ -63,4 +63,3 @@ before_install:
         install_shell
       fi
     fi
-  - sudo apt-get update && sudo apt-get --reinstall install -qq language-pack-en language-pack-de language-pack-fr
