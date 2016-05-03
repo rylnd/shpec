@@ -47,7 +47,7 @@ unstub_command() {
   unset -f "$1";
   local func_decl="$(get_function_declaration _shpec____"$1")"
   [ -n "${func_decl}" ] && {
-    local reverted="${func_decl/_shpec____/}"
+    local reverted=""$(echo "${func_decl}" | sed 's/_shpec____//')""
     eval "${reverted}"
   }
 }
