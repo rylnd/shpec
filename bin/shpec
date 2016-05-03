@@ -36,11 +36,21 @@ end_describe() {
 # any identifier as a function name.
 
 stub_command() {
+  local func_decl="$(get_function_declaration "$1")"
+  [ -n "${func_decl}" ] && eval "_shpec____${func_decl}"
+
   _shpec_stub_body="${2:-:}"
   eval "$1() { ${_shpec_stub_body}; }"
 }
 
-unstub_command() { unset -f "$1"; }
+unstub_command() { 
+  unset -f "$1";
+  local func_decl="$(get_function_declaration _shpec____"$1")"
+  [ -n "${func_decl}" ] && {
+    local reverted="${func_decl/_shpec____/}"
+    eval "${reverted}"
+  }
+}
 
 get_function_declaration()
 {
@@ -49,21 +59,6 @@ get_function_declaration()
   else
     typeset -f "$1"
   fi
-}
-
-stub_assert()
-{
-    eval "_shpec____$(get_function_declaration assert)"
-    stub_command "assert" "$1"
-}
-
-unstub_assert()
-{
-    unstub_command "assert"
-    local definition="$(get_function_declaration _shpec____assert)"
-    local reverted="$(echo "${definition}" | sed 's/_shpec____//')"
-
-    eval "${reverted}"
 }
 
 it() {

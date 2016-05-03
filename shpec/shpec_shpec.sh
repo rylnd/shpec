@@ -87,11 +87,11 @@ line'
       unstub_command "curl"
     end
 
-    it "stubs shpec assert function"
+    it "prevents loosing stubbed function"
       local expected="assert double"
-      stub_assert "echo '${expected}'"
+      stub_command "assert" "echo '${expected}'"
       local result="$(assert)"
-      unstub_assert
+      unstub_command "assert"
 
       assert equal "${expected}" "${result}"
     end
