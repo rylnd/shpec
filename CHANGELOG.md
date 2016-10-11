@@ -1,6 +1,7 @@
 # shpec Changelog
 
 ## 0.2.3 Unreleased
+  * shpec files are no longer restricted to the .sh extension
 
 ## 0.2.2 (May 26, 2015)
   * Fix Antigen plugin to work with new shpec syntax
