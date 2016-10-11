@@ -177,7 +177,7 @@ shpec() {
       _shpec_files="${*}"
     else
       _shpec_files=$(
-        find "$_shpec_root" -name '*_shpec.sh'
+        find "$_shpec_root" -name '*_shpec.*'
       )
     fi
 
