@@ -63,6 +63,30 @@ line'
     end
   end
 
+  describe "grep matcher"
+    it "handles regex properly"
+        assert grep "hello" "^[a-z]*$"
+    end
+  end
+
+  describe "no_grep matcher"
+    it "handles regex properly"
+        assert no_grep "hello1" "^[a-z]*$"
+    end
+  end
+
+  describe "egrep matcher"
+    it "handles regex extended properly"
+        assert egrep "hello" "^[a-z]+$"
+    end
+  end
+
+  describe "no_egrep matcher"
+    it "handles regex extended properly"
+        assert no_egrep "hello1" "^[a-z]+$"
+    end
+  end
+
   describe "passing through to the test builtin"
     it "asserts an arbitrary algebraic test"
       assert test "[ 5 -lt 10 ]"

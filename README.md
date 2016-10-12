@@ -63,8 +63,12 @@ equal         # equality
 unequal       # inequality
 gt            # algebraic '>'
 lt            # algebraic '<'
-match         # regex match
-no_match      # lack of regex match
+match         # regex match (glob style)
+no_match      # lack of regex match (glob style)
+grep          # regex match (grep style)
+no_grep       # lack of regex match (grep style)
+egrep         # regex match (egrep style)
+no_egrep      # lack of regex match (egrep style)
 ```
 
 #### Unary Matchers

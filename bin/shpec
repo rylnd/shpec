@@ -107,6 +107,18 @@ assert() {
     print_result "$2" \
       "Expected $2 to be true"
   ;;
+  ( xgrep )
+    print_result "echo $2 | grep -q $3" "Expected $2 to match $3"
+  ;;
+  ( xno_grep )
+    print_result "echo $2 | grep -qv $3" "Expected $2 to not match $3"
+  ;;
+  ( xegrep )
+    print_result "echo $2 | egrep -q $3" "Expected $2 to match $3"
+  ;;
+  ( xno_egrep )
+    print_result "echo $2 | egrep -qv $3" "Expected $2 to not match $3"
+  ;;
   ( * )
     if is_function "$1"; then
       _shpec_matcher="$1"; shift
