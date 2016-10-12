@@ -1,5 +1,25 @@
 # vim: set ft=sh:
 
+all() {
+  _shpec_all_func=$1
+  _shpec_all_arg=$2
+  shift 2
+
+  _shpec_all_result=0
+  for _shpec_all_item in "$@"; do
+    "$_shpec_all_func" "$_shpec_all_arg" "$_shpec_all_item" >/dev/null 2>&1 || _shpec_all_result=1
+  done
+  [ $_shpec_all_result -eq 0 ]
+}
+
+ends_with() {
+  [ ! "${2##*$1}" ]
+}
+
+echo_shell() {
+  ps -hp $$ | awk '{print $5}'
+}
+
 indent() {
   printf '%*s' $(( (_shpec_indent - 1) * 2))
 }
@@ -179,6 +199,10 @@ shpec() {
       _shpec_files=$(
         find "$_shpec_root" -name '*_shpec.*'
       )
+    fi
+
+    if ! ends_with bash "$(echo_shell)" && all ends_with .bash $_shpec_files; then
+      exec bash -c "$0" "$_shpec_files"
     fi
 
     for _shpec_file in $_shpec_files; do
