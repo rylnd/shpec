@@ -201,6 +201,7 @@ shpec() {
       )
     fi
 
+    # shellcheck disable=SC2086
     if ! ends_with bash "$(echo_shell)" && all ends_with .bash $_shpec_files; then
       exec bash -c "$0" "$_shpec_files"
     fi
