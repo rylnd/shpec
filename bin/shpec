@@ -40,6 +40,11 @@ describe() {
 }
 
 end() {
+  _shpec_last_result=$?
+  if [ $_shpec_indent -gt 1 ]; then
+    [ -z "$_shpec_subshell_test" ] && : $((_shpec_total_failures += _shpec_last_result))
+    : $((_shpec_failures += _shpec_total_failures ))
+  fi
   : $((_shpec_indent -= 1))
   [ $_shpec_indent -ge 0 ] && return 0
   echo >& 2 "shpec: $_shpec_file: unexpected 'end'"
@@ -66,6 +71,9 @@ it() {
   : $((_shpec_indent += 1))
   : $((_shpec_examples += 1))
   _shpec_assertion="$1"
+  unset -v _shpec_subshell_test
+  _shpec_total_failures=$_shpec_failures
+  _shpec_failures=0
 }
 
 is_function() {
@@ -76,6 +84,8 @@ is_function() {
 }
 
 assert() {
+  _shpec_subshell_test=true
+
   case "x$1" in
   ( xequal )
     print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
