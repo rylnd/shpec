@@ -126,7 +126,8 @@ print_result() {
     if [[ ${_shpec_assertion_printed} -eq 1 ]]; then
       iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
     else
-        iecho "$_shpec_clear_ln$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
+        iecho "$_shpec_clear_ln"\
+              "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
     fi
   else
     : $((_shpec_failures += 1))
@@ -166,7 +167,6 @@ shpec() {
     _shpec_red="\033[0;31m"
     _shpec_green="\033[0;32m"
     _shpec_norm="\033[0m"
-
     _shpec_clear_ln="\e[1A\033[K"
 
     _shpec_root=${SHPEC_ROOT:-$(
