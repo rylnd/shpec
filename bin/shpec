@@ -123,11 +123,11 @@ assert() {
 print_result() {
   if eval "$1"; then
     : $((_shpec_assertion_printed += 1))
-    if [[ ${_shpec_assertion_printed} -eq 1 ]]; then
+    if [ ${_shpec_assertion_printed} -eq 1 ]; then
       iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
     else
-        iecho "$_shpec_clear_ln"\
-              "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
+        echo -en "$_shpec_clear_ln"
+        iecho "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
     fi
   else
     : $((_shpec_failures += 1))
