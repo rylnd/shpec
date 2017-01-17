@@ -1,3 +1,4 @@
+#!/usr/bin/sh
 # vim: set ft=sh:
 
 indent() {
@@ -126,7 +127,7 @@ print_result() {
     if [ ${_shpec_assertion_printed} -eq 1 ]; then
       iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
     else
-        echo -en "$_shpec_clear_ln"
+        printf "%b" "$_shpec_clear_ln"
         iecho "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
     fi
   else
