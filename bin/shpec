@@ -168,7 +168,7 @@ shpec() {
     _shpec_red="\033[0;31m"
     _shpec_green="\033[0;32m"
     _shpec_norm="\033[0m"
-    _shpec_clear_ln="\e[1A\033[K"
+    _shpec_clear_ln="\033[1A\033[K"
 
     _shpec_root=${SHPEC_ROOT:-$(
       [ -d './shpec' ] && echo './shpec' || echo '.'
