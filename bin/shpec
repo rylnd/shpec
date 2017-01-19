@@ -127,8 +127,8 @@ print_result() {
     if [ ${_shpec_assertion_printed} -eq 1 ]; then
       iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
     else
-        printf "%b" "$_shpec_clear_ln"
-        iecho "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
+      printf "%b" "$_shpec_clear_ln"
+      iecho "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
     fi
   else
     : $((_shpec_failures += 1))
