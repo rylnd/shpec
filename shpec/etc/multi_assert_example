@@ -1,0 +1,4 @@
+it "joins multi asserts"
+  assert equal "foo" "foo"
+  assert equal "foo" "foo"
+end
