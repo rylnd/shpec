@@ -134,6 +134,29 @@ line'
       message="$(. $SHPEC_ROOT/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
     end
+
+    it "joins multiple identical assert names"
+      _expected="joins multi asserts"
+
+      # the following pipe does
+      # 1) run shpec in multi_assert_example
+      # 2) remove all output wich does not have the relevant test (i.e. _expected)
+      # 3) remove all color escape chars
+      # 4) remove all ascii formating characters (whitespace)
+      message="$(shpec $SHPEC_ROOT/etc/multi_assert_example\
+                 | grep "${_expected}"\
+                 | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"\
+                 | tr -dc '[:print:]'\
+                )"
+
+      # deletes part of string wich is not shown due to the clearln char
+      message="${message##*[1A}"
+
+      # can't use a 'assert test' or 'assert equal' because the strings to
+      # compare have non escapable chars
+      [ "${message}" = "${_expected}(x2)" ]
+      assert equal $? 0
+    end
   end
 
   describe "malformed test files"
