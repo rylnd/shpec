@@ -143,19 +143,17 @@ line'
       # 2) remove all output wich does not have the relevant test (i.e. _expected)
       # 3) remove all color escape chars
       # 4) remove all ascii formating characters (whitespace)
-      message="$(shpec $SHPEC_ROOT/etc/multi_assert_example\
-                 | grep "${_expected}"\
-                 | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"\
-                 | tr -dc '[:print:]'\
+      message="$(shpec $SHPEC_ROOT/etc/multi_assert_example \
+                 | grep "${_expected}" \
+                 | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" \
+                 | tr --delete --complement '[:print:]' \
                 )"
 
-      # deletes part of string wich is not shown due to the clearln char
+      # deletes the part of the string wich is present, but is not shown by the
+      # terminal due to the clearln character.
       message="${message##*[1A}"
 
-      # can't use a 'assert test' or 'assert equal' because the strings to
-      # compare have non escapable chars
-      [ "${message}" = "${_expected}(x2)" ]
-      assert equal $? 0
+      assert test "[ \"${message}\" = \"${_expected}(x2)\" ]"
     end
   end
 
