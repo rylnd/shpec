@@ -150,10 +150,12 @@ line'
                 )"
 
       # deletes the part of the string wich is present, but is not shown by the
-      # terminal due to the clearln character.
-      message="${message##*[1A}"
+      # terminal, due to the clearln character.
+      echo $message
+      message=${message##*'[1A'}
+      echo $message
 
-      assert test "[ \"${message}\" = \"${_expected}(x2)\" ]"
+      assert equal "${message}" "${_expected}(x2)"
     end
   end
 
