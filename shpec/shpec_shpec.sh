@@ -140,7 +140,7 @@ line'
       # 1) run shpec in multi_assert_example
       # 2) remove shepec's final results section
       # 3) remove all color escape chars
-      # 4) remove all ascii formating characters (whitespace)
+      # 4) remove all ascii formating characters expect newlines (whitespace)
       output="$(shpec $SHPEC_ROOT/etc/multi_assert_example |
                     head --lines=-3 |
                     sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
@@ -153,6 +153,23 @@ line'
       expected="${expected}\nanother assert"
 
       assert equal "${output}" "${expected}"
+    end
+
+
+    it "doesn't join FAILED identical assert names"
+        # see previous test
+        output="$(shpec $SHPEC_ROOT/etc/multi_assert_fail_example |
+                        head --lines=-3 |
+                        sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
+                        tr --delete --complement '\n[:print:]'
+                )"
+
+        expected="assert with errors"
+        expected="${expected}\nassert with errors"
+        expected="${expected}\n(Expected [1] to equal [2])"
+        expected="${expected}\nassert with errors"
+
+        assert equal "${output}" "${expected}"
     end
   end
 
