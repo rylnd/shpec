@@ -136,24 +136,23 @@ line'
     end
 
     it "joins multiple identical assert names"
-      _expected="joins multi asserts"
-
       # the following pipe does
       # 1) run shpec in multi_assert_example
-      # 2) remove all output wich does not have the relevant test (i.e. _expected)
+      # 2) remove shepec's final results section
       # 3) remove all color escape chars
       # 4) remove all ascii formating characters (whitespace)
-      message="$(shpec $SHPEC_ROOT/etc/multi_assert_example \
-                 | grep "${_expected}" \
-                 | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" \
-                 | tr --delete --complement '[:print:]' \
-                )"
+      output="$(shpec $SHPEC_ROOT/etc/multi_assert_example |
+                    head --lines=-3 |
+                    sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
+                    tr --delete --complement '\n[:print:]'
+               )"
 
-      # deletes the part of the string wich is present, but is not shown by the
-      # terminal, due to the clearln character.
-      message=${message##*'[1A'}
+      expected="a assert"
+      expected="${expected}\nmulti assert" # which is present in the string but hidden in the terminal
+      expected="${expected}\n[1Amulti assert(x2)"
+      expected="${expected}\nanother assert"
 
-      assert equal "${message}" "${_expected}(x2)"
+      assert equal "${output}" "${expected}"
     end
   end
 
