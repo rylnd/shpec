@@ -142,9 +142,9 @@ line'
       # 3) remove all color escape chars
       # 4) remove all ascii formating characters expect newlines (whitespace)
       output="$(shpec $SHPEC_ROOT/etc/multi_assert_example |
-                    head --lines=-3 |
+                    head -n -3 |
                     sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
-                    tr --delete --complement '\n[:print:]'
+                    tr -d -c '\n[:print:]'
                )"
 
       expected="a assert"
