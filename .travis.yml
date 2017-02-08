@@ -8,10 +8,19 @@ env:
     - SHELL=ksh
     - SHELL=zsh
 matrix:
+  include:
+    - os: osx
+      env: SHELL=bash
+  exclude:
+    - os: osx
   fast_finish: true
+os:
+  - linux
+  - osx
 script:
   - |
     $SHELL --version
+
     if [ "$SHELL" = "zsh" ]; then
       cat > $HOME/.zshenv <<END
         disable -r end
@@ -26,27 +35,29 @@ script:
     fi
 before_install:
   - |
-    get_shellcheck() {
-      (
-      for v
-      do
-        pkg=shellcheck_${v}_amd64.deb
-        url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
-        wget $url/$pkg || continue
-        echo $pkg
-        break
-      done
-      )
-    }
-    install_shell(){
-      echo "Install $SHELL"
-      sudo apt-get update -qq
-      sudo apt-get install -y $SHELL
-    }
+    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+      get_shellcheck() {
+        (
+        for v
+        do
+          pkg=shellcheck_${v}_amd64.deb
+          url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
+          wget $url/$pkg || continue
+          echo $pkg
+          break
+        done
+        )
+      }
+      install_shell(){
+        echo "Install $SHELL"
+        sudo apt-get update -qq
+        sudo apt-get install -y $SHELL
+      }
 
-    if ${LINT:-false}; then
-      pkg=$( get_shellcheck 0.3.5-3 0.3.4-3 )
-      sudo dpkg -i $pkg
-    elif ! type $SHELL > /dev/null; then
-      install_shell
+      if ${LINT:-false}; then
+        pkg=$( get_shellcheck 0.3.5-3 0.3.4-3 )
+        sudo dpkg -i $pkg
+      elif ! type $SHELL > /dev/null; then
+        install_shell
+      fi
     fi
