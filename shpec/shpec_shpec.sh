@@ -142,7 +142,7 @@ line'
       # 3) remove all color escape chars
       # 4) remove all ascii formating characters expect newlines (whitespace)
       output="$(shpec $SHPEC_ROOT/etc/multi_assert_example |
-                    head -n -3 |
+                    sed "5,\$d" |
                     sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
                     tr -d -c '\n[:print:]'
                )"
@@ -159,9 +159,9 @@ line'
     it "doesn't join FAILED identical assert names"
         # see previous test
         output="$(shpec $SHPEC_ROOT/etc/multi_assert_fail_example |
-                        head --lines=-3 |
+                        sed "5,\$d" |
                         sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
-                        tr --delete --complement '\n[:print:]'
+                        tr -d -c '\n[:print:]'
                 )"
 
         expected="assert with errors"
