@@ -17,7 +17,7 @@ ends_with() {
 }
 
 echo_shell() {
-  ps -hp $$ | awk '{print $5}'
+  ps hp $$ | awk '{print $5}'
 }
 
 indent() {
