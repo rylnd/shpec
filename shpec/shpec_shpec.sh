@@ -20,8 +20,32 @@ describe "shpec"
       assert match "partially" "partial"
     end
 
+    it "asserts star glob matches"
+      assert match "star" "s*r"
+    end
+
+    it "asserts question mark matches"
+      assert match "question" "que?tion"
+    end
+
+    it "asserts matches with spaces"
+      assert match "a space" "a space"
+    end
+
     it "asserts lack of partial matches"
       assert no_match "zebra" "giraffe"
+    end
+
+    it "asserts lack of star glob matches"
+      assert no_match "star" "a*b"
+    end
+
+    it "asserts lack of question mark matches"
+      assert no_match "question" "a?b"
+    end
+
+    it "asserts lack of matches with spaces"
+      assert no_match "nospace" "a space"
     end
 
     it "asserts presence"
