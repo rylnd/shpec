@@ -1,0 +1,12 @@
+it "a assert"
+  assert equal 1 1
+end
+
+it "multi assert"
+  assert equal 1 1
+  assert equal 2 2
+end
+
+it "another assert"
+  assert equal 1 1
+end

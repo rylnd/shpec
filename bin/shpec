@@ -21,6 +21,7 @@ describe() {
 
 end() {
   : $((_shpec_indent -= 1))
+  _shpec_assertion_printed=0
   [ $_shpec_indent -ge 0 ] && return 0
   echo >& 2 "shpec: $_shpec_file: unexpected 'end'"
   exit 1
@@ -121,9 +122,16 @@ assert() {
 
 print_result() {
   if eval "$1"; then
-    iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
+    : $((_shpec_assertion_printed += 1))
+    if [ ${_shpec_assertion_printed} -le 1 ]; then
+      iecho "$_shpec_green$_shpec_assertion$_shpec_norm"
+    else
+      printf "%b" "$_shpec_clear_ln"
+      iecho "$_shpec_green$_shpec_assertion$_shpec_norm(x$_shpec_assertion_printed)"
+    fi
   else
     : $((_shpec_failures += 1))
+    _shpec_assertion_printed=0
     iecho "$_shpec_red$_shpec_assertion"
     iecho "($2)$_shpec_norm"
   fi
@@ -159,6 +167,7 @@ shpec() {
     _shpec_red="\033[0;31m"
     _shpec_green="\033[0;32m"
     _shpec_norm="\033[0m"
+    _shpec_clear_ln="\033[1A\033[K"
 
     _shpec_root=${SHPEC_ROOT:-$(
       [ -d './shpec' ] && echo './shpec' || echo '.'

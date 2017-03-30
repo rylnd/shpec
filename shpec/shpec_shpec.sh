@@ -134,6 +134,43 @@ line'
       message="$(. $SHPEC_ROOT/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
     end
+
+    it "joins multiple identical assert names"
+      # the following pipe does
+      # 1) run shpec in multi_assert_example
+      # 2) remove shepec's final results section
+      # 3) remove all color escape chars
+      # 4) remove all ascii formating characters expect newlines (whitespace)
+      output="$(shpec $SHPEC_ROOT/etc/multi_assert_example |
+                    sed "5,\$d" |
+                    sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
+                    tr -d -c '\n[:print:]'
+               )"
+
+      expected="a assert"
+      expected="${expected}\nmulti assert" # which is present in the string but hidden in the terminal
+      expected="${expected}\n[1Amulti assert(x2)"
+      expected="${expected}\nanother assert"
+
+      assert equal "${output}" "${expected}"
+    end
+
+
+    it "doesn't join FAILED identical assert names"
+        # see previous test
+        output="$(shpec $SHPEC_ROOT/etc/multi_assert_fail_example |
+                        sed "5,\$d" |
+                        sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g" |
+                        tr -d -c '\n[:print:]'
+                )"
+
+        expected="assert with errors"
+        expected="${expected}\nassert with errors"
+        expected="${expected}\n(Expected [1] to equal [2])"
+        expected="${expected}\nassert with errors"
+
+        assert equal "${output}" "${expected}"
+    end
   end
 
   describe "malformed test files"
