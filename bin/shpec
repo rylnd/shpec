@@ -74,12 +74,12 @@ assert() {
       "Expected [$2] to be < [$3]"
   ;;
   ( xmatch )
-    printf -v match_string '%s' "$(echo "$3" | sed -e 's/ /\\ /'g)"
+    printf -v match_string '%s' "$(echo "$3" | sed -e 's/[^\\] /\\ /g')"
     print_result "case '$2' in *$match_string*) :;; *) false;; esac" \
       "Expected [$2] to match [$3]"
   ;;
   ( xno_match )
-    printf -v match_string '%s' "$(echo "$3" | sed -e 's/ /\\ /'g)"
+    printf -v match_string '%s' "$(echo "$3" | sed -e 's/[^\\] /\\ /g')"
     print_result "case '$2' in *$match_string*) false ;; *) :;; esac" \
       "Expected [$2] not to match [$3]"
   ;;
