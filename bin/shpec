@@ -78,7 +78,6 @@ assert() {
       "Expected [$2] to match [$3]"
   ;;
   ( xno_match )
-    printf -v match_string '%s' ""
     print_result "case '$2' in *$(echo "$3" | sed -e 's/[^\\] /\\ /g')*) false ;; *) :;; esac" \
       "Expected [$2] not to match [$3]"
   ;;
