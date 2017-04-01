@@ -19,20 +19,43 @@ os:
   - osx
 script:
   - |
+    echo -n "Run tests for shell \"$SHELL\". Shell version: "
     $SHELL --version
-
-    if [ "$SHELL" = "zsh" ]; then
-      cat > $HOME/.zshenv <<END
-        disable -r end
-        setopt sh_word_split
-    END
-
-    fi
     if ${LINT:-false}; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
-    else
-      $SHELL bin/shpec
     fi
+
+  - echo "Test $SHELL shpec core" && echo -en 'travis_fold:start:core\\r'
+  - |
+    # test shpec core
+    ${LINT:-false} && return
+    $SHELL t
+  - echo -en 'travis_fold:end:core\\r'
+
+  - echo "Test $SHELL shpec version option" && echo -en 'travis_fold:start:version\\r'
+  - |
+    # test version option
+    ${LINT:-false} && return
+    $SHELL t -v | tee test
+    grep -P '^\d+\.' test
+  - echo -en 'travis_fold:end:version\\r'
+
+  - echo "Test $SHELL shpec with single argument" && echo -en 'travis_fold:start:single_arg\\r'
+  - |
+    # test single argument
+    ${LINT:-false} && return
+    $SHELL t "shpec/a test.sh" | tee test
+    grep 'shpec_a' test && echo 'shpec_a found'
+  - echo -en 'travis_fold:end:single_arg\\r'
+
+  - echo "Test $SHELL shpec with multiple arguments" && echo -en 'travis_fold:start:multiple_args\\r'
+  - |
+    # test multiple arguments
+    ${LINT:-false} && return
+    $SHELL t "shpec/a test.sh" "shpec/b test.sh" | tee test
+    grep 'shpec_a' test && echo 'shpec_a found'
+    grep 'shpec_b' test && echo 'shpec_b found'
+  - echo -en 'travis_fold:end:multiple_args\\r'
 before_install:
   - |
     if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
@@ -60,4 +83,23 @@ before_install:
       elif ! type $SHELL > /dev/null; then
         install_shell
       fi
+
+    if [ "$SHELL" = "zsh" ]; then
+      echo 'source shpec.plugin.zsh
+            if [ $# -eq 2 ]; then
+              shpec "$1" "$2"
+            elif [ $# -eq 1 ]; then
+              shpec "$1"
+            else
+              shpec
+            fi' > "t"
+    else
+      echo 'if [ $# -eq 2 ]; then
+              ./bin/shpec "$1" "$2"
+            elif [ $# -eq 1 ]; then
+              ./bin/shpec "$1"
+            else
+              ./bin/shpec
+            fi' > "t"
     fi
+    chmod a+x "t"
