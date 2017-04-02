@@ -35,8 +35,7 @@ describe "shpec"
 
   describe "equality matcher"
     it "handles newlines properly"
-      string_with_newline_char="new
-line"
+      string_with_newline_char="new\nline"
       multiline_string='new
 line'
       assert equal "$multiline_string" "$string_with_newline_char"
