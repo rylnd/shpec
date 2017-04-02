@@ -37,7 +37,7 @@ script:
     # test version option
     ${LINT:-false} && return
     $SHELL t -v | tee test
-    grep -P '^\d+\.' test
+    grep -E '^[0-9]+\.' test
   - echo -en 'travis_fold:end:version\\r'
 
   - echo "Test $SHELL shpec with single argument" && echo -en 'travis_fold:start:single_arg\\r'
@@ -83,6 +83,7 @@ before_install:
       elif ! type $SHELL > /dev/null; then
         install_shell
       fi
+    fi
 
     if [ "$SHELL" = "zsh" ]; then
       echo 'source shpec.plugin.zsh

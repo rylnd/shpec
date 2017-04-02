@@ -182,17 +182,36 @@ shpec() {
       . "$_shpec_matcher_file"
     done
 
-    if [ $# -gt 0 ] ; then
-      _shpec_files="${*}"
+    if [ $# -eq 0 ]; then
+      # sometimes $SHELL points to outer shell
+      if [ "x$ZSH_VERSION" = "x" ]; then
+        # POSIX part for bash, dash, ksh
+        _shpec_files=$(
+          find "$_shpec_root" -name '*_shpec.*'
+        )
+        for _shpec_file in $_shpec_files; do
+          . "$_shpec_file"
+        done
+      else
+        # ZSH specific
+        # SC2016: Expressions don't expand in single quotes, use double quotes for that.
+        # shellcheck disable=SC2016
+        eval '
+          _shpec_files=(
+            "${(f)$(find "'"$_shpec_root"'" -name "*_shpec.*")}"
+          )
+          for _shpec_file in ${(@)_shpec_files}; do
+            . "$_shpec_file"
+          done'
+      fi
     else
-      _shpec_files=$(
-        find "$_shpec_root" -name '*_shpec.*'
-      )
+       n=1
+       while [ $n -le $# ]; do
+         _shpec_file=$(eval echo "\$$n")
+         test -n "$_shpec_file" && . "$_shpec_file"
+         n=$(( n+1 ))
+       done
     fi
-
-    for _shpec_file in $_shpec_files; do
-      . "$_shpec_file"
-    done
 
     final_results
   )
