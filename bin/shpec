@@ -74,11 +74,11 @@ assert() {
     print_result "[ $2 -lt $3 ]" \
       "Expected [$2] to be < [$3]"
   ;;
-  ( xmatch )
+  ( xglob )
     print_result "case '$2' in *$3*) :;; *) false;; esac" \
       "Expected [$2] to match [$3]"
   ;;
-  ( xno_match )
+  ( xno_glob )
     print_result "case '$2' in *$3*) false ;; *) :;; esac" \
       "Expected [$2] not to match [$3]"
   ;;

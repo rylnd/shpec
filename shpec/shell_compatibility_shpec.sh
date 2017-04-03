@@ -7,7 +7,7 @@ describe "shell compatibility"
 
         it "defines a shpec alias"
           shpec_type=$(type shpec | cut -d ' ' -f 4)
-          assert match ${shpec_type} "alias"
+          assert glob ${shpec_type} "alias"
         end
 
         it "alias that works normally"

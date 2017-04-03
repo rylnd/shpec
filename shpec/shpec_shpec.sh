@@ -16,12 +16,16 @@ describe "shpec"
       assert gt 7 5
     end
 
-    it "asserts partial matches"
-      assert match "partially" "partial"
+    it "asserts partial globs"
+      assert glob "partially" "partial"
     end
 
-    it "asserts lack of partial matches"
-      assert no_match "zebra" "giraffe"
+    it "asserts  globs which are not compatible with grep"
+      assert glob "loooooooooooooooooong" "l*ng"
+    end
+
+    it "asserts lack of partial globs"
+      assert no_glob "zebra" "giraffe"
     end
 
     it "asserts presence"
@@ -150,26 +154,26 @@ line'
   describe "output"
     it "outputs passing tests to STDOUT"
       message="$(. $SHPEC_ROOT/etc/passing_example)"
-      assert match "$message" "a\ passing\ test"
+      assert glob "$message" "a\ passing\ test"
     end
 
     it "outputs failing tests to STDOUT"
       message="$(. $SHPEC_ROOT/etc/failing_example)"
-      assert match "$message" "a\ failing\ test"
+      assert glob "$message" "a\ failing\ test"
     end
 
     it "joins multiple identical assert names"
       output="$(. $SHPEC_ROOT/etc/multi_assert_example)"
 
-      assert match "$output" "a\ assert*multi\ assert*x[0-9]*another\ assert"
+      assert glob "$output" "a\ assert*multi\ assert*x[0-9]*another\ assert"
     end
 
     it "doesn't join FAILED identical assert names"
         output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
 
-        assert match "$output" "assert\ with\ errors*assert\ with\ errors"
-        assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
-        assert no_match "$output" "x[0-9]*"
+        assert glob "$output" "assert\ with\ errors*assert\ with\ errors"
+        assert glob "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
+        assert no_glob "$output" "x[0-9]*"
     end
   end
 
@@ -183,7 +187,7 @@ line'
     it "informs you of the malformed shpec test file"
       shpec $_f > /tmp/syntax_error_output 2>& 1
       message="$(cat /tmp/syntax_error_output)"
-      assert match "$message" "$_f"
+      assert glob "$message" "$_f"
     end
   end
 
@@ -192,14 +196,14 @@ line'
     describe "--version"
       it "outputs the current version number"
         message="$(shpec --version)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        assert glob "$message" "$(cat $SHPEC_ROOT/../VERSION)"
       end
     end
 
     describe "-v"
       it "outputs the current version number"
         message="$(shpec -v)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        assert glob "$message" "$(cat $SHPEC_ROOT/../VERSION)"
       end
     end
   end
@@ -207,7 +211,7 @@ line'
   describe "compatibility"
     it "works with old-style syntax"
       message="$(. $SHPEC_ROOT/etc/old_example)"
-      assert match "$message" "old\ example"
+      assert glob "$message" "old\ example"
     end
   end
 end
