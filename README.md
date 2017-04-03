@@ -1,4 +1,4 @@
-shpec [![Build Status](https://travis-ci.org/rylnd/shpec.png)](https://travis-ci.org/rylnd/shpec) [![Join the chat at https://gitter.im/rylnd/shpec](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rylnd/shpec)
+shpec [![Build Status](https://travis-ci.org/rylnd/shpec.svg?branch=master)](https://travis-ci.org/rylnd/shpec) [![Gitter](https://badges.gitter.im/rylnd/shpec.svg)](https://gitter.im/rylnd/shpec?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 ----
 
 *Test your shell scripts!*

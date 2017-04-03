@@ -35,8 +35,7 @@ describe "shpec"
 
   describe "equality matcher"
     it "handles newlines properly"
-      string_with_newline_char="new
-line"
+      string_with_newline_char="new\nline"
       multiline_string='new
 line'
       assert equal "$multiline_string" "$string_with_newline_char"
@@ -157,6 +156,20 @@ line'
     it "outputs failing tests to STDOUT"
       message="$(. $SHPEC_ROOT/etc/failing_example)"
       assert match "$message" "a\ failing\ test"
+    end
+
+    it "joins multiple identical assert names"
+      output="$(. $SHPEC_ROOT/etc/multi_assert_example)"
+
+      assert match "$output" "a\ assert*multi\ assert*x[0-9]*another\ assert"
+    end
+
+    it "doesn't join FAILED identical assert names"
+        output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
+
+        assert match "$output" "assert\ with\ errors*assert\ with\ errors"
+        assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
+        assert no_match "$output" "x[0-9]*"
     end
   end
 

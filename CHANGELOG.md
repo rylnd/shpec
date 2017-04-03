@@ -1,6 +1,8 @@
 # shpec Changelog
 
 ## 0.2.3 Unreleased
+  * tests containing multiple assertions are aggregated to a single line of
+    output
   * shpec files are no longer restricted to the .sh extension
 
 ## 0.2.2 (May 26, 2015)
