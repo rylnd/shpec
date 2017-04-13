@@ -75,11 +75,11 @@ assert() {
       "Expected [$2] to be < [$3]"
   ;;
   ( xmatch )
-    print_result "case '$2' in *$3*) :;; *) false;; esac" \
+    print_result "case '$2' in *$(echo "$3" | sed -e 's/[^\\] /\\ /g')*) :;; *) false;; esac" \
       "Expected [$2] to match [$3]"
   ;;
   ( xno_match )
-    print_result "case '$2' in *$3*) false ;; *) :;; esac" \
+    print_result "case '$2' in *$(echo "$3" | sed -e 's/[^\\] /\\ /g')*) false ;; *) :;; esac" \
       "Expected [$2] not to match [$3]"
   ;;
   ( xpresent )
