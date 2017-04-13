@@ -237,6 +237,16 @@ line'
         assert match "$output" "a\ test\ file\ with\ spaces*works"
         rm /tmp/spaces_output
       end
+
+      it "runs multiple arguments with spaces"
+        shpec "$SHPEC_ROOT/etc/example with spaces" "$SHPEC_ROOT/etc/example with spaces" > /tmp/multi_spaces_output 2>& 1
+        assert equal "$?" "0"
+
+        output="$(cat /tmp/multi_spaces_output)"
+
+        assert match "$output" "spaces*works*spaces*works"
+        rm /tmp/multi_spaces_output
+      end
     end
   end
 
