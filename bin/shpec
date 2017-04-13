@@ -50,10 +50,11 @@ it() {
 }
 
 is_function() {
-  case $(type "$1" 2> /dev/null) in
-    (*function*) return 0;;
-  esac
-  return 1
+  if [ "${SHELL}" = "dash" ]; then
+    type -t "$1" | grep "function" > /dev/null
+  else
+    typeset -f | grep "$1" > /dev/null
+  fi
 }
 
 assert() {

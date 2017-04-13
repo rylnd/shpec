@@ -7,6 +7,7 @@ env:
     - SHELL=dash
     - SHELL=ksh
     - SHELL=zsh
+    - LANGUAGE=fr_FR.UTF-8
 matrix:
   include:
     - os: osx
@@ -53,6 +54,11 @@ before_install:
         sudo apt-get update -qq
         sudo apt-get install -y $SHELL
       }
+      install_language_packs(){
+        echo "Install language packs"
+        sudo apt-get update -qq
+        sudo apt-get --reinstall install -qq language-pack-en language-pack-fr
+      }
 
       if ${LINT:-false}; then
         pkg=$( get_shellcheck 0.3.5-3 0.3.4-3 )
@@ -60,4 +66,5 @@ before_install:
       elif ! type $SHELL > /dev/null; then
         install_shell
       fi
+      install_language_packs
     fi
