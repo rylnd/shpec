@@ -165,6 +165,18 @@ line'
     end
   end
 
+  describe "commandline arguments"
+    describe "multiple arguments"
+      it "runs each file passed to the function"
+        shpec $SHPEC_ROOT/etc/failing_example $SHPEC_ROOT/etc/passing_example > /dev/null 2>& 1
+        assert unequal "$?" "0"
+
+        shpec $SHPEC_ROOT/etc/passing_example $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1
+        assert unequal "$?" "0"
+      end
+    end
+  end
+
   describe "commandline options"
     describe "--version"
       it "outputs the current version number"
