@@ -16,14 +16,6 @@ describe "shpec"
       assert gt 7 5
     end
 
-    it "asserts partial matches"
-      assert match "partially" "partial"
-    end
-
-    it "asserts lack of partial matches"
-      assert no_match "zebra" "giraffe"
-    end
-
     it "asserts presence"
       assert present "something"
     end
@@ -59,6 +51,64 @@ line'
   describe "gt matcher"
     it "handles numbers of different length properly"
       assert gt 17 5
+    end
+  end
+
+  describe "glob matcher"
+    it "is essentially 'assert equal' if no special characters are used"
+      assert glob "word" "word"
+    end
+
+    it "supports multi-character wildcards"
+      assert glob "impartially" "*partial*"
+    end
+
+    it "supports single-character wildcards"
+      assert glob "word" "wo?d"
+      assert no_glob "world" "wo?d"
+    end
+
+    it "supports character lists"
+      assert glob "foo" "[a-f]oo"
+      assert no_glob "foo" "[g-z]oo"
+      assert glob "boo" "[a-z]oo"
+      assert glob "bar" "[a-z]*"
+    end
+
+    it "asserts globs which are not compatible with grep"
+      assert glob "loooooooooooooooooong" "l*ng"
+    end
+
+    it "asserts lack of globs"
+      assert no_glob "zebra" "giraffe"
+    end
+  end
+
+  describe "grep matcher"
+    it "supports matching regular expressions"
+      assert grep "hello" "^[a-z]*$"
+    end
+
+    it "supports lack of matching regular expressions"
+      assert no_grep "hello1" "^[a-z]*$"
+    end
+
+    it "does not match multiple lines in a single expression"
+      output="$(. $SHPEC_ROOT/etc/multi_assert_example)"
+
+      assert grep "$output" "a assert"
+      assert grep "$output" "multi assert"
+      assert no_grep "$output" "a assert.*multi assert"
+    end
+  end
+
+  describe "egrep matcher"
+    it "supports matching extended regular expressions"
+      assert egrep "hello" "^[a-z]+$"
+    end
+
+    it "supports lack of matching extended regular expressions"
+      assert no_egrep "hello1" "^[a-z]+$"
     end
   end
 
@@ -127,26 +177,26 @@ line'
   describe "output"
     it "outputs passing tests to STDOUT"
       message="$(. $SHPEC_ROOT/etc/passing_example)"
-      assert match "$message" "a\ passing\ test"
+      assert grep "$message" "a passing test"
     end
 
     it "outputs failing tests to STDOUT"
       message="$(. $SHPEC_ROOT/etc/failing_example)"
-      assert match "$message" "a\ failing\ test"
+      assert grep "$message" "a failing test"
     end
 
     it "joins multiple identical assert names"
       output="$(. $SHPEC_ROOT/etc/multi_assert_example)"
 
-      assert match "$output" "a\ assert*multi\ assert*x[0-9]*another\ assert"
+      assert glob "$output" "*a\ assert*multi\ assert*x[0-9]*another\ assert*"
     end
 
     it "doesn't join FAILED identical assert names"
-    output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
+      output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
 
-      assert match "$output" "assert\ with\ errors*assert\ with\ errors"
-      assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
-      assert no_match "$output" "x[0-9]*"
+      assert glob "$output" "*assert\ with\ errors*assert\ with\ errors*"
+      assert grep "$output" "Expected \[1\] to equal \[2\]"
+      assert no_grep "$output" "x[0-9]*"
     end
   end
 
@@ -161,7 +211,7 @@ line'
     it "informs you of the malformed shpec test file"
       shpec $_f > /tmp/syntax_error_output 2>& 1
       message="$(cat /tmp/syntax_error_output)"
-      assert match "$message" "$_f"
+      assert grep "$message" "$_f"
       rm /tmp/syntax_error_output
     end
   end
@@ -182,14 +232,14 @@ line'
     describe "--version"
       it "outputs the current version number"
         message="$(shpec --version)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        assert grep "$message" "$(cat $SHPEC_ROOT/../VERSION)"
       end
     end
 
     describe "-v"
       it "outputs the current version number"
         message="$(shpec -v)"
-        assert match "$message" "$(cat $SHPEC_ROOT/../VERSION)"
+        assert grep "$message" "$(cat $SHPEC_ROOT/../VERSION)"
       end
     end
   end
@@ -197,7 +247,7 @@ line'
   describe "compatibility"
     it "works with old-style syntax"
       message="$(. $SHPEC_ROOT/etc/old_example)"
-      assert match "$message" "old\ example"
+      assert grep "$message" "old example"
     end
   end
 end
