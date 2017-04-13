@@ -75,6 +75,7 @@ line'
       assert equal "$?" 0
       unstub_command "false"
     end
+
     it "preserves the original working of the stub"
       false
       assert equal "$?" 1
@@ -141,16 +142,17 @@ line'
     end
 
     it "doesn't join FAILED identical assert names"
-        output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
+    output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
 
-        assert match "$output" "assert\ with\ errors*assert\ with\ errors"
-        assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
-        assert no_match "$output" "x[0-9]*"
+      assert match "$output" "assert\ with\ errors*assert\ with\ errors"
+      assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
+      assert no_match "$output" "x[0-9]*"
     end
   end
 
   describe "malformed test files"
     _f=$SHPEC_ROOT/etc/syntax_error
+
     it "exits with an error"
       shpec $_f > /dev/null 2>& 1
       assert unequal "$?" "0"
@@ -160,11 +162,23 @@ line'
       shpec $_f > /tmp/syntax_error_output 2>& 1
       message="$(cat /tmp/syntax_error_output)"
       assert match "$message" "$_f"
+      rm /tmp/syntax_error_output
+    end
+  end
+
+  describe "commandline arguments"
+    describe "multiple arguments"
+      it "runs each file passed to the function"
+        shpec $SHPEC_ROOT/etc/failing_example $SHPEC_ROOT/etc/passing_example > /dev/null 2>& 1
+        assert unequal "$?" "0"
+
+        shpec $SHPEC_ROOT/etc/passing_example $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1
+        assert unequal "$?" "0"
+      end
     end
   end
 
   describe "commandline options"
-
     describe "--version"
       it "outputs the current version number"
         message="$(shpec --version)"
