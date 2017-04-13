@@ -1,0 +1,5 @@
+describe "a test file with spaces"
+  it "works"
+    assert equal "foo" "foo"
+  end
+end
