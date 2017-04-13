@@ -162,6 +162,7 @@ line'
       shpec $_f > /tmp/syntax_error_output 2>& 1
       message="$(cat /tmp/syntax_error_output)"
       assert match "$message" "$_f"
+      rm /tmp/syntax_error_output
     end
   end
 
