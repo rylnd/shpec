@@ -1,3 +1,5 @@
 describe "a passing test"
-  assert equal "foo" "foo"
+  it "works"
+    assert equal "foo" "foo"
+  end
 end

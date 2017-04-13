@@ -125,6 +125,7 @@ line'
       assert equal "$?" 0
       unstub_command "false"
     end
+
     it "preserves the original working of the stub"
       false
       assert equal "$?" 1
@@ -201,6 +202,7 @@ line'
 
   describe "malformed test files"
     _f=$SHPEC_ROOT/etc/syntax_error
+
     it "exits with an error"
       shpec $_f > /dev/null 2>& 1
       assert unequal "$?" "0"
@@ -210,11 +212,23 @@ line'
       shpec $_f > /tmp/syntax_error_output 2>& 1
       message="$(cat /tmp/syntax_error_output)"
       assert grep "$message" "$_f"
+      rm /tmp/syntax_error_output
+    end
+  end
+
+  describe "commandline arguments"
+    describe "multiple arguments"
+      it "runs each file passed to the function"
+        shpec $SHPEC_ROOT/etc/failing_example $SHPEC_ROOT/etc/passing_example > /dev/null 2>& 1
+        assert unequal "$?" "0"
+
+        shpec $SHPEC_ROOT/etc/passing_example $SHPEC_ROOT/etc/failing_example > /dev/null 2>& 1
+        assert unequal "$?" "0"
+      end
     end
   end
 
   describe "commandline options"
-
     describe "--version"
       it "outputs the current version number"
         message="$(shpec --version)"
