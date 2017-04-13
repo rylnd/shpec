@@ -85,26 +85,30 @@ line'
   end
 
   describe "grep matcher"
-    it "handles regex properly"
-        assert grep "hello" "^[a-z]*$"
+    it "supports matching regular expressions"
+      assert grep "hello" "^[a-z]*$"
     end
-  end
 
-  describe "no_grep matcher"
-    it "handles regex properly"
-        assert no_grep "hello1" "^[a-z]*$"
+    it "supports lack of matching regular expressions"
+      assert no_grep "hello1" "^[a-z]*$"
+    end
+
+    it "does not match multiple lines in a single expression"
+      output="$(. $SHPEC_ROOT/etc/multi_assert_example)"
+
+      assert grep "$output" "a assert"
+      assert grep "$output" "multi assert"
+      assert no_grep "$output" "a assert.*multi assert"
     end
   end
 
   describe "egrep matcher"
-    it "handles regex extended properly"
-        assert egrep "hello" "^[a-z]+$"
+    it "supports matching extended regular expressions"
+      assert egrep "hello" "^[a-z]+$"
     end
-  end
 
-  describe "no_egrep matcher"
-    it "handles regex extended properly"
-        assert no_egrep "hello1" "^[a-z]+$"
+    it "supports lack of matching extended regular expressions"
+      assert no_egrep "hello1" "^[a-z]+$"
     end
   end
 
