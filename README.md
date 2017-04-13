@@ -63,8 +63,8 @@ equal         # equality
 unequal       # inequality
 gt            # algebraic '>'
 lt            # algebraic '<'
-match         # regex match
-no_match      # lack of regex match
+match         # shell wildcard match
+no_match      # lack of shell wildcard match
 ```
 
 #### Unary Matchers
