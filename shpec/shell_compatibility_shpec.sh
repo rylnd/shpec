@@ -6,11 +6,11 @@ describe "shell compatibility"
         . ./shpec.plugin.zsh
 
         it "defines a shpec alias"
-          shpec_type=$(type shpec | cut -d ' ' -f 4)
-          assert match ${shpec_type} "alias"
+          shpec_type=$(type shpec | cut -d ' ' -f 5)
+          assert match ${shpec_type} "function"
         end
 
-        it "alias that works normally"
+        it "function that works normally"
         tmp_spec="/tmp/shpec_shpec_plugin_test" # problems with $(mktemp -q)
           cat > $tmp_spec <<-SHPEC
              describe "Dummy test spec"
