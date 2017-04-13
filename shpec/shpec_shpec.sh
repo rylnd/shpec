@@ -75,6 +75,7 @@ line'
       assert equal "$?" 0
       unstub_command "false"
     end
+
     it "preserves the original working of the stub"
       false
       assert equal "$?" 1
@@ -141,16 +142,17 @@ line'
     end
 
     it "doesn't join FAILED identical assert names"
-        output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
+    output="$(. $SHPEC_ROOT/etc/multi_assert_fail_example)"
 
-        assert match "$output" "assert\ with\ errors*assert\ with\ errors"
-        assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
-        assert no_match "$output" "x[0-9]*"
+      assert match "$output" "assert\ with\ errors*assert\ with\ errors"
+      assert match "$output" "Expected\ \[1\]\ to\ equal\ \[2\]"
+      assert no_match "$output" "x[0-9]*"
     end
   end
 
   describe "malformed test files"
     _f=$SHPEC_ROOT/etc/syntax_error
+
     it "exits with an error"
       shpec $_f > /dev/null 2>& 1
       assert unequal "$?" "0"
@@ -164,7 +166,6 @@ line'
   end
 
   describe "commandline options"
-
     describe "--version"
       it "outputs the current version number"
         message="$(shpec --version)"
