@@ -16,18 +16,6 @@ describe "shpec"
       assert gt 7 5
     end
 
-    it "asserts partial globs"
-      assert glob "partially" "partial"
-    end
-
-    it "asserts  globs which are not compatible with grep"
-      assert glob "loooooooooooooooooong" "l*ng"
-    end
-
-    it "asserts lack of partial globs"
-      assert no_glob "zebra" "giraffe"
-    end
-
     it "asserts presence"
       assert present "something"
     end
@@ -63,6 +51,36 @@ line'
   describe "gt matcher"
     it "handles numbers of different length properly"
       assert gt 17 5
+    end
+  end
+
+  describe "glob matcher"
+    it "is essentially 'assert equal' if no special characters are used"
+      assert glob "word" "word"
+    end
+
+    it "supports multi-character wildcards"
+      assert glob "impartially" "*partial*"
+    end
+
+    it "supports single-character wildcards"
+      assert glob "word" "wo?d"
+      assert no_glob "world" "wo?d"
+    end
+
+    it "supports character lists"
+      assert glob "foo" "[a-f]oo"
+      assert no_glob "foo" "[g-z]oo"
+      assert glob "boo" "[a-z]oo"
+      assert glob "bar" "[a-z]*"
+    end
+
+    it "asserts globs which are not compatible with grep"
+      assert glob "loooooooooooooooooong" "l*ng"
+    end
+
+    it "asserts lack of globs"
+      assert no_glob "zebra" "giraffe"
     end
   end
 
