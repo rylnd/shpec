@@ -3,6 +3,7 @@ cache: apt
 env:
   matrix:
     - LINT=true
+    - SHELL=sh
     - SHELL=bash
     - SHELL=dash
     - SHELL=ksh
