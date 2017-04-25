@@ -6,6 +6,7 @@ env:
   - SHELL=dash
   - SHELL=ksh
   - SHELL=zsh
+  - SHELL=bash NON_ENGLISH=true LC_ALL=fr_FR.UTF-8
 matrix:
   fast_finish: true
   include:
@@ -38,12 +39,20 @@ before_install:
       sudo apt-get update -qq
       sudo apt-get install -y $SHELL
     }
+    install_language_pack() {
+      echo "Installing language pack"
+      sudo apt-get --reinstall install -qq language-pack-fr
+    }
 
     if [ "${SHELL}" = "zsh" ]; then
       echo "disable -r end; setopt sh_word_split" >> $HOME/.zshenv
     fi
 
     if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+      if [ -n "${NON_ENGLISH}" ]; then
+        install_language_pack
+      fi
+
       if [ -n "${LINT}" ]; then
         install_shellcheck 0.3.5-3 0.3.4-3
       elif ! type $SHELL > /dev/null; then
