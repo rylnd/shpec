@@ -1,12 +1,11 @@
 language: sh
 cache: apt
 env:
-  matrix:
-    - LINT=true
-    - SHELL=bash
-    - SHELL=dash
-    - SHELL=ksh
-    - SHELL=zsh
+  - LINT=true
+  - SHELL=bash
+  - SHELL=dash
+  - SHELL=ksh
+  - SHELL=zsh
 matrix:
   include:
     - os: osx
