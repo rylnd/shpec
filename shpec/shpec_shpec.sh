@@ -234,7 +234,7 @@ line'
 
         output="$(cat /tmp/spaces_output)"
 
-        assert match "$output" "a\ test\ file\ with\ spaces*works"
+        assert glob "$output" "*a\ test\ file\ with\ spaces*works*"
         rm /tmp/spaces_output
       end
 
@@ -244,7 +244,7 @@ line'
 
         output="$(cat /tmp/multi_spaces_output)"
 
-        assert match "$output" "spaces*works*spaces*works"
+        assert glob "$output" "*spaces*works*spaces*works*"
         rm /tmp/multi_spaces_output
       end
     end
