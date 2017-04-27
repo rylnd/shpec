@@ -1,62 +1,60 @@
 language: sh
 cache: apt
 env:
-  matrix:
-    - LINT=true
-    - SHELL=bash
-    - SHELL=dash
-    - SHELL=ksh
-    - SHELL=zsh
+  - LINT=true
+  - SHELL=bash
+  - SHELL=dash
+  - SHELL=ksh
+  - SHELL=zsh
+  - SHELL=bash NON_ENGLISH=true LC_ALL=fr_FR.UTF-8
 matrix:
-  include:
-    - os: osx
-      env: SHELL=bash
-  exclude:
-    - os: osx
   fast_finish: true
-os:
-  - linux
-  - osx
+  include:
+    - env:
+        - SHELL=bash
+      os: osx
 script:
   - |
-    $SHELL --version
-
-    if [ "$SHELL" = "zsh" ]; then
-      cat > $HOME/.zshenv <<END
-        disable -r end
-        setopt sh_word_split
-    END
-
-    fi
-    if ${LINT:-false}; then
+    if [ -n "${LINT}" ]; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
     else
       $SHELL bin/shpec
     fi
 before_install:
   - |
-    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-      get_shellcheck() {
-        (
-        for v
-        do
-          pkg=shellcheck_${v}_amd64.deb
-          url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
-          wget $url/$pkg || continue
-          echo $pkg
-          break
-        done
-        )
-      }
-      install_shell(){
-        echo "Install $SHELL"
-        sudo apt-get update -qq
-        sudo apt-get install -y $SHELL
-      }
-
-      if ${LINT:-false}; then
-        pkg=$( get_shellcheck 0.3.5-3 0.3.4-3 )
+    install_shellcheck() {
+      (
+      for v; do
+        pkg=shellcheck_${v}_amd64.deb
+        url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
+        wget $url/$pkg || continue
+        echo "Installing $pkg"
         sudo dpkg -i $pkg
+        break
+      done
+      )
+    }
+    install_shell() {
+      echo "Installing $SHELL"
+      sudo apt-get update -qq
+      sudo apt-get install -y $SHELL
+    }
+    install_language_pack() {
+      echo "Installing language pack"
+      sudo apt-get --reinstall install -qq language-pack-fr
+    }
+
+    if [ "${SHELL}" = "zsh" ]; then
+      echo "disable -r end; setopt sh_word_split" >> $HOME/.zshenv
+    fi
+
+    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+      if [ -n "${NON_ENGLISH}" ]; then
+        install_language_pack
+      fi
+
+      if [ -n "${LINT}" ]; then
+        install_shellcheck 0.3.5-3 0.3.4-3
       elif ! type $SHELL > /dev/null; then
         install_shell
       fi
