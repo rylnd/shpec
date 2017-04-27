@@ -1,6 +1,9 @@
 # shpec Changelog
 
-## 0.2.3 Unreleased
+## 0.3.1 Unreleased
+
+## 0.3.0 (Apr 26, 2017)
+  * custom matchers now work in non-english locales (#113)
   * tests containing multiple assertions are aggregated to a single line of
     output
   * shpec files are no longer restricted to the .sh extension
