@@ -195,16 +195,15 @@ shpec() {
     done
 
     if [ $# -gt 0 ] ; then
-      _shpec_files="${*}"
+      for _shpec_file in "$@"; do
+        . "$_shpec_file"
+      done
     else
-      _shpec_files=$(
-        find "$_shpec_root" -name '*_shpec.*'
-      )
+      _shpec_files=$(find "$_shpec_root" -name '*_shpec.*')
+      for _shpec_file in $_shpec_files; do
+        . "$_shpec_file"
+      done
     fi
-
-    for _shpec_file in $_shpec_files; do
-      . "$_shpec_file"
-    done
 
     final_results
   )
