@@ -1,5 +1,25 @@
 # vim: set ft=sh:
 
+all() {
+  _shpec_all_func=$1
+  _shpec_all_arg=$2
+  shift 2
+
+  _shpec_all_result=0
+  for _shpec_all_item in "$@"; do
+    "$_shpec_all_func" "$_shpec_all_arg" "$_shpec_all_item" >/dev/null 2>&1 || _shpec_all_result=1
+  done
+  [ $_shpec_all_result -eq 0 ]
+}
+
+ends_with() {
+  [ ! "${2##*$1}" ]
+}
+
+echo_shell() {
+  ps hp $$ | awk '{print $5}'
+}
+
 indent() {
   printf '%*s' $(( (_shpec_indent - 1) * 2))
 }
@@ -20,6 +40,11 @@ describe() {
 }
 
 end() {
+  _shpec_last_result=$?
+  if [ $_shpec_indent -gt 1 ]; then
+    [ -z "$_shpec_subshell_test" ] && : $((_shpec_total_failures += _shpec_last_result))
+    : $((_shpec_failures += _shpec_total_failures ))
+  fi
   : $((_shpec_indent -= 1))
   _shpec_assertion_printed=0
   [ $_shpec_indent -ge 0 ] && return 0
@@ -47,6 +72,9 @@ it() {
   : $((_shpec_indent += 1))
   : $((_shpec_examples += 1))
   _shpec_assertion="$1"
+  unset -v _shpec_subshell_test
+  _shpec_total_failures=$_shpec_failures
+  _shpec_failures=0
 }
 
 is_function() {
@@ -57,6 +85,8 @@ is_function() {
 }
 
 assert() {
+  _shpec_subshell_test=true
+
   case "x$1" in
   ( xequal )
     print_result "[ '$(sanitize "$2")' = '$(sanitize "$3")' ]" \
@@ -200,6 +230,11 @@ shpec() {
       _shpec_files=$(
         find "$_shpec_root" -name '*_shpec.*'
       )
+    fi
+
+    # shellcheck disable=SC2086
+    if ! ends_with bash "$(echo_shell)" && all ends_with .bash $_shpec_files; then
+      exec bash -c "$0 $_shpec_files"
     fi
 
     for _shpec_file in $_shpec_files; do
