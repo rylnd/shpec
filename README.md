@@ -71,6 +71,14 @@ egrep         # regex match (egrep style)
 no_egrep      # lack of regex match (egrep style)
 ```
 
+*Note:* for `match` and `no_match` matchers the righthand string should be escaped.
+
+Example:
+```
+  assert match "a = b" "a\ =\ b"  # Correct
+  assert match "a = b" "a = b"    # NOT correct
+```
+
 #### Unary Matchers
 ```bash
 present       # string presence
