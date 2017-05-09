@@ -1,12 +1,12 @@
 language: sh
 cache: apt
 env:
-  # - LINT=true
-  # - SHELL=bash
-  # - SHELL=dash
-  # - SHELL=ksh
-  # - SHELL=zsh
-  # - SHELL=bash NON_ENGLISH=true LC_ALL=fr_FR.UTF-8
+  - LINT=true
+  - SHELL=bash
+  - SHELL=dash
+  - SHELL=ksh
+  - SHELL=zsh
+  - SHELL=bash NON_ENGLISH=true LC_ALL=fr_FR.UTF-8
   - SHELL=zsh ANTIGEN=true
 matrix:
   fast_finish: true
