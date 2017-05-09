@@ -16,6 +16,7 @@ matrix:
       os: osx
 script:
   - |
+    $SHELL --version
     if [ -n "${LINT}" ]; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
     elif [ -n "${ANTIGEN}" ]; then
