@@ -22,6 +22,7 @@ script:
     elif [ -n "${ANTIGEN}" ]; then
       # the current environment is already evaluated under bash even if the $SHELL is zsh
       zsh -c '
+      echo "sourcing plugin and running"
       source shpec.plugin.zsh
       shpec
       '

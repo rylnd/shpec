@@ -209,6 +209,8 @@ shpec() {
   )
 }
 
+echo "running executable"
+echo "process: [$(ps  -ef | grep $$ | grep -v grep)]"
 (
   _progname=shpec
   _pathname=$( command -v "$0" )

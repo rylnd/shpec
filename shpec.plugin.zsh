@@ -16,6 +16,7 @@ __shpec_location="$(dirname $0:A)/bin/shpec"
 shpec() {
   # $@ is already defined, pass it to shpec
   (
+      echo "in function with args: [$@]"
       disable -r end;
       . $__shpec_location;
   )
