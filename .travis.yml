@@ -20,9 +20,11 @@ script:
     if [ -n "${LINT}" ]; then
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
     elif [ -n "${ANTIGEN}" ]; then
-      . shpec.plugin.zsh
-      shopt -s expand_aliases
+      # the current environment is already evaluated under bash even if the $SHELL is zsh
+      zsh -c '
+      source shpec.plugin.zsh
       shpec
+      '
     else
       $SHELL bin/shpec
     fi

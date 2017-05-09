@@ -10,7 +10,7 @@
 ##########################################################
 
 
-## just create an alias shpec pointing to where the spec
+## just create a variable shpec pointing to where the spec
 ## executable really is (in this folder)
 __shpec_location="$(dirname $0:A)/bin/shpec"
 shpec() {
