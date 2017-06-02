@@ -2,15 +2,12 @@ describe "shell compatibility"
   case "$SHELL" in
     *zsh)
       describe "shpec plugin"
-
-        . ./shpec.plugin.zsh
-
-        it "defines a shpec alias"
-          shpec_type=$(type shpec | cut -d ' ' -f 4)
-          assert glob ${shpec_type} "alias"
+        it "defines a shpec function"
+          shpec_type=$(type shpec | cut -d ' ' -f 5)
+          assert equal ${shpec_type} "function"
         end
 
-        it "alias that works normally"
+        it "function that works normally"
         tmp_spec="/tmp/shpec_shpec_plugin_test" # problems with $(mktemp -q)
           cat > $tmp_spec <<-SHPEC
              describe "Dummy test spec"
@@ -21,7 +18,6 @@ SHPEC
            assert equal $? 0
          end
        end
-       unalias shpec
       ;;
 
     *)
