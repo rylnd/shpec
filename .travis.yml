@@ -4,6 +4,7 @@ env:
   - LINT=true
   - SHELL=bash
   - SHELL=dash
+  - SHELL=fish
   - SHELL=ksh
   - SHELL=zsh
   - SHELL=bash NON_ENGLISH=true LC_ALL=fr_FR.UTF-8
