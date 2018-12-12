@@ -16,6 +16,7 @@ matrix:
 script:
   - |
     if [ -n "${LINT}" ]; then
+      shellcheck --version
       shellcheck -s sh bin/shpec  # 'sh' refers to POSIX
     else
       $SHELL bin/shpec
