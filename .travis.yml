@@ -22,18 +22,6 @@ script:
     fi
 before_install:
   - |
-    install_shellcheck() {
-      (
-      for v; do
-        pkg=shellcheck_${v}_amd64.deb
-        url="http://ftp.debian.org/debian/pool/main/s/shellcheck/"
-        wget $url/$pkg || continue
-        echo "Installing $pkg"
-        sudo dpkg -i $pkg
-        break
-      done
-      )
-    }
     install_shell() {
       echo "Installing $SHELL"
       sudo apt-get update -qq
@@ -53,9 +41,7 @@ before_install:
         install_language_pack
       fi
 
-      if [ -n "${LINT}" ]; then
-        install_shellcheck 0.3.5-3 0.3.4-3
-      elif ! type $SHELL > /dev/null; then
+      if ! type $SHELL > /dev/null; then
         install_shell
       fi
     fi
