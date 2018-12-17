@@ -50,7 +50,7 @@ it() {
 }
 
 is_function() {
-  case $(LC_ALL=C type "$1" 2> /dev/null) in
+  case $(LC_ALL=C command -V "$1" 2> /dev/null) in
     (*function*) return 0;;
   esac
   return 1
@@ -191,6 +191,7 @@ shpec() {
     )
 
     for _shpec_matcher_file in $_shpec_matcher_files; do
+      # shellcheck source=/dev/null
       . "$_shpec_matcher_file"
     done
 
@@ -203,6 +204,7 @@ shpec() {
     fi
 
     for _shpec_file in $_shpec_files; do
+      # shellcheck source=/dev/null
       . "$_shpec_file"
     done
 
