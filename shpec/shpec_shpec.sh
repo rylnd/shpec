@@ -226,6 +226,28 @@ line'
         assert unequal "$?" "0"
       end
     end
+
+    describe "arguments with whitespace"
+      it "runs arguments with spaces"
+        shpec "$SHPEC_ROOT/etc/example with spaces" > /tmp/spaces_output 2>& 1
+        assert equal "$?" "0"
+
+        output="$(cat /tmp/spaces_output)"
+
+        assert glob "$output" "*a\ test\ file\ with\ spaces*works*"
+        rm /tmp/spaces_output
+      end
+
+      it "runs multiple arguments with spaces"
+        shpec "$SHPEC_ROOT/etc/example with spaces" "$SHPEC_ROOT/etc/example with spaces" > /tmp/multi_spaces_output 2>& 1
+        assert equal "$?" "0"
+
+        output="$(cat /tmp/multi_spaces_output)"
+
+        assert glob "$output" "*spaces*works*spaces*works*"
+        rm /tmp/multi_spaces_output
+      end
+    end
   end
 
   describe "commandline options"
