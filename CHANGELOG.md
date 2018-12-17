@@ -1,6 +1,10 @@
 # shpec Changelog
 
-## 0.3.1 Unreleased
+## Unreleased
+
+## 0.3.1 (Dec 16, 2018)
+  * Replaces usage of `type` for better POSIX compatibility
+  * Better `tar` compatibility in install script
 
 ## 0.3.0 (Apr 26, 2017)
   * custom matchers now work in non-english locales (#113)
