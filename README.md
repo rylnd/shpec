@@ -112,7 +112,7 @@ the second argument will be used as the body of the command. (code that would be
 Once you're done, you can delete it with `unstub_command`.
 
 The best example is the [shpec test for this feature](
-https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L72-L89).
+https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L121-L139).
 <!-- beware: keep in sync of line when modifying the shpec -->
 
 ## Installation
