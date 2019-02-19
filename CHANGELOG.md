@@ -2,6 +2,7 @@
 
 ## Unreleased
   * Handles arguments containing whitespace (#112)
+  * Updates URI in installation instructions and screenshot (#124)
 
 ## 0.3.1 (Dec 16, 2018)
   * Replaces usage of `type` for better POSIX compatibility
