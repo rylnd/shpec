@@ -4,7 +4,7 @@ shpec [![Build Status](https://travis-ci.org/rylnd/shpec.svg?branch=master)](htt
 *Test your shell scripts!*
 
 <p align='center'>
-  <img src='https://raw.github.com/wiki/rylnd/shpec/images/screenshot.png'
+  <img src='https://raw.githubusercontent.com/wiki/rylnd/shpec/images/screenshot.png'
        alt="Screenshot of shpec" />
 </p>
 
@@ -118,7 +118,7 @@ https://github.com/rylnd/shpec/blob/master/shpec/shpec_shpec.sh#L121-L139).
 ## Installation
 you can either install with curl
 ```bash
-sh -c "`curl -L https://raw.github.com/rylnd/shpec/master/install.sh`"
+sh -c "`curl -L https://raw.githubusercontent.com/rylnd/shpec/master/install.sh`"
 ```
 
 or with [antigen](https://github.com/zsh-users/antigen) for zsh by
