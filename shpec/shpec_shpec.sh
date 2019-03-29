@@ -136,6 +136,15 @@ line'
       assert equal "$(curl)" "stubbed body"
       unstub_command "curl"
     end
+
+    it "prevents loosing stubbed function"
+      local expected="assert double"
+      stub_command "assert" "echo '${expected}'"
+      local result="$(assert)"
+      unstub_command "assert"
+
+      assert equal "${expected}" "${result}"
+    end
   end
 
   describe "testing files"

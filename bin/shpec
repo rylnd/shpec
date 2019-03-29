@@ -37,11 +37,30 @@ end_describe() {
 # any identifier as a function name.
 
 stub_command() {
+  local func_decl="$(get_function_declaration "$1")"
+  [ -n "${func_decl}" ] && eval "_shpec____${func_decl}"
+
   _shpec_stub_body="${2:-:}"
   eval "$1() { ${_shpec_stub_body}; }"
 }
 
-unstub_command() { unset -f "$1"; }
+unstub_command() { 
+  unset -f "$1";
+  local func_decl="$(get_function_declaration _shpec____"$1")"
+  [ -n "${func_decl}" ] && {
+    local reverted="$(echo "${func_decl}" | sed 's/_shpec____//')"
+    eval "${reverted}"
+  }
+}
+
+get_function_declaration()
+{
+  if [ "${SHELL}" = "dash" ]; then
+    type "$1" | tail -n +2
+  else
+    typeset -f "$1"
+  fi
+}
 
 it() {
   : $((_shpec_indent += 1))
