@@ -213,10 +213,6 @@ shpec() {
 }
 
 (
-  _progname=shpec
-  _pathname=$( command -v "$0" )
-  _cmdname=${_pathname##*/}
   _main=shpec
-
-  case $_progname in (${_cmdname%.sh}) $_main "$@";; esac
+  $_main "$@"
 )
