@@ -22,8 +22,8 @@ Then to run your tests:
 shpec [shpec_files]
 ```
 
-If you'd like your tests to run automatically when they change, we recommend the [entr](
-http://entrproject.org/) utility:
+If you'd like your tests to run automatically when they change, we suggest a utility like [entr](
+https://github.com/eradman/entr/):
 
 ```bash
 find . -name "*_shpec.sh" | entr shpec
